@@ -4,4 +4,4 @@ import com.fwhyn.app.gethub.feature.func.user.data.model.GetGitHubUserProfilePar
 import com.fwhyn.app.gethub.feature.func.user.data.model.GitHubUserProfileData
 import com.fwhyn.lib.baze.common.helper.BaseGetter
 
-interface GitHubUserProfileDataSource : BaseGetter<GetGitHubUserProfileParam, GitHubUserProfileData>
+interface GitHubUserProfileRemoteDataSource : BaseGetter<GetGitHubUserProfileParam, GitHubUserProfileData>
