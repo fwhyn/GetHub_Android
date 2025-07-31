@@ -46,9 +46,9 @@ import com.fwhyn.app.gethub.feature.screen.home.component.getStateOfConnectDisco
 import com.fwhyn.app.gethub.feature.screen.home.component.getStateOfDataStreamViewParam
 import com.fwhyn.app.gethub.feature.screen.home.helper.OpenSafCode
 import com.fwhyn.app.gethub.feature.screen.home.model.HomeEvent
-import com.fwhyn.app.gethub.feature.screen.home.model.HomeParam
+import com.fwhyn.app.gethub.feature.screen.home.model.HomeProperties
 import com.fwhyn.app.gethub.feature.screen.home.model.HomeState
-import com.fwhyn.app.gethub.feature.screen.home.model.homeParamFake
+import com.fwhyn.app.gethub.feature.screen.home.model.homePropertiesFake
 import com.fwhyn.lib.baze.compose.dialog.CircularProgressDialog
 import com.fwhyn.lib.baze.compose.helper.ActivityState
 import com.fwhyn.lib.baze.compose.helper.DevicePreviews
@@ -84,7 +84,7 @@ private fun HomeScreen(
 
     // ----------------------------------------------------------------
     LaunchedEffect(Unit) {
-        vm.param.event.collect { event ->
+        vm.properties.event.collect { event ->
             when (event) {
                 is HomeEvent.OnNotify -> activityState.notification.showSnackbar(stringManager.getString(event.code))
                 is HomeEvent.OpenSaf -> when (event.code) {
@@ -95,7 +95,7 @@ private fun HomeScreen(
     }
 
     // ----------------------------------------------------------------
-    val state by vm.param.state.collectAsStateWithLifecycle()
+    val state by vm.properties.state.collectAsStateWithLifecycle()
     when (state) {
         HomeState.Idle -> {} // do nothing
         HomeState.Loading -> CircularProgressDialog()
@@ -110,11 +110,11 @@ private fun HomeScreen(
     )
 
     val dataStreamViewParam = getStateOfDataStreamViewParam(
-        kmcUiListFlow = vm.param.kmcUiList
+        kmcUiListFlow = vm.properties.kmcUiList
     )
 
     val connectDisconnectBtnParam = getStateOfConnectDisconnectBtnParam(
-        isConnected = vm.param.isRealTimeData,
+        isConnected = vm.properties.isRealTimeData,
         onClick = vm::onConnectOrDisconnect
     )
 
@@ -241,8 +241,8 @@ fun HomeScreenPreview() {
             activityState = rememberActivityState(),
             stringManager = HomeStringManagerImpl(LocalContext.current),
             vm = object : HomeVmInterface() {
-                override val param: HomeParam
-                    get() = homeParamFake
+                override val properties: HomeProperties
+                    get() = homePropertiesFake
             },
         )
     }

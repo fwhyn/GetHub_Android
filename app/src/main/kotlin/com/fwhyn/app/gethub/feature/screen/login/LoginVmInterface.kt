@@ -1,15 +1,14 @@
 package com.fwhyn.app.gethub.feature.screen.login
 
 import androidx.lifecycle.ViewModel
+import com.fwhyn.app.gethub.feature.screen.login.model.LoginProperties
 
 abstract class LoginVmInterface : ViewModel() {
 
-//    abstract val loginUiState: LoginUiState
+    abstract val properties: LoginProperties
 
-    open fun onEmailValueChange(value: String) {}
-    open fun onPasswordValueChange(value: String) {}
-    open fun onCheckRememberMe() {}
-
-    //    open fun onLogin(getAuthTokenParam: GetAuthTokenParam) {}
-    open fun onCalledFromBackStack() {}
+    open fun onEmailChanged(value: String) {}
+    open fun onPasswordChanged(value: String) {}
+    open fun onRememberMeChecked() {}
+    open fun onLogin() {}
 }

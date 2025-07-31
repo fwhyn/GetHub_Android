@@ -1,12 +1,12 @@
 package com.fwhyn.app.gethub.feature.screen.login
 
-import com.fwhyn.lib.baze.compose.helper.ActivityRetainedState
+import com.fwhyn.app.gethub.feature.screen.login.model.LoginProperties
+import com.fwhyn.app.gethub.feature.screen.login.model.loginPropertiesFake
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val activityRetainedState: ActivityRetainedState,
 //    private val messageHandler: MessageHandler<Status>,
 //    private val getTokenUseCase: GetAuthTokenUseCase,
 ) : LoginVmInterface() {
@@ -14,6 +14,8 @@ class LoginViewModel @Inject constructor(
     companion object {
         const val MAX_LOGIN_TRY = 3
     }
+
+    override val properties: LoginProperties = loginPropertiesFake
 
 //    init {
 //        init()
@@ -44,7 +46,7 @@ class LoginViewModel @Inject constructor(
 //
 //    override fun onCalledFromBackStack() {
 //        if (loginUiState.loginResult is Rezult.Success) {
-//            loginUiState.state = LoginUiState.State.LoggedIn()
+//            loginUiState.state = LoginProperties.State.LoggedIn()
 //        }
 //    }
 //
@@ -62,7 +64,7 @@ class LoginViewModel @Inject constructor(
 //
 //                    is Rezult.Success -> {
 //                        if (it.dat != AuthTokenModel.None) {
-//                            loginUiState.state = LoginUiState.State.LoggedIn()
+//                            loginUiState.state = LoginProperties.State.LoggedIn()
 //                        }
 //                    }
 //                }

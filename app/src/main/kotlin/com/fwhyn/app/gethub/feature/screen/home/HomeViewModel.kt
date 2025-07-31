@@ -15,7 +15,7 @@ import com.fwhyn.app.gethub.feature.screen.home.helper.OpenSafCode
 import com.fwhyn.app.gethub.feature.screen.home.helper.extension.toDomain
 import com.fwhyn.app.gethub.feature.screen.home.helper.extension.toUi
 import com.fwhyn.app.gethub.feature.screen.home.model.HomeEvent
-import com.fwhyn.app.gethub.feature.screen.home.model.HomeParam
+import com.fwhyn.app.gethub.feature.screen.home.model.HomeProperties
 import com.fwhyn.app.gethub.feature.screen.home.model.HomeState
 import com.fwhyn.app.gethub.feature.screen.home.model.KmcUi
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -39,7 +39,7 @@ class HomeViewModel @Inject constructor(
     private val kmcUiList: MutableStateFlow<List<KmcUi>> = MutableStateFlow(emptyList())
 
     // ----------------------------------------------------------------
-    override val param: HomeParam = HomeParam(
+    override val properties: HomeProperties = HomeProperties(
         event = event,
         state = state,
         isRealTimeData = isRealTimeData,
@@ -98,7 +98,7 @@ class HomeViewModel @Inject constructor(
                 scope = scope,
                 onStart = { state.value = HomeState.Loading },
                 onFetchParam = {
-                    val kmcList = param.kmcUiList.value
+                    val kmcList = properties.kmcUiList.value
                     ExportKmcListParam(kmcList.toDomain(), uri)
                 },
                 onOmitResult = { res ->

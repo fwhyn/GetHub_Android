@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted.Companion.WhileSubscribed
 import kotlinx.coroutines.flow.StateFlow
 
-data class HomeParam(
+data class HomeProperties(
     val event: SharedFlow<HomeEvent>,
     val state: StateFlow<HomeState>,
     val isRealTimeData: StateFlow<Boolean>,
@@ -20,8 +20,8 @@ data class HomeParam(
             state: StateFlow<HomeState> = MutableStateFlow(HomeState.Idle),
             isRealTimeData: StateFlow<Boolean> = MutableStateFlow(false),
             kmcUiList: StateFlow<List<KmcUi>> = MutableStateFlow(emptyList()),
-        ): HomeParam {
-            return HomeParam(
+        ): HomeProperties {
+            return HomeProperties(
                 event = event,
                 state = state,
                 isRealTimeData = isRealTimeData,
@@ -31,6 +31,6 @@ data class HomeParam(
     }
 }
 
-val homeParamFake = HomeParam.default(
+val homePropertiesFake = HomeProperties.default(
     kmcUiList = MutableStateFlow(kmcUiListFake)
 )

@@ -10,4 +10,14 @@
     <string name="disconnect">Disconnect</string>
     <string name="export_error">Export error.</string>
     <string name="export_success">Export success.</string>
+    <string name="email">Email</string>
+    <string name="enter_your_email">Enter your Email.</string>
+    <string name="login">Login</string>
+    <string name="welcome">Welcome</string>
+    <string name="log_in">Log in</string>
+    <string name="password">Password</string>
+    <string name="enter_your_password">Enter your password.</string>
+    <string name="remember_me">Remember me</string>
+    <string name="login_error">Login error!</string>
+    <string name="login_success">Login success.</string>
 </resources>
