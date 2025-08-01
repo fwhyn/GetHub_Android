@@ -11,9 +11,8 @@ class HomeStringManagerMain(
     override fun getString(input: HomeMessageCode): String {
         @StringRes
         val id: Int = when (input) {
-            HomeMessageCode.GetKmcListError -> R.string.get_data_error
-            HomeMessageCode.ExportError -> R.string.export_error
-            HomeMessageCode.ExportSuccess -> R.string.export_success
+            HomeMessageCode.UnexpectedError -> R.string.unexpected_error
+            HomeMessageCode.TimeOutError -> R.string.time_out_error
         }
 
         return context.getString(id)

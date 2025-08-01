@@ -3,13 +3,10 @@ package com.fwhyn.app.gethub.feature.screen.home
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,23 +25,17 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.fwhyn.app.gethub.R
-import com.fwhyn.app.gethub.common.storage.saf.getFileCreatorLauncher
 import com.fwhyn.app.gethub.common.ui.component.MySpacer
 import com.fwhyn.app.gethub.common.ui.component.TopBar
 import com.fwhyn.app.gethub.common.ui.component.TopBarParam
 import com.fwhyn.app.gethub.common.ui.component.getStateOfTopBarHomeParam
 import com.fwhyn.app.gethub.common.ui.config.MyTheme
 import com.fwhyn.app.gethub.common.ui.config.TopBarHeight
-import com.fwhyn.app.gethub.feature.func.sensor.kmc.domain.helper.ExportExcelUtil
-import com.fwhyn.app.gethub.feature.screen.home.component.ConnectDisconnectBtn
-import com.fwhyn.app.gethub.feature.screen.home.component.ConnectDisconnectBtnParam
 import com.fwhyn.app.gethub.feature.screen.home.component.DataStreamView
 import com.fwhyn.app.gethub.feature.screen.home.component.DataStreamViewParam
 import com.fwhyn.app.gethub.feature.screen.home.component.HomeStringManager
 import com.fwhyn.app.gethub.feature.screen.home.component.HomeStringManagerMain
-import com.fwhyn.app.gethub.feature.screen.home.component.getStateOfConnectDisconnectBtnParam
 import com.fwhyn.app.gethub.feature.screen.home.component.getStateOfDataStreamViewParam
-import com.fwhyn.app.gethub.feature.screen.home.helper.OpenSafCode
 import com.fwhyn.app.gethub.feature.screen.home.model.HomeEvent
 import com.fwhyn.app.gethub.feature.screen.home.model.HomeProperties
 import com.fwhyn.app.gethub.feature.screen.home.model.HomeState
@@ -80,16 +71,12 @@ private fun HomeScreen(
     stringManager: HomeStringManager,
     vm: HomeVmInterface,
 ) {
-    val safFileCreator = getFileCreatorLauncher(onResult = vm::onCreateFileResult)
-
     // ----------------------------------------------------------------
     LaunchedEffect(Unit) {
         vm.properties.event.collect { event ->
             when (event) {
-                is HomeEvent.OnNotify -> activityState.notification.showSnackbar(stringManager.getString(event.code))
-                is HomeEvent.OpenSaf -> when (event.code) {
-                    OpenSafCode.ExportKmcList -> ExportExcelUtil.requestToCreateWorkBook(safFileCreator)
-                }
+                is HomeEvent.Notify -> activityState.notification.showSnackbar(stringManager.getString(event.code))
+                is HomeEvent.OpenProfile -> {} // TODO Handle opening profile if needed
             }
         }
     }
@@ -110,19 +97,13 @@ private fun HomeScreen(
     )
 
     val dataStreamViewParam = getStateOfDataStreamViewParam(
-        kmcUiListFlow = vm.properties.kmcUiList
-    )
-
-    val connectDisconnectBtnParam = getStateOfConnectDisconnectBtnParam(
-        isConnected = vm.properties.isRealTimeData,
-        onClick = vm::onConnectOrDisconnect
+        gitHubUsersFlow = vm.properties.gitHubUsers,
+        onItemClicked = {} // TODO Handle item click if needed
     )
 
     val param = HomeViewParam(
         topBarParam = topBarParam,
         dataStreamViewParam = dataStreamViewParam,
-        connectDisconnectBtnParam = connectDisconnectBtnParam,
-        onExportData = vm::onExportData,
     )
 
     HomeView(
@@ -188,37 +169,19 @@ fun PortraitHomeView(
             ) {
 
                 Text(
-                    text = stringResource(R.string.kmc_data)
+                    text = stringResource(R.string.github_users)
                 )
 
                 MySpacer(4.dp)
                 Column(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .height(500.dp)
+                        .fillMaxSize()
                         .background(color = MaterialTheme.colorScheme.tertiary, shape = RoundedCornerShape(8.dp))
                         .clip(RoundedCornerShape(8.dp)),
                 ) {
                     DataStreamView(
                         modifier = Modifier.padding(8.dp),
                         param = param.dataStreamViewParam
-                    )
-                }
-
-                MySpacer(8.dp)
-                Row {
-                    MySpacer(50.dp)
-                    Button(
-                        modifier = Modifier.weight(1f),
-                        onClick = param.onExportData
-                    ) {
-                        Text(text = stringResource(R.string.export))
-                    }
-
-                    MySpacer(8.dp)
-                    ConnectDisconnectBtn(
-                        modifier = Modifier.weight(1f),
-                        param = param.connectDisconnectBtnParam
                     )
                 }
             }
@@ -229,8 +192,6 @@ fun PortraitHomeView(
 data class HomeViewParam(
     val topBarParam: TopBarParam,
     val dataStreamViewParam: DataStreamViewParam,
-    val connectDisconnectBtnParam: ConnectDisconnectBtnParam,
-    val onExportData: () -> Unit,
 )
 
 @DevicePreviews

@@ -3,13 +3,6 @@
     <string name="logout_button">Logout Button</string>
     <string name="back_button">Back Button</string>
     <string name="home_title">Home</string>
-    <string name="kmc_data">KMC Data</string>
-    <string name="connect">Connect</string>
-    <string name="export">Export</string>
-    <string name="get_data_error">Get data error.</string>
-    <string name="disconnect">Disconnect</string>
-    <string name="export_error">Export error.</string>
-    <string name="export_success">Export success.</string>
     <string name="email">Email</string>
     <string name="enter_your_email">Enter your Email.</string>
     <string name="login">Login</string>
@@ -20,4 +13,7 @@
     <string name="remember_me">Remember me</string>
     <string name="login_error">Login error!</string>
     <string name="login_success">Login success.</string>
+    <string name="unexpected_error">Unexpected error!</string>
+    <string name="time_out_error">Time out error!</string>
+    <string name="github_users">GitHub Users</string>
 </resources>

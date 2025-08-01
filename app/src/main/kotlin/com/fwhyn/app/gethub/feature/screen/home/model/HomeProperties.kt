@@ -9,8 +9,7 @@ import kotlinx.coroutines.flow.StateFlow
 data class HomeProperties(
     val event: SharedFlow<HomeEvent>,
     val state: StateFlow<HomeState>,
-    val isRealTimeData: StateFlow<Boolean>,
-    val kmcUiList: StateFlow<List<KmcUi>>,
+    val gitHubUsers: StateFlow<List<GitHubUserUi>>,
 ) {
     companion object {
         val started by lazy { WhileSubscribed(5000) }
@@ -18,19 +17,15 @@ data class HomeProperties(
         fun default(
             event: SharedFlow<HomeEvent> = MutableSharedFlow(),
             state: StateFlow<HomeState> = MutableStateFlow(HomeState.Idle),
-            isRealTimeData: StateFlow<Boolean> = MutableStateFlow(false),
-            kmcUiList: StateFlow<List<KmcUi>> = MutableStateFlow(emptyList()),
+            kmcUiList: StateFlow<List<GitHubUserUi>> = MutableStateFlow(emptyList()),
         ): HomeProperties {
             return HomeProperties(
                 event = event,
                 state = state,
-                isRealTimeData = isRealTimeData,
-                kmcUiList = kmcUiList
+                gitHubUsers = kmcUiList
             )
         }
     }
 }
 
-val homePropertiesFake = HomeProperties.default(
-    kmcUiList = MutableStateFlow(kmcUiListFake)
-)
+val homePropertiesFake = HomeProperties.default()

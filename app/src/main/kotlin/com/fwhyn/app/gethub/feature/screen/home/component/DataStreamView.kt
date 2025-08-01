@@ -16,12 +16,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.fwhyn.app.gethub.common.ui.config.MyTheme
-import com.fwhyn.app.gethub.feature.screen.home.model.KmcUi
-import com.fwhyn.app.gethub.feature.screen.home.model.RespirationRateUi
-import com.fwhyn.app.gethub.feature.screen.home.model.SpoO2Ui
-import com.fwhyn.app.gethub.feature.screen.home.model.TemperatureUi
-import com.fwhyn.app.gethub.feature.screen.home.model.kmcUiListFake
-import com.yeocak.timelineview.TimelineView
+import com.fwhyn.app.gethub.feature.screen.home.model.GitHubUserUi
+import com.fwhyn.app.gethub.feature.screen.home.model.gitHubUserUiFake
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -36,23 +32,17 @@ fun DataStreamView(
         LazyColumn(
             modifier = Modifier.fillMaxSize()
         ) {
-            itemsIndexed(param.kmcUiList) { index, kmcUi ->
-                val nodeType = when (index) {
-                    0 -> TimelineView.NodeType.FIRST
-                    param.kmcUiList.lastIndex -> TimelineView.NodeType.LAST
-                    else -> TimelineView.NodeType.MIDDLE
-                }
-
-                val kmcUiViewParam = KmcUiViewParam(
-                    nodeType = nodeType,
-                    kmcUi = kmcUi,
+            itemsIndexed(param.gitHubUsers) { index, user ->
+                val gitHubUserViewParam = GitHubUserViewParam(
+                    user = user,
+                    onClicked = { param.onItemClicked(user) }
                 )
 
-                KmcUiView(
+                GitHubUserView(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(defaultKmcUiViewHeight),
-                    param = kmcUiViewParam,
+                    param = gitHubUserViewParam,
                 )
             }
         }
@@ -60,30 +50,33 @@ fun DataStreamView(
 }
 
 data class DataStreamViewParam(
-    val kmcUiList: List<KmcUi>,
+    val gitHubUsers: List<GitHubUserUi>,
+    val onItemClicked: (GitHubUserUi) -> Unit,
 ) {
     companion object {
         fun default(
-            kmcUiList: List<KmcUi> = listOf(
-                KmcUi.default(
-                    spoO2Ui = SpoO2Ui.default(),
-                    temperatureUi = TemperatureUi.default(),
-                    respirationRateUi = RespirationRateUi.default()
-                )
-            ),
-        ) = DataStreamViewParam(kmcUiList = kmcUiList)
+            gitHubUsers: List<GitHubUserUi> = emptyList(),
+            onItemClicked: (GitHubUserUi) -> Unit = {},
+        ): DataStreamViewParam {
+            return DataStreamViewParam(
+                gitHubUsers = gitHubUsers,
+                onItemClicked = onItemClicked
+            )
+        }
     }
 }
 
 @Composable
 fun getStateOfDataStreamViewParam(
-    kmcUiListFlow: StateFlow<List<KmcUi>>,
+    gitHubUsersFlow: StateFlow<List<GitHubUserUi>>,
+    onItemClicked: (GitHubUserUi) -> Unit,
 ): DataStreamViewParam {
 
-    val kmcList: List<KmcUi> by kmcUiListFlow.collectAsStateWithLifecycle()
+    val users: List<GitHubUserUi> by gitHubUsersFlow.collectAsStateWithLifecycle()
 
     return DataStreamViewParam(
-        kmcUiList = kmcList
+        gitHubUsers = users,
+        onItemClicked = onItemClicked
     )
 }
 
@@ -91,7 +84,8 @@ fun getStateOfDataStreamViewParam(
 @Preview
 fun DataStreamViewPreview() {
     val param = getStateOfDataStreamViewParam(
-        kmcUiListFlow = MutableStateFlow(kmcUiListFake)
+        gitHubUsersFlow = MutableStateFlow(gitHubUserUiFake),
+        onItemClicked = {}
     )
 
     MyTheme {
