@@ -4,10 +4,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -15,9 +15,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.fwhyn.app.gethub.common.ui.component.MySpacer
 import com.fwhyn.app.gethub.common.ui.config.MyTheme
 import com.fwhyn.app.gethub.feature.screen.home.model.GitHubUserUi
-import com.fwhyn.app.gethub.feature.screen.home.model.gitHubUserUiFake
+import com.fwhyn.app.gethub.feature.screen.home.model.gitHubUsersUiFake
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -39,11 +40,15 @@ fun DataStreamView(
                 )
 
                 GitHubUserView(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(defaultKmcUiViewHeight),
+                    modifier = Modifier.fillMaxWidth(),
                     param = gitHubUserViewParam,
                 )
+
+                if (index < param.gitHubUsers.size - 1) {
+                    // Add a spacer between items
+                    HorizontalDivider()
+                    MySpacer(1.dp)
+                }
             }
         }
     }
@@ -84,7 +89,7 @@ fun getStateOfDataStreamViewParam(
 @Preview
 fun DataStreamViewPreview() {
     val param = getStateOfDataStreamViewParam(
-        gitHubUsersFlow = MutableStateFlow(gitHubUserUiFake),
+        gitHubUsersFlow = MutableStateFlow(gitHubUsersUiFake),
         onItemClicked = {}
     )
 

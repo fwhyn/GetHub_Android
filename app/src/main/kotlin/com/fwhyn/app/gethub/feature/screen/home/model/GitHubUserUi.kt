@@ -32,7 +32,18 @@ data class GitHubUserUi(
     }
 }
 
-val gitHubUserUiFake = listOf(
+val gitHubUserUiFake = GitHubUserUi(
+    login = "fwhyn",
+    id = 1,
+    nodeId = "MDQ6VXNlcjE=",
+    avatarUrl = "https://avatars.githubusercontent.com/u/1?v=4",
+    gravatarId = "",
+    url = "https://api.github.com/users/fwhyn",
+    htmlUrl = "https://github.com/fwhyn",
+)
+
+val gitHubUsersUiFake = listOf(
+    gitHubUserUiFake,
     GitHubUserUi(
         login = "mojombo",
         id = 3,
