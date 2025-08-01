@@ -33,7 +33,7 @@ import com.fwhyn.app.gethub.feature.screen.login.component.LabeledCheckboxParam
 import com.fwhyn.app.gethub.feature.screen.login.component.LoginButton
 import com.fwhyn.app.gethub.feature.screen.login.component.LoginButtonParam
 import com.fwhyn.app.gethub.feature.screen.login.component.LoginStringManager
-import com.fwhyn.app.gethub.feature.screen.login.component.LoginStringManagerImpl
+import com.fwhyn.app.gethub.feature.screen.login.component.LoginStringManagerMain
 import com.fwhyn.app.gethub.feature.screen.login.component.LoginTitle
 import com.fwhyn.app.gethub.feature.screen.login.component.PasswordField
 import com.fwhyn.app.gethub.feature.screen.login.component.PasswordFieldParam
@@ -59,7 +59,7 @@ fun NavGraphBuilder.addLoginScreen(
     composable(LOGIN_ROUTE) {
         LoginScreen(
             modifier = Modifier.fillMaxSize(),
-            stringManager = LoginStringManagerImpl(LocalContext.current),
+            stringManager = LoginStringManagerMain(LocalContext.current),
             activityState = activityState,
             vm = hiltViewModel<LoginViewModel>(),
         )
@@ -198,7 +198,7 @@ fun LoginScreenPreview() {
     MyTheme {
         LoginScreen(
             activityState = rememberActivityState(),
-            stringManager = LoginStringManagerImpl(LocalContext.current),
+            stringManager = LoginStringManagerMain(LocalContext.current),
             vm = object : LoginVmInterface() {
                 override val properties: LoginProperties
                     get() = loginPropertiesFake

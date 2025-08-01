@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.annotation.StringRes
 import com.fwhyn.app.gethub.R
 
-class HomeStringManagerImpl(
+class HomeStringManagerMain(
     private val context: Context,
 ) : HomeStringManager {
 

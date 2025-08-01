@@ -1,7 +1,13 @@
 package com.fwhyn.app.gethub.feature.func.user.data.remote
 
-import com.fwhyn.app.gethub.feature.func.user.data.model.GetGitHubUserProfileParam
 import com.fwhyn.app.gethub.feature.func.user.data.model.GitHubUserProfileData
-import com.fwhyn.lib.baze.common.helper.BaseGetter
+import retrofit2.Response
+import retrofit2.http.GET
+import retrofit2.http.Path
 
-interface GitHubUserProfileRemoteDataSource : BaseGetter<GetGitHubUserProfileParam, GitHubUserProfileData>
+interface GitHubUserProfileRemoteDataSource {
+    @GET("users/{username}")
+    suspend fun getUserProfile(
+        @Path("username") username: String,
+    ): Response<GitHubUserProfileData>
+}

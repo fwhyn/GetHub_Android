@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.annotation.StringRes
 import com.fwhyn.app.gethub.R
 
-class LoginStringManagerImpl(
+class LoginStringManagerMain(
     private val context: Context,
 ) : LoginStringManager {
 

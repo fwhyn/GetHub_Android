@@ -1,4 +1,4 @@
-package com.telehealth.app.gethub.feature.func.sensor.kmc.data.repository
+package com.fwhyn.app.gethub.feature.func.sensor.kmc.data.repository
 
 import com.fwhyn.app.gethub.feature.func.sensor.kmc.data.model.GetKmcDataParam
 import com.fwhyn.app.gethub.feature.func.sensor.kmc.data.model.KmcData

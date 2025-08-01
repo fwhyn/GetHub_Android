@@ -1,7 +1,14 @@
 package com.fwhyn.app.gethub.feature.func.user.data.remote
 
-import com.fwhyn.app.gethub.feature.func.user.data.model.GetGitHubUsersParam
 import com.fwhyn.app.gethub.feature.func.user.data.model.GitHubUserData
-import com.fwhyn.lib.baze.common.helper.BaseGetter
+import retrofit2.Response
+import retrofit2.http.GET
+import retrofit2.http.Query
 
-interface GitHubUsersRemoteDataSource : BaseGetter<GetGitHubUsersParam, List<GitHubUserData>>
+interface GitHubUsersRemoteDataSource {
+    @GET("users")
+    suspend fun getUsers(
+        @Query("per_page") perPage: Int,
+        @Query("since") since: Int = 0,
+    ): Response<List<GitHubUserData>>
+}

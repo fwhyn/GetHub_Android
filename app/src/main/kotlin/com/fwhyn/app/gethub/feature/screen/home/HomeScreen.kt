@@ -41,7 +41,7 @@ import com.fwhyn.app.gethub.feature.screen.home.component.ConnectDisconnectBtnPa
 import com.fwhyn.app.gethub.feature.screen.home.component.DataStreamView
 import com.fwhyn.app.gethub.feature.screen.home.component.DataStreamViewParam
 import com.fwhyn.app.gethub.feature.screen.home.component.HomeStringManager
-import com.fwhyn.app.gethub.feature.screen.home.component.HomeStringManagerImpl
+import com.fwhyn.app.gethub.feature.screen.home.component.HomeStringManagerMain
 import com.fwhyn.app.gethub.feature.screen.home.component.getStateOfConnectDisconnectBtnParam
 import com.fwhyn.app.gethub.feature.screen.home.component.getStateOfDataStreamViewParam
 import com.fwhyn.app.gethub.feature.screen.home.helper.OpenSafCode
@@ -63,7 +63,7 @@ fun NavGraphBuilder.addHomeScreen(
         HomeScreen(
             modifier = Modifier.fillMaxSize(),
             activityState = activityState,
-            stringManager = HomeStringManagerImpl(LocalContext.current),
+            stringManager = HomeStringManagerMain(LocalContext.current),
             vm = hiltViewModel<HomeViewModel>()
         )
     }
@@ -239,7 +239,7 @@ fun HomeScreenPreview() {
     MyTheme {
         HomeScreen(
             activityState = rememberActivityState(),
-            stringManager = HomeStringManagerImpl(LocalContext.current),
+            stringManager = HomeStringManagerMain(LocalContext.current),
             vm = object : HomeVmInterface() {
                 override val properties: HomeProperties
                     get() = homePropertiesFake
