@@ -1,6 +1,7 @@
 package com.fwhyn.app.gethub.feature.screen.home.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,16 +11,19 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshotFlow
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.fwhyn.app.gethub.common.ui.component.MySpacer
 import com.fwhyn.app.gethub.common.ui.config.MyTheme
@@ -37,31 +41,47 @@ fun DataStreamView(
         modifier = modifier
     ) {
         val listState = rememberLazyListState()
-        var previousScrollOffset by remember { mutableStateOf(0) }
+        var previousScrollOffset by remember { mutableIntStateOf(0) }
+
 
         LaunchedEffect(listState) {
-            snapshotFlow { listState.firstVisibleItemScrollOffset }
-                .collect { currentOffset ->
-                    val scrollingUp = currentOffset < previousScrollOffset
-                    val scrollingDown = currentOffset > previousScrollOffset
-
-                    previousScrollOffset = currentOffset
-
-                    // Check if at the top
-                    if (listState.firstVisibleItemIndex == 0 && scrollingUp) {
-                        param.onLoadPrev()
-                    }
-
-                    // Check if at the bottom
-                    val lastIndex = param.gitHubUsers.lastIndex
-                    if (listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index == lastIndex && scrollingDown) {
-                        param.onLoadNext()
-                    }
+            listState.interactionSource.interactions.collect {
+                // Check if at the top
+                if (listState.firstVisibleItemIndex == 0 && listState.firstVisibleItemScrollOffset == 0) {
+                    param.onLoadPrev()
                 }
+
+                // Check if at the bottom
+                val lastIndex = param.gitHubUsers.lastIndex
+                if (listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index == lastIndex) {
+                    param.onLoadNext()
+                }
+            }
+
+//            combine(
+//                listState.interactionSource.interactions,
+//                snapshotFlow { listState.firstVisibleItemScrollOffset }
+//            ) { interaction: Interaction, currentOffset: Int ->
+//                val noScroll = currentOffset == previousScrollOffset
+//
+//                previousScrollOffset = currentOffset
+//
+//                // Check if at the top
+//                if (listState.firstVisibleItemIndex == 0 && noScroll) {
+//                    param.onLoadPrev()
+//                }
+//
+//                // Check if at the bottom
+//                val lastIndex = param.gitHubUsers.lastIndex
+//                if (listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index == lastIndex && noScroll) {
+//                    param.onLoadNext()
+//                }
+//            }
         }
 
         LazyColumn(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize(),
+            state = listState
         ) {
             itemsIndexed(param.gitHubUsers) { index, user ->
                 val gitHubUserViewParam = GitHubUserViewParam(
@@ -129,20 +149,32 @@ fun getStateOfDataStreamViewParam(
 @Preview
 fun DataStreamViewPreview() {
 
+    var status by remember { mutableStateOf("None") }
+
     val param = getStateOfDataStreamViewParam(
         gitHubUsersFlow = MutableStateFlow(gitHubUsersUiFake),
-        onItemClicked = {},
-        onLoadPrev = {},
-        onLoadNext = {},
+        onItemClicked = { status = "Clicked on ${it.login}" },
+        onLoadPrev = { status = "on load prev" },
+        onLoadNext = { status = "on load next" },
     )
 
     MyTheme {
-        DataStreamView(
-            modifier = Modifier
-                .background(MaterialTheme.colorScheme.tertiary)
-                .fillMaxSize()
-                .padding(4.dp),
-            param = param
-        )
+        Box {
+            DataStreamView(
+                modifier = Modifier
+                    .background(MaterialTheme.colorScheme.tertiary)
+                    .fillMaxSize()
+                    .padding(4.dp),
+                param = param
+            )
+
+            Text(
+                modifier = Modifier
+                    .padding(8.dp)
+                    .align(Alignment.BottomCenter),
+                text = status,
+                fontSize = 20.sp
+            )
+        }
     }
 }

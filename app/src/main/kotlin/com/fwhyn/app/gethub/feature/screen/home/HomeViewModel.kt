@@ -52,6 +52,10 @@ class HomeViewModel @Inject constructor(
 
     // ----------------------------------------------------------------
     private fun getGitHubUsers(param: GetGitHubUsersParam = GetGitHubUsersParam.default()) {
+        // Prevent multiple calls
+        if (state.value == HomeState.Loading) return
+
+        // Fetch GitHub users
         getGitHubUsers.invoke(
             scope = scope,
             onStart = { state.value = HomeState.Loading },

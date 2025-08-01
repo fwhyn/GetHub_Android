@@ -4,7 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.util.Log
 import androidx.test.runner.AndroidJUnitRunner
-import com.fwhyn.lib.baze.common.data.helper.extension.getDebugTag
+import com.fwhyn.lib.baze.common.helper.extension.getDebugTag
 import dagger.hilt.android.testing.HiltTestApplication
 
 class MyTestRunner : AndroidJUnitRunner() {
