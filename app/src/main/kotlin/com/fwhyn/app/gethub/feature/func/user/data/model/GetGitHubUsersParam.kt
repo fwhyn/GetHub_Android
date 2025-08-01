@@ -5,7 +5,7 @@ data class GetGitHubUsersParam(
 ) {
     companion object {
         fun default(
-            perPage: Int = 10,
+            perPage: Int = 20,
         ) = GetGitHubUsersParam(
             perPage = perPage,
         )

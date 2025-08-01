@@ -9,4 +9,5 @@ abstract class HomeVmInterface : ViewModel() {
 
     open fun onLogout() {}
     open fun onOpenProfile(user: String) {}
+    open fun onLoadNext() {}
 }

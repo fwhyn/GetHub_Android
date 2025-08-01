@@ -1,6 +1,7 @@
 package com.fwhyn.app.gethub.feature.screen.home.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -38,7 +39,8 @@ fun GitHubUserView(
             .shadow(elevation = 8.dp, shape = RoundedCornerShape(8.dp))
             .background(color = Color.White, shape = RoundedCornerShape(8.dp))
             .clip(RoundedCornerShape(8.dp))
-            .padding(6.dp),
+            .padding(6.dp)
+            .clickable { param.onClicked() },
     ) {
         AsyncImage(
             model = param.user.avatarUrl,
@@ -98,7 +100,7 @@ fun KmcUiViewPreview() {
             modifier = Modifier
                 .background(MaterialTheme.colorScheme.background)
                 .fillMaxSize()
-                .padding(16.dp),
+                .padding(4.dp),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {

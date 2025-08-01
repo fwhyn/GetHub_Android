@@ -38,7 +38,7 @@ class HomeViewModel @Inject constructor(
 
     // ----------------------------------------------------------------
     init {
-        getGitHubUsers(GetGitHubUsersParam.default())
+        getGitHubUsers()
     }
 
     // ----------------------------------------------------------------
@@ -46,8 +46,12 @@ class HomeViewModel @Inject constructor(
         event.emitEvent(scope, HomeEvent.OpenProfile(user))
     }
 
+    override fun onLoadNext() {
+        getGitHubUsers()
+    }
+
     // ----------------------------------------------------------------
-    private fun getGitHubUsers(param: GetGitHubUsersParam) {
+    private fun getGitHubUsers(param: GetGitHubUsersParam = GetGitHubUsersParam.default()) {
         getGitHubUsers.invoke(
             scope = scope,
             onStart = { state.value = HomeState.Loading },
