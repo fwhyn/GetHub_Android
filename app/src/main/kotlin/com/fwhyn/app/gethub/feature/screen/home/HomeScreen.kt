@@ -171,7 +171,7 @@ fun PortraitHomeView(
             ) {
 
                 Text(
-                    text = stringResource(R.string.github_users)
+                    text = stringResource(R.string.github_users) + " (${param.dataStreamViewParam.gitHubUsers.size})",
                 )
 
                 MySpacer(4.dp)

@@ -42,7 +42,8 @@ fun DataStreamView(
     ) {
         val listState = rememberLazyListState()
         var previousScrollOffset by remember { mutableIntStateOf(0) }
-
+        var items by remember { mutableStateOf(param.gitHubUsers) }
+        items = param.gitHubUsers
 
         LaunchedEffect(listState) {
             listState.interactionSource.interactions.collect {
@@ -52,7 +53,7 @@ fun DataStreamView(
                 }
 
                 // Check if at the bottom
-                val lastIndex = param.gitHubUsers.lastIndex
+                val lastIndex = items.lastIndex
                 if (listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index == lastIndex) {
                     param.onLoadNext()
                 }
