@@ -15,7 +15,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -41,7 +40,6 @@ fun DataStreamView(
         modifier = modifier
     ) {
         val listState = rememberLazyListState()
-        var previousScrollOffset by remember { mutableIntStateOf(0) }
         var items by remember { mutableStateOf(param.gitHubUsers) }
         items = param.gitHubUsers
 
@@ -58,26 +56,6 @@ fun DataStreamView(
                     param.onLoadNext()
                 }
             }
-
-//            combine(
-//                listState.interactionSource.interactions,
-//                snapshotFlow { listState.firstVisibleItemScrollOffset }
-//            ) { interaction: Interaction, currentOffset: Int ->
-//                val noScroll = currentOffset == previousScrollOffset
-//
-//                previousScrollOffset = currentOffset
-//
-//                // Check if at the top
-//                if (listState.firstVisibleItemIndex == 0 && noScroll) {
-//                    param.onLoadPrev()
-//                }
-//
-//                // Check if at the bottom
-//                val lastIndex = param.gitHubUsers.lastIndex
-//                if (listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index == lastIndex && noScroll) {
-//                    param.onLoadNext()
-//                }
-//            }
         }
 
         LazyColumn(
