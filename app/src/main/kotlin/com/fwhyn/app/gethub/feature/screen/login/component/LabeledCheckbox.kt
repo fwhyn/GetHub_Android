@@ -33,7 +33,9 @@ fun LabeledCheckbox(
     ) {
         Checkbox(checked = param.isChecked, onCheckedChange = null)
         MySpacer(6.dp)
-        Text(param.label)
+        Text(
+            text = param.label
+        )
     }
 }
 

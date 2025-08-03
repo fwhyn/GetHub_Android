@@ -17,4 +17,6 @@
     <string name="time_out_error">Time out error!</string>
     <string name="github_users">GitHub Users</string>
     <string name="profile_title">Profile</string>
+    <string name="dash">---</string>
+    <string name="followers_following">%1$d followers; %2$d following</string>
 </resources>

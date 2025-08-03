@@ -60,6 +60,9 @@ data class GitHubUserProfileData(
     @SerializedName("site_admin")
     val siteAdmin: Boolean,
 
+    @SerializedName("name")
+    val name: String,
+
     @SerializedName("company")
     val company: String?,
 

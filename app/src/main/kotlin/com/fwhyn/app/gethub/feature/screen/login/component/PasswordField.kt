@@ -42,7 +42,7 @@ fun PasswordField(
     val leadingIcon = @Composable {
         Icon(
             Icons.Default.Key,
-            contentDescription = "",
+            contentDescription = "PasswordIcon",
             tint = MaterialTheme.colorScheme.primary
         )
     }

@@ -34,7 +34,7 @@ fun EmailField(
     val leadingIcon = @Composable {
         Icon(
             Icons.Default.Person,
-            contentDescription = "",
+            contentDescription = "PersonIcon",
             tint = MaterialTheme.colorScheme.primary
         )
     }
