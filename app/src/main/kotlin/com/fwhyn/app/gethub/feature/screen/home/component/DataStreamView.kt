@@ -13,13 +13,16 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -39,27 +42,26 @@ fun DataStreamView(
     Column(
         modifier = modifier
     ) {
-        val listState = rememberLazyListState()
-        var items by remember { mutableStateOf(param.gitHubUsers) }
-        items = param.gitHubUsers
+        // Custom scroll listener
+        val nestedScrollConnection = remember {
+            object : NestedScrollConnection {
+                override fun onPostScroll(consumed: Offset, available: Offset, source: NestedScrollSource): Offset {
+                    when {
+                        available.y > 0f && consumed.y == 0f -> param.onLoadPrev()
+                        available.y < 0f && consumed.y == 0f -> param.onLoadNext()
+                    }
 
-        LaunchedEffect(listState) {
-            listState.interactionSource.interactions.collect {
-                // Check if at the top
-                if (listState.firstVisibleItemIndex == 0 && listState.firstVisibleItemScrollOffset == 0) {
-                    param.onLoadPrev()
-                }
-
-                // Check if at the bottom
-                val lastIndex = items.lastIndex
-                if (listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index == lastIndex) {
-                    param.onLoadNext()
+                    return Offset.Zero
                 }
             }
         }
 
+        val listState = rememberLazyListState()
+
         LazyColumn(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .nestedScroll(nestedScrollConnection),
             state = listState
         ) {
             itemsIndexed(param.gitHubUsers) { index, user ->
