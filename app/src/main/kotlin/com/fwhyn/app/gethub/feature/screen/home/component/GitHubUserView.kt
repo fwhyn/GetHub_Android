@@ -34,6 +34,8 @@ fun GitHubUserView(
     modifier: Modifier,
     param: GitHubUserViewParam,
 ) {
+    // TODO add item number
+    // TODO add id
     Row(
         modifier = modifier
             .shadow(elevation = 8.dp, shape = RoundedCornerShape(8.dp))
