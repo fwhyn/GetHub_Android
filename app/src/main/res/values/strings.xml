@@ -16,4 +16,5 @@
     <string name="unexpected_error">Unexpected error!</string>
     <string name="time_out_error">Time out error!</string>
     <string name="github_users">GitHub Users</string>
+    <string name="profile_title">Profile</string>
 </resources>

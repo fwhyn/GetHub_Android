@@ -5,6 +5,7 @@ import androidx.navigation.compose.NavHost
 import com.fwhyn.app.gethub.feature.screen.home.HOME_ROUTE
 import com.fwhyn.app.gethub.feature.screen.home.addHomeScreen
 import com.fwhyn.app.gethub.feature.screen.login.addLoginScreen
+import com.fwhyn.app.gethub.feature.screen.profile.addProfileScreen
 import com.fwhyn.lib.baze.compose.helper.ActivityState
 
 @Composable
@@ -20,6 +21,9 @@ fun NavigationHost(
         )
         addHomeScreen(
             activityState = activityState,
+        )
+        addProfileScreen(
+            activityState = activityState
         )
     }
 }

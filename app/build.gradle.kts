@@ -7,6 +7,10 @@ plugins {
 }
 
 android {
+    // TODO correct system design doc
+    // add ui test
+    // add integrated test
+    // add unit test
     namespace = "com.fwhyn.app.gethub"
     compileSdk = 36
 

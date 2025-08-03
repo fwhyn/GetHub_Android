@@ -17,12 +17,12 @@ data class HomeProperties(
         fun default(
             event: SharedFlow<HomeEvent> = MutableSharedFlow(),
             state: StateFlow<HomeState> = MutableStateFlow(HomeState.Idle),
-            kmcUiList: StateFlow<List<GitHubUserUi>> = MutableStateFlow(emptyList()),
+            gitHubUsers: StateFlow<List<GitHubUserUi>> = MutableStateFlow(emptyList()),
         ): HomeProperties {
             return HomeProperties(
                 event = event,
                 state = state,
-                gitHubUsers = kmcUiList
+                gitHubUsers = gitHubUsers
             )
         }
     }

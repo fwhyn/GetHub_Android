@@ -1,4 +1,4 @@
-package com.fwhyn.app.gethub.feature.screen.home.component
+package com.fwhyn.app.gethub.feature.screen.profile.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -30,12 +30,10 @@ import com.fwhyn.app.gethub.feature.screen.home.model.GitHubUserUi
 import com.fwhyn.app.gethub.feature.screen.home.model.gitHubUserUiFake
 
 @Composable
-fun GitHubUserView(
+fun ProfileViewSection1(
     modifier: Modifier,
     param: GitHubUserViewParam,
 ) {
-    // TODO add item number
-    // TODO add id
     Row(
         modifier = modifier
             .shadow(elevation = 8.dp, shape = RoundedCornerShape(8.dp))
@@ -96,7 +94,7 @@ val gitHubUserViewParamFake = GitHubUserViewParam(
 
 @Preview
 @Composable
-fun GitHubUserPreview() {
+fun ProfileViewSection1Preview() {
     MyTheme {
         Column(
             modifier = Modifier
@@ -106,7 +104,7 @@ fun GitHubUserPreview() {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            GitHubUserView(
+            ProfileViewSection1(
                 modifier = Modifier.fillMaxWidth(),
                 param = gitHubUserViewParamFake
             )

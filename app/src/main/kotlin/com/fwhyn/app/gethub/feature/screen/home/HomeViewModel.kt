@@ -42,8 +42,8 @@ class HomeViewModel @Inject constructor(
     }
 
     // ----------------------------------------------------------------
-    override fun onOpenProfile(user: String) {
-        event.emitEvent(scope, HomeEvent.OpenProfile(user))
+    override fun onGoToProfile(user: String) {
+        event.emitEvent(scope, HomeEvent.GoToProfile(user))
     }
 
     override fun onLoadNext() {

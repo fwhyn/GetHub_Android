@@ -128,7 +128,7 @@ fun getStateOfDataStreamViewParam(
 
 @Composable
 @Preview
-fun DataStreamViewPreview() {
+fun DataStreamPreview() {
 
     var status by remember { mutableStateOf("None") }
 

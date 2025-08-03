@@ -1,0 +1,77 @@
+package com.fwhyn.app.gethub.feature.screen.profile
+
+import androidx.lifecycle.viewModelScope
+import com.fwhyn.app.gethub.feature.func.user.data.model.GetGitHubUserProfileParam
+import com.fwhyn.app.gethub.feature.func.user.data.repository.GitHubUserProfileRepository
+import com.fwhyn.app.gethub.feature.screen.home.component.HomeMessageCode
+import com.fwhyn.app.gethub.feature.screen.home.model.HomeState
+import com.fwhyn.app.gethub.feature.screen.profile.helper.extension.toUi
+import com.fwhyn.app.gethub.feature.screen.profile.model.GitHubUserProfileUi
+import com.fwhyn.app.gethub.feature.screen.profile.model.ProfileEvent
+import com.fwhyn.app.gethub.feature.screen.profile.model.ProfileProperties
+import com.fwhyn.app.gethub.feature.screen.profile.model.ProfileState
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import java.net.SocketTimeoutException
+import javax.inject.Inject
+
+@HiltViewModel
+class ProfileViewModel @Inject constructor(
+    private val getGitHubUserProfile: GitHubUserProfileRepository,
+) : ProfileVmInterface() {
+
+    private val scope: CoroutineScope
+        get() = viewModelScope
+
+    private val event: MutableSharedFlow<ProfileEvent> = MutableSharedFlow()
+    private val state: MutableStateFlow<ProfileState> = MutableStateFlow(ProfileState.Idle)
+    private val gitHubUserProfile: MutableStateFlow<GitHubUserProfileUi> =
+        MutableStateFlow(GitHubUserProfileUi.default())
+
+    // ----------------------------------------------------------------
+    override val properties: ProfileProperties = ProfileProperties(
+        event = event,
+        state = state,
+        gitHubUserProfile = gitHubUserProfile
+    )
+
+    // ----------------------------------------------------------------
+    init {
+        getGitHubUserProfile()
+    }
+
+    // ----------------------------------------------------------------
+    // override
+
+    // ----------------------------------------------------------------
+    private fun getGitHubUserProfile(param: GetGitHubUserProfileParam = GetGitHubUserProfileParam()) {
+        // Prevent multiple calls
+        if (state.value == HomeState.Loading) return
+
+        // Fetch GitHub users
+        getGitHubUserProfile.invoke(
+            scope = scope,
+            onStart = { state.value = ProfileState.Loading },
+            onFetchParam = { param },
+            onOmitResult = {
+                it.onSuccess { data ->
+                    gitHubUserProfile.value = data.toUi()
+                }.onFailure { error ->
+                    handleError(error)
+                }
+            },
+            onFinish = { state.value = ProfileState.Idle },
+        )
+    }
+
+    private suspend fun handleError(error: Throwable) {
+        val errorCode = when (error) {
+            is SocketTimeoutException -> HomeMessageCode.TimeOutError
+            else -> HomeMessageCode.UnexpectedError
+        }
+
+        event.emit(ProfileEvent.Notify(errorCode))
+    }
+}
