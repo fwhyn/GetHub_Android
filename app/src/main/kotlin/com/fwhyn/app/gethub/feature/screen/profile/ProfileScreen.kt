@@ -1,12 +1,17 @@
 package com.fwhyn.app.gethub.feature.screen.profile
 
+import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -139,12 +144,12 @@ fun ProfileView(
     val configuration = LocalConfiguration.current
 
     when (configuration.orientation) {
-//        Configuration.ORIENTATION_LANDSCAPE -> {
-//            LandscapeHomeView(
-//                modifier = modifier,
-//                param = param
-//            )
-//        }
+        Configuration.ORIENTATION_LANDSCAPE -> {
+            LandscapeHomeView(
+                modifier = modifier,
+                param = param
+            )
+        }
 
         else -> {
             PortraitHomeView(
@@ -186,6 +191,46 @@ fun PortraitHomeView(
             MySpacer(8.dp)
             ProfileViewSection2(
                 modifier = Modifier.fillMaxWidth(),
+                param = param.profileViewSection2Param
+            )
+        }
+    }
+}
+
+@Composable
+fun LandscapeHomeView(
+    modifier: Modifier = Modifier,
+    param: ProfileViewParam,
+) {
+    Column(
+        modifier = modifier
+    ) {
+        TopBar(
+            modifier = Modifier.height(TopBarHeight),
+            topBarParam = TopBarParam.default(
+                title = stringResource(R.string.profile_title),
+                onBack = {}
+            )
+        )
+
+        Row(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(8.dp),
+        ) {
+            ProfileViewSection1(
+                modifier = Modifier
+                    .weight(1f)
+                    .verticalScroll(rememberScrollState()),
+                param = param.profileViewSection1Param
+            )
+
+            MySpacer(8.dp)
+            VerticalDivider()
+
+            MySpacer(8.dp)
+            ProfileViewSection2(
+                modifier = Modifier.weight(1f),
                 param = param.profileViewSection2Param
             )
         }
