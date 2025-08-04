@@ -51,15 +51,15 @@ fun EventView(
         var nodeModifier by remember { mutableStateOf(Modifier.height(0.dp)) }
         Row {
             TimelineView.SingleNode(
-                modifier = nodeModifier.padding(horizontal = 2.dp),
+                modifier = nodeModifier,
                 color = MaterialTheme.colorScheme.primary,
                 nodeType = param.nodeType,
-                nodeSize = 30f,
+                nodeSize = 25f,
                 isChecked = true,
                 isDashed = false
             )
 
-            MySpacer(8.dp)
+            MySpacer(4.dp)
             val localDensity = (LocalDensity.current)
             Column(
                 Modifier.onGloballyPositioned(
@@ -164,8 +164,7 @@ fun EventPreview() {
         Column(
             modifier = Modifier
                 .background(MaterialTheme.colorScheme.background)
-                .fillMaxSize()
-                .padding(16.dp),
+                .fillMaxSize(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {

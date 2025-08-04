@@ -35,6 +35,8 @@ fun EventsView(
     Column(
         modifier = modifier
     ) {
+
+
         // Custom scroll listener
         val nestedScrollConnection = remember {
             object : NestedScrollConnection {

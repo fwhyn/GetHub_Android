@@ -129,6 +129,7 @@ fun ProfileViewSection1(
             MySpacer(4.dp)
             RepositoriesView(
                 modifier = Modifier
+                    .padding(start = 16.dp)
                     .height(defaultRepoItemHeight + 4.dp)
                     .fillMaxWidth(),
                 param = param.reposViewParam

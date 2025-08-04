@@ -120,7 +120,6 @@ fun getStateOfRepositoriesViewParam(
     onLoadPrev: () -> Unit,
     onLoadNext: () -> Unit,
 ): RepositoriesViewParam {
-
     val repos: List<GitHubRepoUi> by reposFlow.collectAsStateWithLifecycle()
 
     return RepositoriesViewParam(

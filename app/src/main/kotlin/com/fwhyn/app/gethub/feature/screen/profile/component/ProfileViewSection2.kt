@@ -6,10 +6,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.fwhyn.app.gethub.R
+import com.fwhyn.app.gethub.common.ui.component.MySpacer
 import com.fwhyn.app.gethub.common.ui.config.MyTheme
 
 @Composable
@@ -20,6 +25,12 @@ fun ProfileViewSection2(
     Column(
         modifier = modifier
     ) {
+        Text(
+            text = stringResource(R.string.events),
+            fontWeight = FontWeight.Bold
+        )
+
+        MySpacer(8.dp)
         EventsView(
             modifier = Modifier.fillMaxSize(),
             param = param.eventsViewParam

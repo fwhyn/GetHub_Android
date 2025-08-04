@@ -1,10 +1,12 @@
 package com.fwhyn.app.gethub.feature.screen.profile
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -20,6 +22,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.fwhyn.app.gethub.R
+import com.fwhyn.app.gethub.common.ui.component.MySpacer
 import com.fwhyn.app.gethub.common.ui.component.TopBar
 import com.fwhyn.app.gethub.common.ui.component.TopBarParam
 import com.fwhyn.app.gethub.common.ui.component.getStateOfTopBarHomeParam
@@ -49,7 +52,9 @@ fun NavGraphBuilder.addProfileScreen(
 ) {
     composable(PROFILE_ROUTE) {
         ProfileScreen(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .background(color = MaterialTheme.colorScheme.background),
             activityState = activityState,
             stringManager = HomeStringManagerMain(LocalContext.current),
             vm = hiltViewModel<ProfileViewModel>()
@@ -174,16 +179,13 @@ fun PortraitHomeView(
                 .padding(8.dp),
         ) {
             ProfileViewSection1(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f),
+                modifier = Modifier.fillMaxWidth(),
                 param = param.profileViewSection1Param
             )
 
+            MySpacer(8.dp)
             ProfileViewSection2(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f),
+                modifier = Modifier.fillMaxWidth(),
                 param = param.profileViewSection2Param
             )
         }
@@ -201,6 +203,7 @@ data class ProfileViewParam(
 fun ProfileScreenPreview() {
     MyTheme {
         ProfileScreen(
+            modifier = Modifier.background(color = MaterialTheme.colorScheme.background),
             activityState = rememberActivityState(),
             stringManager = HomeStringManagerMain(LocalContext.current),
             vm = object : ProfileVmInterface() {
