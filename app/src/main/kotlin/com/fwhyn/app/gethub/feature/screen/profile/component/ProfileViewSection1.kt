@@ -116,14 +116,24 @@ fun ProfileViewSection1(
 
         MySpacer(10.dp)
         Column {
+            Text(
+                text = stringResource(R.string.repositories) +
+                        " (${param.reposViewParam.repos.size} / ${param.user.publicRepos})",
+                style = TextStyle(
+                    fontWeight = FontWeight.Bold,
+                )
+            )
+
+            MySpacer(4.dp)
             RepositoriesView(
                 modifier = Modifier
-                    .height(defaultRepoItemHeight + 100.dp)
+                    .height(defaultRepoItemHeight + 4.dp)
                     .fillMaxWidth(),
                 param = param.reposViewParam
             )
         }
 
+        MySpacer(2.dp)
         HorizontalDivider(thickness = 2.dp)
     }
 }
