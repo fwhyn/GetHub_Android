@@ -31,11 +31,11 @@ import com.fwhyn.app.gethub.common.ui.component.TopBarParam
 import com.fwhyn.app.gethub.common.ui.component.getStateOfTopBarHomeParam
 import com.fwhyn.app.gethub.common.ui.config.MyTheme
 import com.fwhyn.app.gethub.common.ui.config.TopBarHeight
-import com.fwhyn.app.gethub.feature.screen.home.component.DataStreamView
-import com.fwhyn.app.gethub.feature.screen.home.component.DataStreamViewParam
+import com.fwhyn.app.gethub.feature.screen.home.component.GitHubUsersView
+import com.fwhyn.app.gethub.feature.screen.home.component.GitHubUsersViewParam
 import com.fwhyn.app.gethub.feature.screen.home.component.HomeStringManager
 import com.fwhyn.app.gethub.feature.screen.home.component.HomeStringManagerMain
-import com.fwhyn.app.gethub.feature.screen.home.component.getStateOfDataStreamViewParam
+import com.fwhyn.app.gethub.feature.screen.home.component.getStateOfGitHubUsersViewParam
 import com.fwhyn.app.gethub.feature.screen.home.model.HomeEvent
 import com.fwhyn.app.gethub.feature.screen.home.model.HomeProperties
 import com.fwhyn.app.gethub.feature.screen.home.model.HomeState
@@ -98,7 +98,7 @@ private fun HomeScreen(
         }
     )
 
-    val dataStreamViewParam = getStateOfDataStreamViewParam(
+    val dataStreamViewParam = getStateOfGitHubUsersViewParam(
         gitHubUsersFlow = vm.properties.gitHubUsers,
         onItemClicked = {}, // TODO Handle item click if needed,
         onLoadPrev = {}, // TODO Handle loading previous items if needed
@@ -107,7 +107,7 @@ private fun HomeScreen(
 
     val param = HomeViewParam(
         topBarParam = topBarParam,
-        dataStreamViewParam = dataStreamViewParam,
+        gitHubUsersViewParam = dataStreamViewParam,
     )
 
     HomeView(
@@ -173,7 +173,7 @@ fun PortraitHomeView(
             ) {
 
                 Text(
-                    text = stringResource(R.string.github_users) + " (${param.dataStreamViewParam.gitHubUsers.size})",
+                    text = stringResource(R.string.github_users) + " (${param.gitHubUsersViewParam.gitHubUsers.size})",
                 )
 
                 MySpacer(4.dp)
@@ -183,9 +183,9 @@ fun PortraitHomeView(
                         .background(color = MaterialTheme.colorScheme.tertiary, shape = RoundedCornerShape(8.dp))
                         .clip(RoundedCornerShape(8.dp)),
                 ) {
-                    DataStreamView(
+                    GitHubUsersView(
                         modifier = Modifier.padding(8.dp),
-                        param = param.dataStreamViewParam
+                        param = param.gitHubUsersViewParam
                     )
                 }
             }
@@ -195,7 +195,7 @@ fun PortraitHomeView(
 
 data class HomeViewParam(
     val topBarParam: TopBarParam,
-    val dataStreamViewParam: DataStreamViewParam,
+    val gitHubUsersViewParam: GitHubUsersViewParam,
 )
 
 @DevicePreviews

@@ -1,15 +1,14 @@
-package com.fwhyn.app.gethub.feature.screen.home.component
+package com.fwhyn.app.gethub.feature.screen.profile.component
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -18,46 +17,35 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.AsyncImage
+import com.fwhyn.app.gethub.R
 import com.fwhyn.app.gethub.common.helper.ContentDesc
-import com.fwhyn.app.gethub.common.ui.component.MySpacer
 import com.fwhyn.app.gethub.common.ui.config.MyTheme
-import com.fwhyn.app.gethub.feature.screen.home.model.GitHubUserUi
-import com.fwhyn.app.gethub.feature.screen.home.model.gitHubUserUiFake
+import com.fwhyn.app.gethub.feature.screen.profile.model.GitHubRepoUi
+import com.fwhyn.app.gethub.feature.screen.profile.model.gitHubRepoUiFake
 
 @Composable
-fun GitHubUserView(
+fun RepositoryView(
     modifier: Modifier,
-    param: GitHubUserViewParam,
+    param: RepositoryViewParam,
 ) {
-    // TODO add item number
-    // TODO add id
-    Row(
+    Column(
         modifier = modifier
             .shadow(elevation = 8.dp, shape = RoundedCornerShape(8.dp))
             .background(color = Color.White, shape = RoundedCornerShape(8.dp))
             .clip(RoundedCornerShape(8.dp))
-            .padding(6.dp)
-            .clickable { param.onClicked() },
     ) {
-        AsyncImage(
-            model = param.user.avatarUrl,
-            contentDescription = ContentDesc.AVATAR,
-            modifier = Modifier
-                .size(64.dp)
-                .clip(RoundedCornerShape(32.dp))
-        )
-
-        MySpacer(8.dp)
-        Column {
+        Column(
+            modifier = Modifier.padding(8.dp),
+        ) {
             Text(
-                modifier = Modifier.padding(top = 8.dp),
-                text = param.user.login,
+                text = param.repo.name,
                 style = TextStyle(
                     fontWeight = FontWeight.Bold,
                     fontSize = 18.sp
@@ -65,39 +53,54 @@ fun GitHubUserView(
             )
 
             Text(
+                text = param.repo.htmlUrl,
+                fontStyle = FontStyle.Italic
+            )
+
+            Text(
+                modifier = Modifier.padding(top = 8.dp),
+                text = param.repo.description ?: stringResource(R.string.dash)
+            )
+
+            Text(
                 modifier = Modifier.padding(top = 4.dp),
-                text = param.user.htmlUrl,
-                fontSize = 14.sp,
+                text = stringResource(R.string.language) + stringResource(R.string.colon) +
+                        (param.repo.language ?: stringResource(R.string.dash))
+            )
+
+            IconAndText(
+                modifier = Modifier.padding(top = 4.dp),
+                param = IconAndTextParam(
+                    imageVector = Icons.Default.Star,
+                    contentDescription = ContentDesc.STAR,
+                    text = param.repo.stargazersCount.toString(),
+                )
             )
         }
     }
 }
 
-data class GitHubUserViewParam(
-    val user: GitHubUserUi,
-    val onClicked: () -> Unit,
+data class RepositoryViewParam(
+    val repo: GitHubRepoUi,
 ) {
     companion object {
         fun default(
-            user: GitHubUserUi = GitHubUserUi.default(),
-            onClicked: () -> Unit = {},
-        ): GitHubUserViewParam {
-            return GitHubUserViewParam(
-                user = user,
-                onClicked = onClicked,
+            repo: GitHubRepoUi = GitHubRepoUi.default(),
+        ): RepositoryViewParam {
+            return RepositoryViewParam(
+                repo = repo,
             )
         }
     }
 }
 
-val gitHubUserViewParamFake = GitHubUserViewParam(
-    user = gitHubUserUiFake,
-    onClicked = {}
+val repositoryViewParamFake = RepositoryViewParam(
+    repo = gitHubRepoUiFake,
 )
 
 @Preview
 @Composable
-fun GitHubUserPreview() {
+fun RepositoryPreview() {
     MyTheme {
         Column(
             modifier = Modifier
@@ -107,9 +110,9 @@ fun GitHubUserPreview() {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            GitHubUserView(
+            RepositoryView(
                 modifier = Modifier.fillMaxWidth(),
-                param = gitHubUserViewParamFake
+                param = repositoryViewParamFake
             )
         }
 

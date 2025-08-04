@@ -1,15 +1,14 @@
-package com.fwhyn.app.gethub.feature.screen.home.component
+package com.fwhyn.app.gethub.feature.screen.profile.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,15 +28,15 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.fwhyn.app.gethub.common.ui.component.MySpacer
 import com.fwhyn.app.gethub.common.ui.config.MyTheme
-import com.fwhyn.app.gethub.feature.screen.home.model.GitHubUserUi
-import com.fwhyn.app.gethub.feature.screen.home.model.gitHubUsersUiFake
+import com.fwhyn.app.gethub.feature.screen.profile.model.GitHubRepoUi
+import com.fwhyn.app.gethub.feature.screen.profile.model.gitHubReposUiFake
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable
-fun DataStreamView(
-    modifier: Modifier,
-    param: DataStreamViewParam,
+fun RepositoriesView(
+    modifier: Modifier = Modifier,
+    param: RepositoriesViewParam,
 ) {
     Column(
         modifier = modifier
@@ -47,8 +46,8 @@ fun DataStreamView(
             object : NestedScrollConnection {
                 override fun onPostScroll(consumed: Offset, available: Offset, source: NestedScrollSource): Offset {
                     when {
-                        available.y > 0f && consumed.y == 0f -> param.onLoadPrev()
-                        available.y < 0f && consumed.y == 0f -> param.onLoadNext()
+                        available.x > 0f && consumed.x == 0f -> param.onLoadPrev()
+                        available.x < 0f && consumed.x == 0f -> param.onLoadNext()
                     }
 
                     return Offset.Zero
@@ -58,49 +57,44 @@ fun DataStreamView(
 
         val listState = rememberLazyListState()
 
-        LazyColumn(
+        LazyRow(
             modifier = Modifier
                 .fillMaxSize()
                 .nestedScroll(nestedScrollConnection),
             state = listState
         ) {
-            itemsIndexed(param.gitHubUsers) { index, user ->
-                val gitHubUserViewParam = GitHubUserViewParam(
-                    user = user,
-                    onClicked = { param.onItemClicked(user) }
+            itemsIndexed(param.repos) { index, repo ->
+                val repositoryViewParam = RepositoryViewParam(
+                    repo = repo,
                 )
 
-                GitHubUserView(
-                    modifier = Modifier.fillMaxWidth(),
-                    param = gitHubUserViewParam,
+                RepositoryView(
+                    modifier = Modifier.size(width = 300.dp, height = 150.dp),
+                    param = repositoryViewParam,
                 )
 
-                if (index < param.gitHubUsers.size - 1) {
+                if (index < param.repos.size - 1) {
                     // Add a spacer between items
-                    HorizontalDivider()
-                    MySpacer(1.dp)
+                    MySpacer(8.dp)
                 }
             }
         }
     }
 }
 
-data class DataStreamViewParam(
-    val gitHubUsers: List<GitHubUserUi>,
-    val onItemClicked: (GitHubUserUi) -> Unit,
+data class RepositoriesViewParam(
+    val repos: List<GitHubRepoUi>,
     val onLoadPrev: () -> Unit,
     val onLoadNext: () -> Unit,
 ) {
     companion object {
         fun default(
-            gitHubUsers: List<GitHubUserUi> = emptyList(),
-            onItemClicked: (GitHubUserUi) -> Unit = {},
+            repos: List<GitHubRepoUi> = emptyList(),
             onLoadPrev: () -> Unit = {},
             onLoadNext: () -> Unit = {},
-        ): DataStreamViewParam {
-            return DataStreamViewParam(
-                gitHubUsers = gitHubUsers,
-                onItemClicked = onItemClicked,
+        ): RepositoriesViewParam {
+            return RepositoriesViewParam(
+                repos = repos,
                 onLoadPrev = onLoadPrev,
                 onLoadNext = onLoadNext,
             )
@@ -109,18 +103,16 @@ data class DataStreamViewParam(
 }
 
 @Composable
-fun getStateOfDataStreamViewParam(
-    gitHubUsersFlow: StateFlow<List<GitHubUserUi>>,
-    onItemClicked: (GitHubUserUi) -> Unit,
+fun getStateOfRepositoriesViewParam(
+    reposFlow: StateFlow<List<GitHubRepoUi>>,
     onLoadPrev: () -> Unit,
     onLoadNext: () -> Unit,
-): DataStreamViewParam {
+): RepositoriesViewParam {
 
-    val users: List<GitHubUserUi> by gitHubUsersFlow.collectAsStateWithLifecycle()
+    val repos: List<GitHubRepoUi> by reposFlow.collectAsStateWithLifecycle()
 
-    return DataStreamViewParam(
-        gitHubUsers = users,
-        onItemClicked = onItemClicked,
+    return RepositoriesViewParam(
+        repos = repos,
         onLoadPrev = onLoadPrev,
         onLoadNext = onLoadNext,
     )
@@ -128,20 +120,19 @@ fun getStateOfDataStreamViewParam(
 
 @Composable
 @Preview
-fun DataStreamPreview() {
+fun RepositoriesPreview() {
 
     var status by remember { mutableStateOf("None") }
 
-    val param = getStateOfDataStreamViewParam(
-        gitHubUsersFlow = MutableStateFlow(gitHubUsersUiFake),
-        onItemClicked = { status = "Clicked on ${it.login}" },
-        onLoadPrev = { status = "on load prev" },
-        onLoadNext = { status = "on load next" },
+    val param = getStateOfRepositoriesViewParam(
+        reposFlow = MutableStateFlow(gitHubReposUiFake),
+        onLoadPrev = { status = "Load Previous" },
+        onLoadNext = { status = "Load Next" }
     )
 
     MyTheme {
         Box {
-            DataStreamView(
+            RepositoriesView(
                 modifier = Modifier
                     .background(MaterialTheme.colorScheme.tertiary)
                     .fillMaxSize()

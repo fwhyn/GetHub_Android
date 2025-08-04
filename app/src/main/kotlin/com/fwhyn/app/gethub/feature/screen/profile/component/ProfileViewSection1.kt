@@ -13,14 +13,11 @@ import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Work
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -29,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.fwhyn.app.gethub.R
+import com.fwhyn.app.gethub.common.helper.ContentDesc
 import com.fwhyn.app.gethub.common.ui.component.MySpacer
 import com.fwhyn.app.gethub.common.ui.config.Grey02
 import com.fwhyn.app.gethub.common.ui.config.MyTheme
@@ -46,7 +44,7 @@ fun ProfileViewSection1(
         Row {
             AsyncImage(
                 model = param.user.avatarUrl,
-                contentDescription = "Avatar",
+                contentDescription = ContentDesc.AVATAR,
                 modifier = Modifier
                     .size(64.dp)
                     .clip(RoundedCornerShape(32.dp))
@@ -73,58 +71,37 @@ fun ProfileViewSection1(
 
         MySpacer(8.dp)
         IconAndText(
-            imageVector = Icons.Default.Work,
-            contentDescription = "LocationIcon",
-            text = param.user.bio ?: stringResource(R.string.dash)
+            param = IconAndTextParam(
+                imageVector = Icons.Default.Work,
+                contentDescription = ContentDesc.WORK,
+                text = param.user.bio ?: stringResource(R.string.dash)
+            )
         )
 
         IconAndText(
-            imageVector = Icons.Default.LocationOn,
-            contentDescription = "LocationIcon",
-            text = param.user.location ?: stringResource(R.string.dash)
+            param = IconAndTextParam(
+                imageVector = Icons.Default.LocationOn,
+                contentDescription = ContentDesc.LOCATION,
+                text = param.user.location ?: stringResource(R.string.dash)
+            )
         )
 
         IconAndText(
-            imageVector = Icons.Default.Email,
-            contentDescription = "EmailIcon",
-            text = param.user.email ?: stringResource(R.string.dash)
+            param = IconAndTextParam(
+                imageVector = Icons.Default.Email,
+                contentDescription = ContentDesc.EMAIL,
+                text = param.user.email ?: stringResource(R.string.dash)
+            )
         )
 
         IconAndText(
-            imageVector = Icons.Default.Person,
-            contentDescription = "EmailIcon",
-            text = stringResource(R.string.followers_following, param.user.followers, param.user.following)
+            param = IconAndTextParam(
+                imageVector = Icons.Default.Person,
+                contentDescription = ContentDesc.PERSON,
+                text = stringResource(R.string.followers_following, param.user.followers, param.user.following)
+            )
         )
     }
-}
-
-@Composable
-fun IconAndText(
-    modifier: Modifier = Modifier,
-    imageVector: ImageVector,
-    contentDescription: String,
-    text: String,
-) {
-    Column(
-        modifier = modifier,
-    ) {
-        MySpacer(4.dp)
-        Row(
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(
-                imageVector = imageVector,
-                contentDescription = contentDescription,
-                tint = MaterialTheme.colorScheme.primary
-            )
-
-            MySpacer(4.dp)
-            Text(
-                text = text
-            )
-        }
-    }
-
 }
 
 data class ProfileViewSection1Param(

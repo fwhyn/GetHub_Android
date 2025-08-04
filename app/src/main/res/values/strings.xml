@@ -1,7 +1,5 @@
 <resources>
     <string name="app_name">GetHub</string>
-    <string name="logout_button">Logout Button</string>
-    <string name="back_button">Back Button</string>
     <string name="home_title">Home</string>
     <string name="email">Email</string>
     <string name="enter_your_email">Enter your Email.</string>
@@ -19,4 +17,6 @@
     <string name="profile_title">Profile</string>
     <string name="dash">---</string>
     <string name="followers_following">%1$d followers; %2$d following</string>
+    <string name="language">Language</string>
+    <string name="colon">": "</string>
 </resources>
