@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.fwhyn.app.gethub.R
 import com.fwhyn.app.gethub.common.ui.component.MySpacer
+import com.fwhyn.app.gethub.common.ui.config.Grey02
 import com.fwhyn.app.gethub.common.ui.config.MyTheme
 import com.fwhyn.app.gethub.feature.screen.profile.model.GitHubUserProfileUi
 import com.fwhyn.app.gethub.feature.screen.profile.model.gitHubUserProfileUiFake
@@ -49,6 +50,7 @@ fun ProfileViewSection1(
                 modifier = Modifier
                     .size(64.dp)
                     .clip(RoundedCornerShape(32.dp))
+                    .background(color = Grey02)
             )
 
             MySpacer(8.dp)
@@ -101,7 +103,7 @@ fun IconAndText(
     modifier: Modifier = Modifier,
     imageVector: ImageVector,
     contentDescription: String,
-    text: String
+    text: String,
 ) {
     Column(
         modifier = modifier,
@@ -142,7 +144,7 @@ data class ProfileViewSection1Param(
     }
 }
 
-val gitHubUserViewParamFake = ProfileViewSection1Param(
+val profileViewSection1Param = ProfileViewSection1Param(
     user = gitHubUserProfileUiFake,
     onClicked = {}
 )
@@ -159,7 +161,7 @@ fun ProfileViewSection1Preview() {
         ) {
             ProfileViewSection1(
                 modifier = Modifier.fillMaxWidth(),
-                param = gitHubUserViewParamFake
+                param = profileViewSection1Param
             )
         }
     }
