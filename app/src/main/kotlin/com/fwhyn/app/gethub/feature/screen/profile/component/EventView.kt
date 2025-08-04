@@ -133,8 +133,9 @@ fun EventView(
                 }
 
                 if (param.nodeType != TimelineView.NodeType.LAST) {
-                    MySpacer(3.dp)
+                    MySpacer(2.dp)
                     HorizontalDivider(thickness = 1.dp)
+                    MySpacer(2.dp)
                 }
             }
         }
