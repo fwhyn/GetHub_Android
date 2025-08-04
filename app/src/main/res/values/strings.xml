@@ -20,4 +20,7 @@
     <string name="language">Language</string>
     <string name="colon">": "</string>
     <string name="repositories">Repositories</string>
+    <string name="repository">Repository</string>
+    <string name="branch">Branch</string>
+    <string name="message">Message</string>
 </resources>

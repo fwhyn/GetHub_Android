@@ -119,9 +119,7 @@ fun ProfileViewSection1(
             Text(
                 text = stringResource(R.string.repositories) +
                         " (${param.reposViewParam.repos.size} / ${param.user.publicRepos})",
-                style = TextStyle(
-                    fontWeight = FontWeight.Bold,
-                )
+                fontWeight = FontWeight.Bold
             )
 
             MySpacer(4.dp)
