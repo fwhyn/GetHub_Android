@@ -32,17 +32,17 @@ class ProfileViewModel @Inject constructor(
     private val scope: CoroutineScope
         get() = viewModelScope
 
-    private val event: MutableSharedFlow<ProfileEvent> = MutableSharedFlow()
-    private val state: MutableStateFlow<ProfileState> = MutableStateFlow(ProfileState.Idle)
-    private val gitHubUserProfile: MutableStateFlow<GitHubUserProfileUi> =
-        MutableStateFlow(GitHubUserProfileUi.default())
-    private val gitHubRepos: MutableStateFlow<List<GitHubRepoUi>> = MutableStateFlow(emptyList())
-    private val gitHubEvents: MutableStateFlow<List<GitHubEventUi>> = MutableStateFlow(emptyList())
+    private val event = MutableSharedFlow<ProfileEvent>()
+    private val state = MutableStateFlow(ProfileState.Idle)
+    private val gitHubUserProfile = MutableStateFlow(GitHubUserProfileUi.default())
+    private val gitHubRepos = MutableStateFlow<List<GitHubRepoUi>>(emptyList())
+    private val gitHubEvents = MutableStateFlow<List<GitHubEventUi>>(emptyList())
 
     // ----------------------------------------------------------------
     override val properties: ProfileProperties = ProfileProperties(
         event = event,
         state = state,
+        userName = MutableStateFlow(null),
         gitHubUserProfile = gitHubUserProfile,
         gitHubRepos = gitHubRepos,
         gitHubEvents = gitHubEvents,
@@ -50,7 +50,7 @@ class ProfileViewModel @Inject constructor(
 
     // ----------------------------------------------------------------
     init {
-        loadGitHubUserProfile(username = username)
+        loadGitHubUserProfile(properties.userName.value)
     }
 
     // ----------------------------------------------------------------
@@ -72,7 +72,7 @@ class ProfileViewModel @Inject constructor(
 
     // ----------------------------------------------------------------
     // TODO add username passing parameters
-    private fun loadGitHubUserProfile(username: String) {
+    private fun loadGitHubUserProfile(username: String?) {
         // Prevent multiple calls
         if (state.value == ProfileState.Loading) return
 

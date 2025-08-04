@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.StateFlow
 data class ProfileProperties(
     val event: SharedFlow<ProfileEvent>,
     val state: StateFlow<ProfileState>,
+    val userName: MutableStateFlow<String?>,
     val gitHubUserProfile: StateFlow<GitHubUserProfileUi>,
     val gitHubRepos: StateFlow<List<GitHubRepoUi>>,
     val gitHubEvents: StateFlow<List<GitHubEventUi>>,
@@ -16,6 +17,7 @@ data class ProfileProperties(
         fun default(
             event: SharedFlow<ProfileEvent> = MutableSharedFlow(),
             state: StateFlow<ProfileState> = MutableStateFlow(ProfileState.Idle),
+            userName: MutableStateFlow<String?> = MutableStateFlow(null),
             gitHubUserProfile: StateFlow<GitHubUserProfileUi> = MutableStateFlow(GitHubUserProfileUi.default()),
             gitHubRepos: StateFlow<List<GitHubRepoUi>> = MutableStateFlow(emptyList()),
             gitHubEvents: StateFlow<List<GitHubEventUi>> = MutableStateFlow(emptyList()),
@@ -23,6 +25,7 @@ data class ProfileProperties(
             return ProfileProperties(
                 event = event,
                 state = state,
+                userName = userName,
                 gitHubUserProfile = gitHubUserProfile,
                 gitHubRepos = gitHubRepos,
                 gitHubEvents = gitHubEvents,

@@ -25,7 +25,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
+import androidx.navigation.NavType
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.fwhyn.app.gethub.R
 import com.fwhyn.app.gethub.common.ui.component.MySpacer
 import com.fwhyn.app.gethub.common.ui.component.TopBar
@@ -50,25 +52,33 @@ import com.fwhyn.lib.baze.compose.helper.ActivityState
 import com.fwhyn.lib.baze.compose.helper.DevicePreviews
 import com.fwhyn.lib.baze.compose.helper.rememberActivityState
 
-const val PROFILE_ROUTE = "PROFILE_ROUTE"
+private const val USERNAME = "userName"
+const val PROFILE_ROUTE = "PROFILE_ROUTE/{$USERNAME}"
 
 fun NavGraphBuilder.addProfileScreen(
     activityState: ActivityState,
 ) {
-    composable(PROFILE_ROUTE) {
+    composable(
+        route = PROFILE_ROUTE,
+        arguments = listOf(navArgument(USERNAME) { type = NavType.StringType })
+    ) { backStack ->
+        val vm = hiltViewModel<ProfileViewModel>()
+        val userName = backStack.arguments?.getString(USERNAME) ?: ""
+        vm.properties.userName.value = userName
+
         ProfileScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .background(color = MaterialTheme.colorScheme.background),
             activityState = activityState,
             stringManager = HomeStringManagerMain(LocalContext.current),
-            vm = hiltViewModel<ProfileViewModel>()
+            vm = vm
         )
     }
 }
 
-fun NavController.navigateToProfileScreen(navOptions: NavOptions? = null) {
-    this.navigate(PROFILE_ROUTE, navOptions)
+fun NavController.navigateToProfileScreen(userName: String, navOptions: NavOptions? = null) {
+    this.navigate("PROFILE_ROUTE/$userName", navOptions)
 }
 
 @Composable
