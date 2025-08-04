@@ -9,7 +9,7 @@ import dagger.hilt.android.components.ActivityRetainedComponent
 
 @Module
 @InstallIn(ActivityRetainedComponent::class)
-abstract class GitHubUsersModuleMain {
+abstract class GitHubUsersDiMain {
 
     @Binds
     abstract fun bindGetGitHubUsersRepository(

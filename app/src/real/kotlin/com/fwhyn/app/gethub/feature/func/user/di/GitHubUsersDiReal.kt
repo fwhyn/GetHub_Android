@@ -1,7 +1,7 @@
 package com.fwhyn.app.gethub.feature.func.user.di
 
 import com.fwhyn.app.gethub.feature.func.user.data.remote.GitHubUsersRemoteDataSource
-import com.fwhyn.app.gethub.feature.func.user.di.RetrofitUserModuleReal.GitHubApi
+import com.fwhyn.app.gethub.feature.func.user.di.RetrofitGitHubDiReal.GitHubApi
 import com.fwhyn.lib.baze.retrofit.api.RetrofitApiService
 import dagger.Module
 import dagger.Provides
@@ -11,7 +11,7 @@ import retrofit2.Retrofit
 
 @Module
 @InstallIn(ActivityRetainedComponent::class)
-class GitHubUserProfileModuleReal {
+class GitHubUsersDiReal {
 
     @Provides
     fun provideGitHubUsersRemoteDataSource(

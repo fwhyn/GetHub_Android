@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -13,6 +14,7 @@ import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Work
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -41,81 +43,103 @@ fun ProfileViewSection1(
     Column(
         modifier = modifier
     ) {
-        Row {
-            AsyncImage(
-                model = param.user.avatarUrl,
-                contentDescription = ContentDesc.AVATAR,
-                modifier = Modifier
-                    .size(64.dp)
-                    .clip(RoundedCornerShape(32.dp))
-                    .background(color = Grey02)
-            )
-
-            MySpacer(8.dp)
-            Column {
-                Text(
-                    modifier = Modifier.padding(top = 8.dp),
-                    text = param.user.login,
-                    style = TextStyle(
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 18.sp
-                    ),
+        Column {
+            Row {
+                AsyncImage(
+                    model = param.user.avatarUrl,
+                    contentDescription = ContentDesc.AVATAR,
+                    modifier = Modifier
+                        .size(64.dp)
+                        .clip(RoundedCornerShape(32.dp))
+                        .background(color = Grey02)
                 )
 
-                Text(
-                    modifier = Modifier.padding(top = 4.dp),
-                    text = param.user.name,
-                )
+                MySpacer(8.dp)
+                Column {
+                    Text(
+                        modifier = Modifier.padding(top = 8.dp),
+                        text = param.user.login,
+                        style = TextStyle(
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 18.sp
+                        ),
+                    )
+
+                    Text(
+                        modifier = Modifier.padding(top = 4.dp),
+                        text = param.user.name,
+                    )
+                }
             }
+
+            MySpacer(4.dp)
+            HorizontalDivider(thickness = 2.dp)
         }
 
-        MySpacer(8.dp)
-        IconAndText(
-            param = IconAndTextParam(
-                imageVector = Icons.Default.Work,
-                contentDescription = ContentDesc.WORK,
-                text = param.user.bio ?: stringResource(R.string.dash)
+        MySpacer(6.dp)
+        Column {
+            IconAndText(
+                param = IconAndTextParam(
+                    imageVector = Icons.Default.Work,
+                    contentDescription = ContentDesc.WORK,
+                    text = param.user.bio ?: stringResource(R.string.dash)
+                )
             )
-        )
 
-        IconAndText(
-            param = IconAndTextParam(
-                imageVector = Icons.Default.LocationOn,
-                contentDescription = ContentDesc.LOCATION,
-                text = param.user.location ?: stringResource(R.string.dash)
+            IconAndText(
+                param = IconAndTextParam(
+                    imageVector = Icons.Default.LocationOn,
+                    contentDescription = ContentDesc.LOCATION,
+                    text = param.user.location ?: stringResource(R.string.dash)
+                )
             )
-        )
 
-        IconAndText(
-            param = IconAndTextParam(
-                imageVector = Icons.Default.Email,
-                contentDescription = ContentDesc.EMAIL,
-                text = param.user.email ?: stringResource(R.string.dash)
+            IconAndText(
+                param = IconAndTextParam(
+                    imageVector = Icons.Default.Email,
+                    contentDescription = ContentDesc.EMAIL,
+                    text = param.user.email ?: stringResource(R.string.dash)
+                )
             )
-        )
 
-        IconAndText(
-            param = IconAndTextParam(
-                imageVector = Icons.Default.Person,
-                contentDescription = ContentDesc.PERSON,
-                text = stringResource(R.string.followers_following, param.user.followers, param.user.following)
+            IconAndText(
+                param = IconAndTextParam(
+                    imageVector = Icons.Default.Person,
+                    contentDescription = ContentDesc.PERSON,
+                    text = stringResource(R.string.followers_following, param.user.followers, param.user.following)
+                )
             )
-        )
+
+            MySpacer(2.dp)
+            HorizontalDivider(thickness = 2.dp)
+        }
+
+        MySpacer(10.dp)
+        Column {
+            RepositoriesView(
+                modifier = Modifier
+                    .height(defaultRepoItemHeight + 100.dp)
+                    .fillMaxWidth(),
+                param = param.reposViewParam
+            )
+        }
+
+        HorizontalDivider(thickness = 2.dp)
     }
 }
 
 data class ProfileViewSection1Param(
     val user: GitHubUserProfileUi,
-    val onClicked: () -> Unit,
+    val reposViewParam: RepositoriesViewParam,
 ) {
     companion object {
         fun default(
             user: GitHubUserProfileUi = GitHubUserProfileUi.default(),
-            onClicked: () -> Unit = {},
+            reposViewParam: RepositoriesViewParam = RepositoriesViewParam.default(),
         ): ProfileViewSection1Param {
             return ProfileViewSection1Param(
                 user = user,
-                onClicked = onClicked,
+                reposViewParam = reposViewParam
             )
         }
     }
@@ -123,7 +147,7 @@ data class ProfileViewSection1Param(
 
 val profileViewSection1Param = ProfileViewSection1Param(
     user = gitHubUserProfileUiFake,
-    onClicked = {}
+    reposViewParam = reposViewParamFake
 )
 
 @Preview

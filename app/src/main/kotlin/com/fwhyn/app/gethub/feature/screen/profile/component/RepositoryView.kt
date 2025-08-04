@@ -37,7 +37,7 @@ fun RepositoryView(
 ) {
     Column(
         modifier = modifier
-            .shadow(elevation = 8.dp, shape = RoundedCornerShape(8.dp))
+            .shadow(elevation = 2.dp, shape = RoundedCornerShape(8.dp))
             .background(color = Color.White, shape = RoundedCornerShape(8.dp))
             .clip(RoundedCornerShape(8.dp))
     ) {

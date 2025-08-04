@@ -1,6 +1,7 @@
 package com.fwhyn.app.gethub.feature.screen.profile.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -39,7 +40,9 @@ fun RepositoriesView(
     param: RepositoriesViewParam,
 ) {
     Column(
-        modifier = modifier
+        modifier = modifier,
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         // Custom scroll listener
         val nestedScrollConnection = remember {
@@ -69,7 +72,7 @@ fun RepositoriesView(
                 )
 
                 RepositoryView(
-                    modifier = Modifier.size(width = 300.dp, height = 150.dp),
+                    modifier = Modifier.size(width = defaultRepoItemWidth, height = defaultRepoItemHeight),
                     param = repositoryViewParam,
                 )
 
@@ -81,6 +84,9 @@ fun RepositoriesView(
         }
     }
 }
+
+val defaultRepoItemWidth = 300.dp
+val defaultRepoItemHeight = 150.dp
 
 data class RepositoriesViewParam(
     val repos: List<GitHubRepoUi>,
@@ -101,6 +107,12 @@ data class RepositoriesViewParam(
         }
     }
 }
+
+val reposViewParamFake = RepositoriesViewParam(
+    repos = gitHubReposUiFake,
+    onLoadPrev = {},
+    onLoadNext = {}
+)
 
 @Composable
 fun getStateOfRepositoriesViewParam(

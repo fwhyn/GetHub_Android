@@ -13,7 +13,7 @@ import javax.inject.Qualifier
 
 @Module
 @InstallIn(ActivityRetainedComponent::class)
-class RetrofitUserModuleReal {
+class RetrofitGitHubDiReal {
 
     @Qualifier
     annotation class GitHubApi

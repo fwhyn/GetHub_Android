@@ -46,7 +46,8 @@ class ProfileViewModel @Inject constructor(
     // override
 
     // ----------------------------------------------------------------
-    private fun getGitHubUserProfile(param: GetGitHubUserProfileRepoParam = GetGitHubUserProfileRepoParam()) {
+    // TODO add username passing parameters
+    private fun getGitHubUserProfile(param: GetGitHubUserProfileRepoParam = GetGitHubUserProfileRepoParam.default()) {
         // Prevent multiple calls
         if (state.value == HomeState.Loading) return
 
