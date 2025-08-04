@@ -1,8 +1,8 @@
 package com.fwhyn.app.gethub.feature.screen.profile
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -27,6 +27,12 @@ import com.fwhyn.app.gethub.common.ui.config.MyTheme
 import com.fwhyn.app.gethub.common.ui.config.TopBarHeight
 import com.fwhyn.app.gethub.feature.screen.home.component.HomeStringManager
 import com.fwhyn.app.gethub.feature.screen.home.component.HomeStringManagerMain
+import com.fwhyn.app.gethub.feature.screen.profile.component.ProfileViewSection1
+import com.fwhyn.app.gethub.feature.screen.profile.component.ProfileViewSection1Param
+import com.fwhyn.app.gethub.feature.screen.profile.component.ProfileViewSection2
+import com.fwhyn.app.gethub.feature.screen.profile.component.ProfileViewSection2Param
+import com.fwhyn.app.gethub.feature.screen.profile.component.getStateOfDataStreamViewParam
+import com.fwhyn.app.gethub.feature.screen.profile.component.getStateOfRepositoriesViewParam
 import com.fwhyn.app.gethub.feature.screen.profile.model.ProfileEvent
 import com.fwhyn.app.gethub.feature.screen.profile.model.ProfileProperties
 import com.fwhyn.app.gethub.feature.screen.profile.model.ProfileState
@@ -88,8 +94,30 @@ private fun ProfileScreen(
         }
     )
 
+    val userProfile by vm.properties.gitHubUserProfile.collectAsStateWithLifecycle()
+    val reposViewParam = getStateOfRepositoriesViewParam(
+        reposFlow = vm.properties.gitHubRepos,
+        onLoadPrev = {},
+        onLoadNext = vm::onLoadNextRepos,
+    )
+    val profileViewSection1Param = ProfileViewSection1Param(
+        userProfile = userProfile,
+        reposViewParam = reposViewParam,
+    )
+
+    val eventsViewParam = getStateOfDataStreamViewParam(
+        eventsFlow = vm.properties.gitHubEvents,
+        onLoadPrev = {},
+        onLoadNext = vm::onLoadNextEvents,
+    )
+    val profileViewSection2Param = ProfileViewSection2Param(
+        eventsViewParam = eventsViewParam
+    )
+
     val param = ProfileViewParam(
         topBarParam = topBarParam,
+        profileViewSection1Param = profileViewSection1Param,
+        profileViewSection2Param = profileViewSection2Param
     )
 
     ProfileView(
@@ -135,27 +163,37 @@ fun PortraitHomeView(
         TopBar(
             modifier = Modifier.height(TopBarHeight),
             topBarParam = TopBarParam.default(
-                title = stringResource(R.string.home_title),
+                title = stringResource(R.string.profile_title),
                 onBack = {}
             )
         )
 
-        Box(
-            modifier = modifier.weight(1f)
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(8.dp),
         ) {
-
-            Column(
+            ProfileViewSection1(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .padding(8.dp),
-            ) {
-            }
+                    .fillMaxWidth()
+                    .weight(1f),
+                param = param.profileViewSection1Param
+            )
+
+            ProfileViewSection2(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f),
+                param = param.profileViewSection2Param
+            )
         }
     }
 }
 
 data class ProfileViewParam(
     val topBarParam: TopBarParam,
+    val profileViewSection1Param: ProfileViewSection1Param,
+    val profileViewSection2Param: ProfileViewSection2Param,
 )
 
 @DevicePreviews

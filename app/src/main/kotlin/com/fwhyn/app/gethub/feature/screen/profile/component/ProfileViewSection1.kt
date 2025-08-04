@@ -46,7 +46,7 @@ fun ProfileViewSection1(
         Column {
             Row {
                 AsyncImage(
-                    model = param.user.avatarUrl,
+                    model = param.userProfile.avatarUrl,
                     contentDescription = ContentDesc.AVATAR,
                     modifier = Modifier
                         .size(64.dp)
@@ -58,7 +58,7 @@ fun ProfileViewSection1(
                 Column {
                     Text(
                         modifier = Modifier.padding(top = 8.dp),
-                        text = param.user.login,
+                        text = param.userProfile.login,
                         style = TextStyle(
                             fontWeight = FontWeight.Bold,
                             fontSize = 18.sp
@@ -67,7 +67,7 @@ fun ProfileViewSection1(
 
                     Text(
                         modifier = Modifier.padding(top = 4.dp),
-                        text = param.user.name,
+                        text = param.userProfile.name,
                     )
                 }
             }
@@ -82,7 +82,7 @@ fun ProfileViewSection1(
                 param = IconAndTextParam(
                     imageVector = Icons.Default.Work,
                     contentDescription = ContentDesc.WORK,
-                    text = param.user.bio ?: stringResource(R.string.dash)
+                    text = param.userProfile.bio ?: stringResource(R.string.dash)
                 )
             )
 
@@ -90,7 +90,7 @@ fun ProfileViewSection1(
                 param = IconAndTextParam(
                     imageVector = Icons.Default.LocationOn,
                     contentDescription = ContentDesc.LOCATION,
-                    text = param.user.location ?: stringResource(R.string.dash)
+                    text = param.userProfile.location ?: stringResource(R.string.dash)
                 )
             )
 
@@ -98,7 +98,7 @@ fun ProfileViewSection1(
                 param = IconAndTextParam(
                     imageVector = Icons.Default.Email,
                     contentDescription = ContentDesc.EMAIL,
-                    text = param.user.email ?: stringResource(R.string.dash)
+                    text = param.userProfile.email ?: stringResource(R.string.dash)
                 )
             )
 
@@ -106,7 +106,11 @@ fun ProfileViewSection1(
                 param = IconAndTextParam(
                     imageVector = Icons.Default.Person,
                     contentDescription = ContentDesc.PERSON,
-                    text = stringResource(R.string.followers_following, param.user.followers, param.user.following)
+                    text = stringResource(
+                        R.string.followers_following,
+                        param.userProfile.followers,
+                        param.userProfile.following
+                    )
                 )
             )
 
@@ -118,7 +122,7 @@ fun ProfileViewSection1(
         Column {
             Text(
                 text = stringResource(R.string.repositories) +
-                        " (${param.reposViewParam.repos.size} / ${param.user.publicRepos})",
+                        " (${param.reposViewParam.repos.size} / ${param.userProfile.publicRepos})",
                 fontWeight = FontWeight.Bold
             )
 
@@ -137,7 +141,7 @@ fun ProfileViewSection1(
 }
 
 data class ProfileViewSection1Param(
-    val user: GitHubUserProfileUi,
+    val userProfile: GitHubUserProfileUi,
     val reposViewParam: RepositoriesViewParam,
 ) {
     companion object {
@@ -146,7 +150,7 @@ data class ProfileViewSection1Param(
             reposViewParam: RepositoriesViewParam = RepositoriesViewParam.default(),
         ): ProfileViewSection1Param {
             return ProfileViewSection1Param(
-                user = user,
+                userProfile = user,
                 reposViewParam = reposViewParam
             )
         }
@@ -154,7 +158,7 @@ data class ProfileViewSection1Param(
 }
 
 val profileViewSection1Param = ProfileViewSection1Param(
-    user = gitHubUserProfileUiFake,
+    userProfile = gitHubUserProfileUiFake,
     reposViewParam = reposViewParamFake
 )
 

@@ -22,27 +22,27 @@ fun ProfileViewSection2(
     ) {
         EventsView(
             modifier = Modifier.fillMaxSize(),
-            param = param.eventViewParam
+            param = param.eventsViewParam
         )
     }
 }
 
 data class ProfileViewSection2Param(
-    val eventViewParam: EventsViewParam,
+    val eventsViewParam: EventsViewParam,
 ) {
     companion object {
         fun default(
-            eventViewParam: EventsViewParam = EventsViewParam.default(),
+            eventsViewParam: EventsViewParam = EventsViewParam.default(),
         ): ProfileViewSection2Param {
             return ProfileViewSection2Param(
-                eventViewParam = eventViewParam,
+                eventsViewParam = eventsViewParam,
             )
         }
     }
 }
 
 val profileViewSection2ParamFake = ProfileViewSection2Param(
-    eventViewParam = eventsViewParamFake,
+    eventsViewParam = eventsViewParamFake,
 )
 
 @Preview

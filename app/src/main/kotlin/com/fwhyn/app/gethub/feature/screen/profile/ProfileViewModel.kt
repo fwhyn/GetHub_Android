@@ -6,6 +6,8 @@ import com.fwhyn.app.gethub.feature.func.user.data.repository.GetGitHubUserProfi
 import com.fwhyn.app.gethub.feature.screen.home.component.HomeMessageCode
 import com.fwhyn.app.gethub.feature.screen.home.model.HomeState
 import com.fwhyn.app.gethub.feature.screen.profile.helper.extension.toUi
+import com.fwhyn.app.gethub.feature.screen.profile.model.GitHubEventUi
+import com.fwhyn.app.gethub.feature.screen.profile.model.GitHubRepoUi
 import com.fwhyn.app.gethub.feature.screen.profile.model.GitHubUserProfileUi
 import com.fwhyn.app.gethub.feature.screen.profile.model.ProfileEvent
 import com.fwhyn.app.gethub.feature.screen.profile.model.ProfileProperties
@@ -29,12 +31,16 @@ class ProfileViewModel @Inject constructor(
     private val state: MutableStateFlow<ProfileState> = MutableStateFlow(ProfileState.Idle)
     private val gitHubUserProfile: MutableStateFlow<GitHubUserProfileUi> =
         MutableStateFlow(GitHubUserProfileUi.default())
+    private val gitHubRepos: MutableStateFlow<List<GitHubRepoUi>> = MutableStateFlow(emptyList())
+    private val gitHubEvents: MutableStateFlow<List<GitHubEventUi>> = MutableStateFlow(emptyList())
 
     // ----------------------------------------------------------------
     override val properties: ProfileProperties = ProfileProperties(
         event = event,
         state = state,
-        gitHubUserProfile = gitHubUserProfile
+        gitHubUserProfile = gitHubUserProfile,
+        gitHubRepos = gitHubRepos,
+        gitHubEvents = gitHubEvents,
     )
 
     // ----------------------------------------------------------------

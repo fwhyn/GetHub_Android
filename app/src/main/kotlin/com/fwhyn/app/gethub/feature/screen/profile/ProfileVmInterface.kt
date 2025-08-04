@@ -6,4 +6,7 @@ import com.fwhyn.app.gethub.feature.screen.profile.model.ProfileProperties
 abstract class ProfileVmInterface : ViewModel() {
 
     abstract val properties: ProfileProperties
+
+    fun onLoadNextRepos() {}
+    fun onLoadNextEvents() {}
 }
