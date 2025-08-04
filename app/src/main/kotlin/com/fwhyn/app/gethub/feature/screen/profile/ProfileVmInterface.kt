@@ -7,6 +7,6 @@ abstract class ProfileVmInterface : ViewModel() {
 
     abstract val properties: ProfileProperties
 
-    fun onLoadNextRepos() {}
-    fun onLoadNextEvents() {}
+    open fun onLoadNextRepos() {}
+    open fun onLoadNextEvents() {}
 }

@@ -1,12 +1,13 @@
 package com.fwhyn.app.gethub.feature.screen.profile
 
 import androidx.lifecycle.viewModelScope
+import com.fwhyn.app.gethub.feature.func.event.data.model.GetGitHubEventsRepoParam
 import com.fwhyn.app.gethub.feature.func.event.data.repository.GetGitHubEventsRepository
+import com.fwhyn.app.gethub.feature.func.user.data.model.GetGitHubReposRepoParam
 import com.fwhyn.app.gethub.feature.func.user.data.model.GetGitHubUserProfileRepoParam
 import com.fwhyn.app.gethub.feature.func.user.data.repository.GetGitHubReposRepository
 import com.fwhyn.app.gethub.feature.func.user.data.repository.GetGitHubUserProfileRepository
 import com.fwhyn.app.gethub.feature.screen.home.component.HomeMessageCode
-import com.fwhyn.app.gethub.feature.screen.home.model.HomeState
 import com.fwhyn.app.gethub.feature.screen.profile.helper.extension.toUi
 import com.fwhyn.app.gethub.feature.screen.profile.model.GitHubEventUi
 import com.fwhyn.app.gethub.feature.screen.profile.model.GitHubRepoUi
@@ -49,22 +50,64 @@ class ProfileViewModel @Inject constructor(
 
     // ----------------------------------------------------------------
     init {
-        getGitHubUserProfile()
+        loadGitHubUserProfile(username = username)
     }
 
     // ----------------------------------------------------------------
-    // override
+    override fun onLoadNextRepos() {
+        getGitHubRepos(
+            param = GetGitHubReposRepoParam.default(username = username),
+            onStart = { state.value = ProfileState.Loading },
+            onFinish = { state.value = ProfileState.Idle }
+        )
+    }
+
+    override fun onLoadNextEvents() {
+        getGitHubEvents(
+            param = GetGitHubEventsRepoParam.default(username = username),
+            onStart = { state.value = ProfileState.Loading },
+            onFinish = { state.value = ProfileState.Idle }
+        )
+    }
 
     // ----------------------------------------------------------------
     // TODO add username passing parameters
-    private fun getGitHubUserProfile(param: GetGitHubUserProfileRepoParam = GetGitHubUserProfileRepoParam.default()) {
+    private fun loadGitHubUserProfile(username: String) {
         // Prevent multiple calls
-        if (state.value == HomeState.Loading) return
+        if (state.value == ProfileState.Loading) return
 
-        // Fetch GitHub users
+        val gitHubEvents = {
+            getGitHubEvents(
+                param = GetGitHubEventsRepoParam.default(username = username),
+                onFinish = { state.value = ProfileState.Idle }
+            )
+        }
+
+        val gitHubRepos = {
+            getGitHubRepos(
+                param = GetGitHubReposRepoParam.default(username = username),
+                onFinish = { gitHubEvents }
+            )
+        }
+
+        getGitHubUserProfile(
+            param = GetGitHubUserProfileRepoParam(username = username),
+            onStart = { state.value = ProfileState.Loading },
+            onFinish = { gitHubRepos },
+        )
+    }
+
+    private fun getGitHubUserProfile(
+        param: GetGitHubUserProfileRepoParam,
+        onStart: () -> Unit = {},
+        onFinish: () -> Unit = {},
+    ) {
+        // Prevent multiple calls
+        if (state.value == ProfileState.Loading) return
+
         getGitHubUserProfile.invoke(
             scope = scope,
-            onStart = { state.value = ProfileState.Loading },
+            onStart = onStart,
             onFetchParam = { param },
             onOmitResult = {
                 it.onSuccess { data ->
@@ -73,7 +116,53 @@ class ProfileViewModel @Inject constructor(
                     handleError(error)
                 }
             },
-            onFinish = { state.value = ProfileState.Idle },
+            onFinish = onFinish,
+        )
+    }
+
+    fun getGitHubRepos(
+        param: GetGitHubReposRepoParam,
+        onStart: () -> Unit = {},
+        onFinish: () -> Unit = {},
+    ) {
+        // Prevent multiple calls
+        if (state.value == ProfileState.Loading) return
+
+        getGitHubRepos.invoke(
+            scope = scope,
+            onStart = onStart,
+            onFetchParam = { param },
+            onOmitResult = {
+                it.onSuccess { data ->
+                    gitHubRepos.value = data.toUi()
+                }.onFailure { error ->
+                    handleError(error)
+                }
+            },
+            onFinish = onFinish,
+        )
+    }
+
+    fun getGitHubEvents(
+        param: GetGitHubEventsRepoParam,
+        onStart: () -> Unit = {},
+        onFinish: () -> Unit = {},
+    ) {
+        // Prevent multiple calls
+        if (state.value == ProfileState.Loading) return
+
+        getGitHubEvents.invoke(
+            scope = scope,
+            onStart = onStart,
+            onFetchParam = { param },
+            onOmitResult = {
+                it.onSuccess { data ->
+                    gitHubEvents.value = data.toUi()
+                }.onFailure { error ->
+                    handleError(error)
+                }
+            },
+            onFinish = onFinish,
         )
     }
 
