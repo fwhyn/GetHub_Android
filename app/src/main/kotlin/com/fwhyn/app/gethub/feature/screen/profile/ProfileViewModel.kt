@@ -1,7 +1,9 @@
 package com.fwhyn.app.gethub.feature.screen.profile
 
 import androidx.lifecycle.viewModelScope
+import com.fwhyn.app.gethub.feature.func.event.data.repository.GetGitHubEventsRepository
 import com.fwhyn.app.gethub.feature.func.user.data.model.GetGitHubUserProfileRepoParam
+import com.fwhyn.app.gethub.feature.func.user.data.repository.GetGitHubReposRepository
 import com.fwhyn.app.gethub.feature.func.user.data.repository.GetGitHubUserProfileRepository
 import com.fwhyn.app.gethub.feature.screen.home.component.HomeMessageCode
 import com.fwhyn.app.gethub.feature.screen.home.model.HomeState
@@ -22,6 +24,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
     private val getGitHubUserProfile: GetGitHubUserProfileRepository,
+    private val getGitHubRepos: GetGitHubReposRepository,
+    private val getGitHubEvents: GetGitHubEventsRepository,
 ) : ProfileVmInterface() {
 
     private val scope: CoroutineScope
