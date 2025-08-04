@@ -1,19 +1,19 @@
 package com.fwhyn.app.gethub.feature.func.user.data.repository
 
-import com.fwhyn.app.gethub.feature.func.user.data.model.GetGitHubUsersParam
+import com.fwhyn.app.gethub.feature.func.user.data.model.GetGitHubUsersRepoParam
 import com.fwhyn.app.gethub.feature.func.user.data.model.GitHubUserData
 import com.fwhyn.app.gethub.feature.func.user.data.remote.GitHubUsersRemoteDataSource
 import javax.inject.Inject
 
-class GitHubUsersRepositoryMain @Inject constructor(
+class GetGitHubUsersRepositoryMain @Inject constructor(
     private val gitHubUsersRemoteDataSource: GitHubUsersRemoteDataSource,
-) : GitHubUsersRepository() {
+) : GetGitHubUsersRepository() {
 
     private var lastId = 0
     private var loadedUsers = mutableSetOf<GitHubUserData>()
 
     override suspend fun onRunning(
-        param: GetGitHubUsersParam,
+        param: GetGitHubUsersRepoParam,
         result: suspend (List<GitHubUserData>) -> Unit,
     ) {
         val response = gitHubUsersRemoteDataSource.getUsers(

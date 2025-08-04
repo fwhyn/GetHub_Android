@@ -1,8 +1,8 @@
 package com.fwhyn.app.gethub.feature.screen.profile
 
 import androidx.lifecycle.viewModelScope
-import com.fwhyn.app.gethub.feature.func.user.data.model.GetGitHubUserProfileParam
-import com.fwhyn.app.gethub.feature.func.user.data.repository.GitHubUserProfileRepository
+import com.fwhyn.app.gethub.feature.func.user.data.model.GetGitHubUserProfileRepoParam
+import com.fwhyn.app.gethub.feature.func.user.data.repository.GetGitHubUserProfileRepository
 import com.fwhyn.app.gethub.feature.screen.home.component.HomeMessageCode
 import com.fwhyn.app.gethub.feature.screen.home.model.HomeState
 import com.fwhyn.app.gethub.feature.screen.profile.helper.extension.toUi
@@ -19,7 +19,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    private val getGitHubUserProfile: GitHubUserProfileRepository,
+    private val getGitHubUserProfile: GetGitHubUserProfileRepository,
 ) : ProfileVmInterface() {
 
     private val scope: CoroutineScope
@@ -46,7 +46,7 @@ class ProfileViewModel @Inject constructor(
     // override
 
     // ----------------------------------------------------------------
-    private fun getGitHubUserProfile(param: GetGitHubUserProfileParam = GetGitHubUserProfileParam()) {
+    private fun getGitHubUserProfile(param: GetGitHubUserProfileRepoParam = GetGitHubUserProfileRepoParam()) {
         // Prevent multiple calls
         if (state.value == HomeState.Loading) return
 

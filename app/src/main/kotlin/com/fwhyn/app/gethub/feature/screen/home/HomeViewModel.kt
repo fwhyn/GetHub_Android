@@ -2,8 +2,8 @@ package com.fwhyn.app.gethub.feature.screen.home
 
 import androidx.lifecycle.viewModelScope
 import com.fwhyn.app.gethub.common.helper.emitEvent
-import com.fwhyn.app.gethub.feature.func.user.data.model.GetGitHubUsersParam
-import com.fwhyn.app.gethub.feature.func.user.data.repository.GitHubUsersRepository
+import com.fwhyn.app.gethub.feature.func.user.data.model.GetGitHubUsersRepoParam
+import com.fwhyn.app.gethub.feature.func.user.data.repository.GetGitHubUsersRepository
 import com.fwhyn.app.gethub.feature.screen.home.component.HomeMessageCode
 import com.fwhyn.app.gethub.feature.screen.home.helper.extension.toUi
 import com.fwhyn.app.gethub.feature.screen.home.model.GitHubUserUi
@@ -19,7 +19,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val getGitHubUsers: GitHubUsersRepository,
+    private val getGitHubUsers: GetGitHubUsersRepository,
 ) : HomeVmInterface() {
 
     private val scope: CoroutineScope
@@ -51,7 +51,7 @@ class HomeViewModel @Inject constructor(
     }
 
     // ----------------------------------------------------------------
-    private fun getGitHubUsers(param: GetGitHubUsersParam = GetGitHubUsersParam.default()) {
+    private fun getGitHubUsers(param: GetGitHubUsersRepoParam = GetGitHubUsersRepoParam.default()) {
         // Prevent multiple calls
         if (state.value == HomeState.Loading) return
 
