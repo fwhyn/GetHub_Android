@@ -11,8 +11,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.fwhyn.app.gethub.common.ui.config.MyTheme
-import com.fwhyn.app.gethub.feature.screen.profile.model.GitHubUserProfileUi
-import com.fwhyn.app.gethub.feature.screen.profile.model.gitHubUserProfileUiFake
 
 @Composable
 fun ProfileViewSection2(
@@ -22,30 +20,29 @@ fun ProfileViewSection2(
     Column(
         modifier = modifier
     ) {
-
+        EventsView(
+            modifier = Modifier.fillMaxSize(),
+            param = param.eventViewParam
+        )
     }
 }
 
 data class ProfileViewSection2Param(
-    val user: GitHubUserProfileUi,
-    val onClicked: () -> Unit,
+    val eventViewParam: EventsViewParam,
 ) {
     companion object {
         fun default(
-            user: GitHubUserProfileUi = GitHubUserProfileUi.default(),
-            onClicked: () -> Unit = {},
+            eventViewParam: EventsViewParam = EventsViewParam.default(),
         ): ProfileViewSection2Param {
             return ProfileViewSection2Param(
-                user = user,
-                onClicked = onClicked,
+                eventViewParam = eventViewParam,
             )
         }
     }
 }
 
 val profileViewSection2ParamFake = ProfileViewSection2Param(
-    user = gitHubUserProfileUiFake,
-    onClicked = {}
+    eventViewParam = eventsViewParamFake,
 )
 
 @Preview

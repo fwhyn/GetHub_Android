@@ -63,6 +63,10 @@ data class EventsViewParam(
     }
 }
 
+val eventsViewParamFake = EventsViewParam(
+    events = gitHubEventsUiFake,
+)
+
 @Composable
 fun getStateOfDataStreamViewParam(
     eventsFlow: StateFlow<List<GitHubEventUi>>,
