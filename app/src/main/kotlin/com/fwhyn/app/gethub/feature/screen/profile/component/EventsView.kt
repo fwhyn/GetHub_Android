@@ -20,6 +20,8 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.fwhyn.app.gethub.common.ui.component.DataNotFoundView
+import com.fwhyn.app.gethub.common.ui.component.DataNotFoundViewParam
 import com.fwhyn.app.gethub.common.ui.config.MyTheme
 import com.fwhyn.app.gethub.feature.screen.profile.model.GitHubEventUi
 import com.fwhyn.app.gethub.feature.screen.profile.model.gitHubEventsUiFake
@@ -35,8 +37,15 @@ fun EventsView(
     Column(
         modifier = modifier
     ) {
-        // TODO when list empty
-        // TODO when get list error
+        if (param.events.isEmpty()) {
+            DataNotFoundView(
+                modifier = Modifier.fillMaxSize(),
+                param = DataNotFoundViewParam(onClicked = param.onLoadNext)
+            )
+
+            return
+        }
+
         // Custom scroll listener
         val nestedScrollConnection = remember {
             object : NestedScrollConnection {
@@ -124,6 +133,26 @@ fun getStateOfDataStreamViewParam(
 fun EventsPreview() {
     val param = getStateOfDataStreamViewParam(
         eventsFlow = MutableStateFlow(gitHubEventsUiFake),
+        onLoadPrev = { /* Handle load previous */ },
+        onLoadNext = { /* Handle load next */ }
+    )
+
+    MyTheme {
+        EventsView(
+            modifier = Modifier
+                .background(MaterialTheme.colorScheme.tertiary)
+                .fillMaxSize()
+                .padding(4.dp),
+            param = param
+        )
+    }
+}
+
+@Composable
+@Preview
+fun EventsEmptyPreview() {
+    val param = getStateOfDataStreamViewParam(
+        eventsFlow = MutableStateFlow(emptyList()),
         onLoadPrev = { /* Handle load previous */ },
         onLoadNext = { /* Handle load next */ }
     )

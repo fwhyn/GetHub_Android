@@ -7,24 +7,38 @@ import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import com.fwhyn.app.gethub.R
+import com.fwhyn.app.gethub.common.ui.config.MyTheme
 
 @Composable
 fun RefreshButton(
-    modifier: Modifier,
-    param: ReloadButtonParam
+    modifier: Modifier = Modifier,
+    param: RefreshButtonParam
 ) {
     IconButton(
-        modifier = modifier,
         onClick = param.onClicked,
     ) {
         Icon(
+            modifier = modifier,
             imageVector = Icons.Filled.Refresh,
             contentDescription = stringResource(R.string.refresh_button)
         )
     }
 }
 
-data class ReloadButtonParam(
+data class RefreshButtonParam(
     val onClicked: () -> Unit
 )
+
+@Composable
+@Preview
+fun RefreshButtonPreview() {
+    MyTheme {
+        RefreshButton(
+            param = RefreshButtonParam(
+                onClicked = {}
+            )
+        )
+    }
+}

@@ -20,6 +20,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -68,7 +69,7 @@ fun GitHubUserView(
             Text(
                 modifier = Modifier.padding(top = 4.dp),
                 text = param.user.htmlUrl,
-                fontSize = 14.sp,
+                fontStyle = FontStyle.Italic
             )
         }
     }

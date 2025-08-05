@@ -27,6 +27,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.fwhyn.app.gethub.common.ui.component.DataNotFoundView
+import com.fwhyn.app.gethub.common.ui.component.DataNotFoundViewParam
 import com.fwhyn.app.gethub.common.ui.component.MySpacer
 import com.fwhyn.app.gethub.common.ui.config.MyTheme
 import com.fwhyn.app.gethub.feature.screen.home.model.GitHubUserUi
@@ -42,6 +44,15 @@ fun GitHubUsersView(
     Column(
         modifier = modifier
     ) {
+        if (param.gitHubUsers.isEmpty()) {
+            DataNotFoundView(
+                modifier = Modifier.fillMaxSize(),
+                param = DataNotFoundViewParam(onClicked = param.onLoadNext)
+            )
+
+            return
+        }
+
         // Custom scroll listener
         val nestedScrollConnection = remember {
             object : NestedScrollConnection {
@@ -134,6 +145,39 @@ fun GitHubUsersPreview() {
 
     val param = getStateOfGitHubUsersViewParam(
         gitHubUsersFlow = MutableStateFlow(gitHubUsersUiFake),
+        onItemClicked = { status = "Clicked on ${it.login}" },
+        onLoadPrev = { status = "on load prev" },
+        onLoadNext = { status = "on load next" },
+    )
+
+    MyTheme {
+        Box {
+            GitHubUsersView(
+                modifier = Modifier
+                    .background(MaterialTheme.colorScheme.tertiary)
+                    .fillMaxSize()
+                    .padding(4.dp),
+                param = param
+            )
+
+            Text(
+                modifier = Modifier
+                    .padding(8.dp)
+                    .align(Alignment.BottomCenter),
+                text = status,
+                fontSize = 20.sp
+            )
+        }
+    }
+}
+
+@Composable
+@Preview
+fun GitHubUsersEmptyPreview() {
+    var status by remember { mutableStateOf("None") }
+
+    val param = getStateOfGitHubUsersViewParam(
+        gitHubUsersFlow = MutableStateFlow(emptyList()),
         onItemClicked = { status = "Clicked on ${it.login}" },
         onLoadPrev = { status = "on load prev" },
         onLoadNext = { status = "on load next" },
