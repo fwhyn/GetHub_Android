@@ -24,12 +24,15 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.fwhyn.app.gethub.R
 import com.fwhyn.app.gethub.common.ui.component.MySpacer
 import com.fwhyn.app.gethub.common.ui.config.Grey50
 import com.fwhyn.app.gethub.common.ui.config.MyTheme
@@ -42,6 +45,7 @@ fun EventView(
     modifier: Modifier,
     param: EventViewParam,
 ) {
+    // TODO change time format
     Column(
         modifier = modifier,
     ) {
@@ -88,14 +92,19 @@ fun EventView(
                     MySpacer(4.dp)
                     Row {
                         Text(
-                            modifier = Modifier.weight(1f),
-                            text = param.event.repoName,
+                            modifier = Modifier.weight(2f),
+                            text = stringResource(R.string.repository) +
+                                    stringResource(R.string.colon) +
+                                    param.event.repoName,
+                            fontStyle = FontStyle.Italic,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis
                         )
                         Text(
                             modifier = Modifier.weight(1f),
-                            text = param.event.id,
+                            text = stringResource(R.string.id) +
+                                    stringResource(R.string.colon) +
+                                    param.event.id,
                             textAlign = TextAlign.Right,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis
