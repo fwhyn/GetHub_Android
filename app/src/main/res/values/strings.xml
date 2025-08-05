@@ -28,4 +28,12 @@
     <string name="data_not_found">Data not found!</string>
     <string name="read_data_error">Read data error!</string>
     <string name="id">ID</string>
+    <string name="back_button">Back Button</string>
+    <string name="logout_button">Logout Button</string>
+    <string name="avatar">Avatar</string>
+    <string name="work">Work</string>
+    <string name="location">Location</string>
+    <string name="followers_and_following">Followers and Following</string>
+    <string name="stargazers">Stargazers</string>
+    <string name="refresh_button">Refresh Button</string>
 </resources>

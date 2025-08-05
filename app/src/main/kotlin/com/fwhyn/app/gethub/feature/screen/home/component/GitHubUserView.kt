@@ -18,13 +18,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.fwhyn.app.gethub.common.helper.ContentDesc
+import com.fwhyn.app.gethub.R
 import com.fwhyn.app.gethub.common.ui.component.MySpacer
 import com.fwhyn.app.gethub.common.ui.config.MyTheme
 import com.fwhyn.app.gethub.feature.screen.home.model.GitHubUserUi
@@ -47,7 +48,7 @@ fun GitHubUserView(
     ) {
         AsyncImage(
             model = param.user.avatarUrl,
-            contentDescription = ContentDesc.AVATAR,
+            contentDescription = stringResource(R.string.avatar),
             modifier = Modifier
                 .size(64.dp)
                 .clip(RoundedCornerShape(32.dp))

@@ -28,7 +28,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.fwhyn.app.gethub.R
-import com.fwhyn.app.gethub.common.helper.ContentDesc
 import com.fwhyn.app.gethub.common.ui.component.MySpacer
 import com.fwhyn.app.gethub.common.ui.config.Grey02
 import com.fwhyn.app.gethub.common.ui.config.MyTheme
@@ -47,7 +46,7 @@ fun ProfileViewSection1(
             Row {
                 AsyncImage(
                     model = param.userProfile.avatarUrl,
-                    contentDescription = ContentDesc.AVATAR,
+                    contentDescription = stringResource(R.string.avatar),
                     modifier = Modifier
                         .size(64.dp)
                         .clip(RoundedCornerShape(32.dp))
@@ -81,7 +80,7 @@ fun ProfileViewSection1(
             IconAndText(
                 param = IconAndTextParam(
                     imageVector = Icons.Default.Work,
-                    contentDescription = ContentDesc.WORK,
+                    contentDescription = stringResource(R.string.work),
                     text = param.userProfile.bio ?: stringResource(R.string.dash)
                 )
             )
@@ -89,7 +88,7 @@ fun ProfileViewSection1(
             IconAndText(
                 param = IconAndTextParam(
                     imageVector = Icons.Default.LocationOn,
-                    contentDescription = ContentDesc.LOCATION,
+                    contentDescription = stringResource(R.string.location),
                     text = param.userProfile.location ?: stringResource(R.string.dash)
                 )
             )
@@ -97,7 +96,7 @@ fun ProfileViewSection1(
             IconAndText(
                 param = IconAndTextParam(
                     imageVector = Icons.Default.Email,
-                    contentDescription = ContentDesc.EMAIL,
+                    contentDescription = stringResource(R.string.email),
                     text = param.userProfile.email ?: stringResource(R.string.dash)
                 )
             )
@@ -105,7 +104,7 @@ fun ProfileViewSection1(
             IconAndText(
                 param = IconAndTextParam(
                     imageVector = Icons.Default.Person,
-                    contentDescription = ContentDesc.PERSON,
+                    contentDescription = stringResource(R.string.followers_and_following),
                     text = stringResource(
                         R.string.followers_following,
                         param.userProfile.followers,

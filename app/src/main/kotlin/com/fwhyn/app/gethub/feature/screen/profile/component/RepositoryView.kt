@@ -25,7 +25,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.fwhyn.app.gethub.R
-import com.fwhyn.app.gethub.common.helper.ContentDesc
 import com.fwhyn.app.gethub.common.ui.config.MyTheme
 import com.fwhyn.app.gethub.feature.screen.profile.model.GitHubRepoUi
 import com.fwhyn.app.gethub.feature.screen.profile.model.gitHubRepoUiFake
@@ -72,7 +71,7 @@ fun RepositoryView(
                 modifier = Modifier.padding(top = 4.dp),
                 param = IconAndTextParam(
                     imageVector = Icons.Default.Star,
-                    contentDescription = ContentDesc.STAR,
+                    contentDescription = stringResource(R.string.stargazers),
                     text = param.repo.stargazersCount.toString(),
                 )
             )

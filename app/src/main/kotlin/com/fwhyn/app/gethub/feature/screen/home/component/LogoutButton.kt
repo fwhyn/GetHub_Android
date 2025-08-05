@@ -9,9 +9,10 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.fwhyn.app.gethub.common.helper.ContentDesc
+import com.fwhyn.app.gethub.R
 import com.fwhyn.app.gethub.common.ui.config.MyTheme
 
 @Composable
@@ -28,7 +29,7 @@ fun LogoutButton(
         Icon(
             modifier = Modifier.size(20.dp),
             imageVector = Icons.AutoMirrored.Filled.Logout,
-            contentDescription = ContentDesc.LOGOUT_BUTTON,
+            contentDescription = stringResource(R.string.logout_button),
         )
     }
 }

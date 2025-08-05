@@ -9,9 +9,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.fwhyn.app.gethub.common.helper.ContentDesc
+import com.fwhyn.app.gethub.R
 import com.fwhyn.app.gethub.common.ui.config.MyTheme
 
 @Composable
@@ -28,7 +29,7 @@ fun BackButton(
         Icon(
             modifier = Modifier.size(25.dp),
             imageVector = Icons.AutoMirrored.Filled.ArrowBackIos,
-            contentDescription = ContentDesc.BACK_BUTTON,
+            contentDescription = stringResource(R.string.back_button),
         )
     }
 }
