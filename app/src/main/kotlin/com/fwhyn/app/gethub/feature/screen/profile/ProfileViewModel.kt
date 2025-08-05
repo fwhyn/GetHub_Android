@@ -80,9 +80,6 @@ class ProfileViewModel @Inject constructor(
 
     // ----------------------------------------------------------------
     private fun loadGitHubUserProfile() {
-        // Prevent multiple calls
-        if (isLoading()) return
-
         getGitHubUserProfile(
             onStart = { state.value = ProfileState.Loading },
             onFinish = {
@@ -99,9 +96,6 @@ class ProfileViewModel @Inject constructor(
         onStart: () -> Unit = {},
         onFinish: () -> Unit = {},
     ) {
-        // Prevent multiple calls
-        if (isLoading()) return
-
         getGitHubUserProfile.invoke(
             scope = scope,
             onStart = onStart,
@@ -123,9 +117,6 @@ class ProfileViewModel @Inject constructor(
         onStart: () -> Unit = {},
         onFinish: () -> Unit = {},
     ) {
-        // Prevent multiple calls
-        if (isLoading()) return
-
         getGitHubRepos.invoke(
             scope = scope,
             onStart = onStart,
@@ -147,9 +138,6 @@ class ProfileViewModel @Inject constructor(
         onStart: () -> Unit = {},
         onFinish: () -> Unit = {},
     ) {
-        // Prevent multiple calls
-        if (isLoading()) return
-
         getGitHubEvents.invoke(
             scope = scope,
             onStart = onStart,
@@ -165,10 +153,6 @@ class ProfileViewModel @Inject constructor(
             },
             onFinish = onFinish,
         )
-    }
-
-    private fun isLoading(): Boolean {
-        return state.value == ProfileState.Loading
     }
 
     private suspend fun handleError(error: Throwable) {

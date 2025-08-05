@@ -1,0 +1,25 @@
+package com.fwhyn.app.gethub.feature.func.user.di
+
+import com.fwhyn.app.gethub.feature.func.user.data.remote.GitHubReposRemoteDataSource
+import com.fwhyn.app.gethub.feature.func.user.di.RetrofitGitHubDiReal.GitHubApi
+import com.fwhyn.lib.baze.retrofit.api.RetrofitApiService
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ActivityRetainedComponent
+import retrofit2.Retrofit
+
+@Module
+@InstallIn(ActivityRetainedComponent::class)
+class GitHubReposDiReal {
+
+    @Provides
+    fun provideGitHubReposRemoteDataSource(
+        @GitHubApi retrofit: Retrofit,
+    ): GitHubReposRemoteDataSource {
+        return RetrofitApiService(
+            retrofit = retrofit,
+            cls = GitHubReposRemoteDataSource::class.java
+        ).create()
+    }
+}

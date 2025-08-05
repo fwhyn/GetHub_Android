@@ -101,8 +101,8 @@ private fun HomeScreen(
 
     val dataStreamViewParam = getStateOfGitHubUsersViewParam(
         gitHubUsersFlow = vm.properties.gitHubUsers,
-        onItemClicked = {}, // TODO Handle item click if needed,
-        onLoadPrev = {}, // TODO Handle loading previous items if needed
+        onItemClicked = { vm.onGoToProfile(it.login) },
+        onLoadPrev = {}, // do nothing
         onLoadNext = vm::onLoadNext
     )
 
