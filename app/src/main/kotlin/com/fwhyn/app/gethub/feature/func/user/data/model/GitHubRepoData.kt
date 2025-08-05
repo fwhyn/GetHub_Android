@@ -51,7 +51,7 @@ data class GitHubRepoData(
     @SerializedName("deployments_url") val deploymentsUrl: String,
     @SerializedName("created_at") val createdAt: String,
     @SerializedName("updated_at") val updatedAt: String,
-    @SerializedName("pushed_at") val pushedAt: String,
+    @SerializedName("pushed_at") val pushedAt: String?,
     @SerializedName("git_url") val gitUrl: String,
     @SerializedName("ssh_url") val sshUrl: String,
     @SerializedName("clone_url") val cloneUrl: String,
