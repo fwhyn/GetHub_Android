@@ -13,6 +13,8 @@ class ProfileStringManagerMain(
         val id: Int = when (input) {
             ProfileMessageCode.UnexpectedError -> R.string.unexpected_error
             ProfileMessageCode.TimeOutError -> R.string.time_out_error
+            ProfileMessageCode.NoInternetConnection -> R.string.no_internet_connection
+            ProfileMessageCode.UserNotFound -> R.string.user_not_found
         }
 
         return context.getString(id)

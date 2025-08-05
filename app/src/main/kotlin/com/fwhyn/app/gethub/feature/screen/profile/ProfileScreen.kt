@@ -32,11 +32,11 @@ import com.fwhyn.app.gethub.R
 import com.fwhyn.app.gethub.common.ui.component.MySpacer
 import com.fwhyn.app.gethub.common.ui.component.TopBar
 import com.fwhyn.app.gethub.common.ui.component.TopBarParam
-import com.fwhyn.app.gethub.common.ui.component.getStateOfTopBarHomeParam
+import com.fwhyn.app.gethub.common.ui.component.getStateOfTopBarParam
 import com.fwhyn.app.gethub.common.ui.config.MyTheme
 import com.fwhyn.app.gethub.common.ui.config.TopBarHeight
-import com.fwhyn.app.gethub.feature.screen.home.component.HomeStringManager
-import com.fwhyn.app.gethub.feature.screen.home.component.HomeStringManagerMain
+import com.fwhyn.app.gethub.feature.screen.profile.component.ProfileStringManager
+import com.fwhyn.app.gethub.feature.screen.profile.component.ProfileStringManagerMain
 import com.fwhyn.app.gethub.feature.screen.profile.component.ProfileViewSection1
 import com.fwhyn.app.gethub.feature.screen.profile.component.ProfileViewSection1Param
 import com.fwhyn.app.gethub.feature.screen.profile.component.ProfileViewSection2
@@ -64,14 +64,14 @@ fun NavGraphBuilder.addProfileScreen(
     ) { backStack ->
         val vm = hiltViewModel<ProfileViewModel>()
         val userName = backStack.arguments?.getString(USERNAME) ?: ""
-        vm.properties.userName.value = userName
+        vm.onUpdateUserName(userName)
 
         ProfileScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .background(color = MaterialTheme.colorScheme.background),
             activityState = activityState,
-            stringManager = HomeStringManagerMain(LocalContext.current),
+            stringManager = ProfileStringManagerMain(LocalContext.current),
             vm = vm
         )
     }
@@ -85,7 +85,7 @@ fun NavController.navigateToProfileScreen(userName: String, navOptions: NavOptio
 private fun ProfileScreen(
     modifier: Modifier = Modifier,
     activityState: ActivityState,
-    stringManager: HomeStringManager,
+    stringManager: ProfileStringManager,
     vm: ProfileVmInterface,
 ) {
     // TODO add reload button when error occurs
@@ -107,7 +107,7 @@ private fun ProfileScreen(
     }
 
     // ----------------------------------------------------------------
-    val topBarParam = getStateOfTopBarHomeParam(
+    val topBarParam = getStateOfTopBarParam(
         title = stringResource(R.string.profile_title),
         onBack = {
             activityState.navigation.popBackStack()
@@ -155,14 +155,14 @@ fun ProfileView(
 
     when (configuration.orientation) {
         Configuration.ORIENTATION_LANDSCAPE -> {
-            LandscapeHomeView(
+            LandscapeProfileView(
                 modifier = modifier,
                 param = param
             )
         }
 
         else -> {
-            PortraitHomeView(
+            PortraitProfileView(
                 modifier = modifier,
                 param = param
             )
@@ -173,7 +173,7 @@ fun ProfileView(
 }
 
 @Composable
-fun PortraitHomeView(
+fun PortraitProfileView(
     modifier: Modifier = Modifier,
     param: ProfileViewParam,
 ) {
@@ -208,7 +208,7 @@ fun PortraitHomeView(
 }
 
 @Composable
-fun LandscapeHomeView(
+fun LandscapeProfileView(
     modifier: Modifier = Modifier,
     param: ProfileViewParam,
 ) {
@@ -260,10 +260,14 @@ fun ProfileScreenPreview() {
         ProfileScreen(
             modifier = Modifier.background(color = MaterialTheme.colorScheme.background),
             activityState = rememberActivityState(),
-            stringManager = HomeStringManagerMain(LocalContext.current),
+            stringManager = ProfileStringManagerMain(LocalContext.current),
             vm = object : ProfileVmInterface() {
                 override val properties: ProfileProperties
                     get() = profilePropertiesFake
+
+                override fun onUpdateUserName(data: String) {
+                    // No-op for preview
+                }
             },
         )
     }

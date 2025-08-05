@@ -28,7 +28,7 @@ import com.fwhyn.app.gethub.R
 import com.fwhyn.app.gethub.common.ui.component.MySpacer
 import com.fwhyn.app.gethub.common.ui.component.TopBar
 import com.fwhyn.app.gethub.common.ui.component.TopBarParam
-import com.fwhyn.app.gethub.common.ui.component.getStateOfTopBarHomeParam
+import com.fwhyn.app.gethub.common.ui.component.getStateOfTopBarParam
 import com.fwhyn.app.gethub.common.ui.config.MyTheme
 import com.fwhyn.app.gethub.common.ui.config.TopBarHeight
 import com.fwhyn.app.gethub.feature.screen.home.component.GitHubUsersView
@@ -40,6 +40,7 @@ import com.fwhyn.app.gethub.feature.screen.home.model.HomeEvent
 import com.fwhyn.app.gethub.feature.screen.home.model.HomeProperties
 import com.fwhyn.app.gethub.feature.screen.home.model.HomeState
 import com.fwhyn.app.gethub.feature.screen.home.model.homePropertiesFake
+import com.fwhyn.app.gethub.feature.screen.profile.navigateToProfileScreen
 import com.fwhyn.lib.baze.compose.dialog.CircularProgressDialog
 import com.fwhyn.lib.baze.compose.helper.ActivityState
 import com.fwhyn.lib.baze.compose.helper.DevicePreviews
@@ -78,7 +79,7 @@ private fun HomeScreen(
         vm.properties.event.collect { event ->
             when (event) {
                 is HomeEvent.Notify -> activityState.notification.showSnackbar(stringManager.getString(event.code))
-                is HomeEvent.GoToProfile -> {} // TODO Handle opening profile if needed
+                is HomeEvent.GoToProfile -> activityState.navigation.navigateToProfileScreen(event.user)
             }
         }
     }
@@ -91,7 +92,7 @@ private fun HomeScreen(
     }
 
     // ----------------------------------------------------------------
-    val topBarParam = getStateOfTopBarHomeParam(
+    val topBarParam = getStateOfTopBarParam(
         title = stringResource(R.string.home_title),
         onBack = {
             activityState.navigation.popBackStack()

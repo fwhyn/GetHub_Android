@@ -59,9 +59,9 @@ data class TopBarParam(
 }
 
 @Composable
-fun getStateOfTopBarHomeParam(
+fun getStateOfTopBarParam(
     title: String,
-    onBack: () -> Unit
+    onBack: () -> Unit,
 ): TopBarParam {
     return TopBarParam(
         title = title,
