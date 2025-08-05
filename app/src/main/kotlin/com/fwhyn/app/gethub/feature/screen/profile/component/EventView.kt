@@ -24,15 +24,12 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.fwhyn.app.gethub.R
 import com.fwhyn.app.gethub.common.ui.component.MySpacer
 import com.fwhyn.app.gethub.common.ui.config.Grey50
 import com.fwhyn.app.gethub.common.ui.config.MyTheme
@@ -93,34 +90,17 @@ fun EventView(
                         Text(
                             modifier = Modifier.weight(1f),
                             text = param.event.repoName,
-                            fontWeight = FontWeight.Bold,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis
                         )
                         Text(
                             modifier = Modifier.weight(1f),
-                            text = "#" + param.event.commitNo.takeLast(8),
+                            text = param.event.id,
                             textAlign = TextAlign.Right,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis
                         )
                     }
-                    Text(
-                        text = stringResource(R.string.branch) +
-                                stringResource(R.string.colon) +
-                                param.event.branch,
-                        fontStyle = FontStyle.Italic,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                    Text(
-                        text = stringResource(R.string.message) +
-                                stringResource(R.string.colon) +
-                                param.event.commitMessage,
-                        fontStyle = FontStyle.Italic,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
 
                     MySpacer(8.dp)
                     Text(

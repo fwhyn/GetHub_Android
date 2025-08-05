@@ -7,7 +7,6 @@ data class GitHubEventData(
     @SerializedName("type") val type: String,
     @SerializedName("actor") val actor: ActorData,
     @SerializedName("repo") val repo: RepoData,
-    @SerializedName("payload") val payload: PayloadData,
     @SerializedName("public") val isPublic: Boolean,
     @SerializedName("created_at") val createdAt: String,
 )

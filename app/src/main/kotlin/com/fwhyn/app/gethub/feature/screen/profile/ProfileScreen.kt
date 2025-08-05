@@ -81,6 +81,7 @@ fun NavController.navigateToProfileScreen(userName: String, navOptions: NavOptio
     this.navigate("PROFILE_ROUTE/$userName", navOptions)
 }
 
+// TODO create adaptable font size but limited to 16sp
 @Composable
 private fun ProfileScreen(
     modifier: Modifier = Modifier,

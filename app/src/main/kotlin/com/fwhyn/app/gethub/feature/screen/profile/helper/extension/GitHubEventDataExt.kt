@@ -10,10 +10,6 @@ fun GitHubEventData.toUi(): GitHubEventUi {
         id = id,
         type = type,
         repoName = repo.name,
-        branch = payload.ref,
-        commitNo = payload.commits[0].sha,
-        author = payload.commits[0].author.name,
-        commitMessage = payload.commits[0].message,
         createdAt = createdAt,
     )
 }
