@@ -3,6 +3,8 @@ package com.fwhyn.app.gethub.feature.func.user.data.repository
 import com.fwhyn.app.gethub.feature.func.user.data.model.GetGitHubUserProfileRepoParam
 import com.fwhyn.app.gethub.feature.func.user.data.model.GitHubUserProfileData
 import com.fwhyn.app.gethub.feature.func.user.data.remote.GitHubUserProfileRemoteDataSource
+import com.fwhyn.lib.baze.common.model.Exzeption
+import com.fwhyn.lib.baze.common.model.Status
 import javax.inject.Inject
 
 class GetGitHubUserProfileRepositoryMain @Inject constructor(
@@ -15,9 +17,16 @@ class GetGitHubUserProfileRepositoryMain @Inject constructor(
         val response = gitHubUserProfileRemoteDataSource.getUserProfile(
             username = param.username,
         )
-        val data = response.body() ?: throw Exception("Failed to fetch user profile data")
 
-        result(data)
+        if (response.isSuccessful) {
+            val data = response.body() ?: throw Exzeption(Status.NotFound)
+            result(data)
+        } else {
+            throw Exzeption(
+                status = Status.ReadError,
+                throwable = Throwable("Error fetching user profile: ${response.errorBody()?.string()}")
+            )
+        }
     }
 
 }

@@ -4,5 +4,6 @@ enum class ProfileMessageCode {
     UnexpectedError,
     TimeOutError,
     NoInternetConnection,
-    UserNotFound,
+    DataNotFound,
+    ReadDataError,
 }

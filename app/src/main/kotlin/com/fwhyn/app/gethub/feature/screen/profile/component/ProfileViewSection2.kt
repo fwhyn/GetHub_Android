@@ -26,7 +26,7 @@ fun ProfileViewSection2(
         modifier = modifier
     ) {
         Text(
-            text = stringResource(R.string.events),
+            text = stringResource(R.string.events) + " (${param.eventsViewParam.events.size})",
             fontWeight = FontWeight.Bold
         )
 

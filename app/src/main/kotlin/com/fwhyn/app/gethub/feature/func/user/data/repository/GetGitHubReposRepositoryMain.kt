@@ -3,6 +3,8 @@ package com.fwhyn.app.gethub.feature.func.user.data.repository
 import com.fwhyn.app.gethub.feature.func.user.data.model.GetGitHubReposRepoParam
 import com.fwhyn.app.gethub.feature.func.user.data.model.GitHubRepoData
 import com.fwhyn.app.gethub.feature.func.user.data.remote.GitHubReposRemoteDataSource
+import com.fwhyn.lib.baze.common.model.Exzeption
+import com.fwhyn.lib.baze.common.model.Status
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -24,13 +26,18 @@ class GetGitHubReposRepositoryMain @Inject constructor(
         )
 
         if (response.isSuccessful) {
-            val data = response.body() ?: throw Exception("No data found")
+            val data = response.body()
+            if (data == null || data.isEmpty()) throw Exzeption(Status.NotFound)
+
             loadedData.addAll(data)
             pageToLoad++
 
             result(loadedData.toList())
         } else {
-            throw Exception("Error fetching repositories: ${response.errorBody()?.string()}")
+            throw throw Exzeption(
+                status = Status.ReadError,
+                throwable = Throwable("Error fetching repositories: ${response.errorBody()?.string()}")
+            )
         }
     }
 

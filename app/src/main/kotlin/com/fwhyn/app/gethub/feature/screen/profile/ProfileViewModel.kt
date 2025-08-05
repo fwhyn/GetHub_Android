@@ -16,6 +16,8 @@ import com.fwhyn.app.gethub.feature.screen.profile.model.GitHubUserProfileUi
 import com.fwhyn.app.gethub.feature.screen.profile.model.ProfileEvent
 import com.fwhyn.app.gethub.feature.screen.profile.model.ProfileProperties
 import com.fwhyn.app.gethub.feature.screen.profile.model.ProfileState
+import com.fwhyn.lib.baze.common.model.Exzeption
+import com.fwhyn.lib.baze.common.model.Status
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -57,7 +59,7 @@ class ProfileViewModel @Inject constructor(
     // ----------------------------------------------------------------
     override fun onUpdateUserName(data: String) {
         if (data.isBlank()) {
-            event.emitEvent(scope, ProfileEvent.Notify(ProfileMessageCode.UserNotFound))
+            event.emitEvent(scope, ProfileEvent.Notify(ProfileMessageCode.DataNotFound))
             return
         }
 
@@ -158,6 +160,11 @@ class ProfileViewModel @Inject constructor(
     private suspend fun handleError(error: Throwable) {
         val errorCode = when (error) {
             is SocketTimeoutException -> ProfileMessageCode.TimeOutError
+            is Exzeption -> when (error.status) {
+                Status.NotFound -> ProfileMessageCode.DataNotFound
+                Status.ReadError -> ProfileMessageCode.ReadDataError
+                else -> ProfileMessageCode.UnexpectedError
+            }
             else -> ProfileMessageCode.UnexpectedError
         }
 

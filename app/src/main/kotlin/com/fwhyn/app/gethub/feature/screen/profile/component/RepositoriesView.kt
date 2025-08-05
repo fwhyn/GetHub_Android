@@ -39,6 +39,8 @@ fun RepositoriesView(
     modifier: Modifier = Modifier,
     param: RepositoriesViewParam,
 ) {
+    // TODO when list empty
+    // TODO when get list error
     Column(
         modifier = modifier,
         verticalArrangement = Arrangement.Center,

@@ -35,8 +35,8 @@ fun EventsView(
     Column(
         modifier = modifier
     ) {
-
-
+        // TODO when list empty
+        // TODO when get list error
         // Custom scroll listener
         val nestedScrollConnection = remember {
             object : NestedScrollConnection {
