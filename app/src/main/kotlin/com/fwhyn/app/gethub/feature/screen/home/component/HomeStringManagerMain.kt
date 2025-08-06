@@ -13,6 +13,9 @@ class HomeStringManagerMain(
         val id: Int = when (input) {
             HomeMessageCode.UnexpectedError -> R.string.unexpected_error
             HomeMessageCode.TimeOutError -> R.string.time_out_error
+            HomeMessageCode.NoInternetConnection -> R.string.no_internet_connection
+            HomeMessageCode.DataNotFound -> R.string.data_not_found
+            HomeMessageCode.ReadDataError -> R.string.read_data_error
         }
 
         return context.getString(id)
