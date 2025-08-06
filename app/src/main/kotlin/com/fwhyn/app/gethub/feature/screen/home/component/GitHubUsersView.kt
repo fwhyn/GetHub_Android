@@ -27,9 +27,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.fwhyn.app.gethub.common.ui.component.DataNotFoundView
-import com.fwhyn.app.gethub.common.ui.component.DataNotFoundViewParam
 import com.fwhyn.app.gethub.common.ui.component.MySpacer
+import com.fwhyn.app.gethub.common.ui.component.RefreshAndTextView
+import com.fwhyn.app.gethub.common.ui.component.getStateOfRefreshAndTextViewParam
 import com.fwhyn.app.gethub.common.ui.config.MyTheme
 import com.fwhyn.app.gethub.feature.screen.home.model.GitHubUserUi
 import com.fwhyn.app.gethub.feature.screen.home.model.gitHubUsersUiFake
@@ -45,9 +45,9 @@ fun GitHubUsersView(
         modifier = modifier
     ) {
         if (param.gitHubUsers.isEmpty()) {
-            DataNotFoundView(
+            RefreshAndTextView(
                 modifier = Modifier.fillMaxSize(),
-                param = DataNotFoundViewParam(onClicked = param.onLoadNext)
+                param = getStateOfRefreshAndTextViewParam(onClicked = param.onLoadNext)
             )
 
             return

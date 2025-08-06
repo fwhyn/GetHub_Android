@@ -25,15 +25,9 @@ fun TopBar(
         modifier = modifier.background(MaterialTheme.colorScheme.primary),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        BackButton(
-            modifier = Modifier,
-            param = BackBtnParam(
-                onClick = topBarParam.onBack
-            )
-        )
-
+        MySpacer(8.dp)
         Text(
-            modifier = Modifier.weight(1f),
+            modifier = Modifier,
             text = topBarParam.title,
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
@@ -45,15 +39,12 @@ fun TopBar(
 
 data class TopBarParam(
     val title: String,
-    val onBack: () -> Unit,
 ) {
     companion object {
         fun default(
             title: String = "No Title",
-            onBack: () -> Unit = {}
         ) = TopBarParam(
             title = title,
-            onBack = onBack
         )
     }
 }
@@ -61,11 +52,9 @@ data class TopBarParam(
 @Composable
 fun getStateOfTopBarParam(
     title: String,
-    onBack: () -> Unit,
 ): TopBarParam {
     return TopBarParam(
         title = title,
-        onBack = onBack
     )
 }
 
@@ -77,10 +66,7 @@ fun TopBarPreview() {
             modifier = Modifier
                 .fillMaxWidth()
                 .height(50.dp),
-            topBarParam = TopBarParam.default(
-                title = "Home",
-                onBack = {}
-            )
+            topBarParam = getStateOfTopBarParam(title = "Home")
         )
     }
 }

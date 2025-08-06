@@ -6,18 +6,22 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.fwhyn.app.gethub.R
 import com.fwhyn.app.gethub.common.ui.config.MyTheme
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 @Composable
-fun DataNotFoundView(
+fun RefreshAndTextView(
     modifier: Modifier = Modifier,
-    param: DataNotFoundViewParam
+    param: RefreshAndTextViewParam,
 ) {
     Column(
         modifier = modifier,
@@ -31,22 +35,36 @@ fun DataNotFoundView(
         )
 
         MySpacer(8.dp)
-        Text(text = stringResource(R.string.data_not_found))
+        Text(text = param.errorMessage)
     }
 }
 
-data class DataNotFoundViewParam(
-    val onClicked: () -> Unit
+data class RefreshAndTextViewParam(
+    val errorMessage: String,
+    val onClicked: () -> Unit,
 )
 
 @Composable
+fun getStateOfRefreshAndTextViewParam(
+    errorFlow: StateFlow<String> = MutableStateFlow(stringResource(R.string.data_not_found)),
+    onClicked: () -> Unit,
+): RefreshAndTextViewParam {
+    val error: String by errorFlow.collectAsStateWithLifecycle()
+
+    return RefreshAndTextViewParam(
+        errorMessage = error,
+        onClicked = onClicked,
+    )
+}
+
+@Composable
 @Preview
-fun DataNotFoundPreview() {
+fun RefreshAndTextPreview() {
     MyTheme {
-        DataNotFoundView(
+        RefreshAndTextView(
             modifier = Modifier.fillMaxSize(),
-            param = DataNotFoundViewParam(
-                onClicked = {}
+            param = getStateOfRefreshAndTextViewParam(
+                onClicked = {},
             )
         )
     }

@@ -32,11 +32,20 @@ data class RefreshButtonParam(
 )
 
 @Composable
+fun getStateOfRefreshButtonParam(
+    onClicked: () -> Unit,
+): RefreshButtonParam {
+    return RefreshButtonParam(
+        onClicked = onClicked
+    )
+}
+
+@Composable
 @Preview
 fun RefreshButtonPreview() {
     MyTheme {
         RefreshButton(
-            param = RefreshButtonParam(
+            param = getStateOfRefreshButtonParam(
                 onClicked = {}
             )
         )

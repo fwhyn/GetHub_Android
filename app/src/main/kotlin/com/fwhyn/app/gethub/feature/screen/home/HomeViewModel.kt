@@ -10,6 +10,8 @@ import com.fwhyn.app.gethub.feature.screen.home.model.GitHubUserUi
 import com.fwhyn.app.gethub.feature.screen.home.model.HomeEvent
 import com.fwhyn.app.gethub.feature.screen.home.model.HomeProperties
 import com.fwhyn.app.gethub.feature.screen.home.model.HomeState
+import com.fwhyn.lib.baze.common.model.Exzeption
+import com.fwhyn.lib.baze.common.model.Status
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -33,7 +35,7 @@ class HomeViewModel @Inject constructor(
     override val properties: HomeProperties = HomeProperties(
         event = event,
         state = state,
-        gitHubUsers = gitHubUsers
+        gitHubUsers = gitHubUsers,
     )
 
     // ----------------------------------------------------------------
@@ -70,6 +72,11 @@ class HomeViewModel @Inject constructor(
     private suspend fun handleError(error: Throwable) {
         val errorCode = when (error) {
             is SocketTimeoutException -> HomeMessageCode.TimeOutError
+            is Exzeption -> when (error.status) {
+                Status.NotFound -> HomeMessageCode.DataNotFound
+                Status.ReadError -> HomeMessageCode.ReadDataError
+                else -> HomeMessageCode.UnexpectedError
+            }
             else -> HomeMessageCode.UnexpectedError
         }
 

@@ -92,12 +92,7 @@ private fun HomeScreen(
     }
 
     // ----------------------------------------------------------------
-    val topBarParam = getStateOfTopBarParam(
-        title = stringResource(R.string.home_title),
-        onBack = {
-            activityState.navigation.popBackStack()
-        }
-    )
+    val topBarParam = getStateOfTopBarParam(title = stringResource(R.string.home_title))
 
     val dataStreamViewParam = getStateOfGitHubUsersViewParam(
         gitHubUsersFlow = vm.properties.gitHubUsers,
@@ -154,10 +149,7 @@ fun PortraitHomeView(
     ) {
         TopBar(
             modifier = Modifier.height(TopBarHeight),
-            topBarParam = TopBarParam.default(
-                title = stringResource(R.string.home_title),
-                onBack = {}
-            )
+            topBarParam = TopBarParam(title = stringResource(R.string.home_title))
         )
 
         Box(

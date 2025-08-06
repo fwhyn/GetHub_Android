@@ -108,12 +108,7 @@ private fun ProfileScreen(
     }
 
     // ----------------------------------------------------------------
-    val topBarParam = getStateOfTopBarParam(
-        title = stringResource(R.string.profile_title),
-        onBack = {
-            activityState.navigation.popBackStack()
-        }
-    )
+    val topBarParam = getStateOfTopBarParam(title = stringResource(R.string.profile_title))
 
     val userProfile by vm.properties.gitHubUserProfile.collectAsStateWithLifecycle()
     val reposViewParam = getStateOfRepositoriesViewParam(
@@ -183,10 +178,7 @@ fun PortraitProfileView(
     ) {
         TopBar(
             modifier = Modifier.height(TopBarHeight),
-            topBarParam = TopBarParam.default(
-                title = stringResource(R.string.profile_title),
-                onBack = {}
-            )
+            topBarParam = TopBarParam.default(title = stringResource(R.string.profile_title))
         )
 
         Column(
@@ -218,10 +210,7 @@ fun LandscapeProfileView(
     ) {
         TopBar(
             modifier = Modifier.height(TopBarHeight),
-            topBarParam = TopBarParam.default(
-                title = stringResource(R.string.profile_title),
-                onBack = {}
-            )
+            topBarParam = TopBarParam.default(title = stringResource(R.string.profile_title))
         )
 
         Row(

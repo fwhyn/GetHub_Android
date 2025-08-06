@@ -8,9 +8,15 @@ plugins {
 
 android {
     // TODO correct system design doc
-    // add ui test
-    // add integrated test
-    // add unit test
+    // TODO add ui test
+    // TODO add integrated test
+    // TODO add unit test
+    // TODO add proguard rules
+    // TODO add release notes
+    // TODO check warnings
+    // TODO add app icon
+    // TODO add app description
+
     namespace = "com.fwhyn.app.gethub"
     compileSdk = 36
 
