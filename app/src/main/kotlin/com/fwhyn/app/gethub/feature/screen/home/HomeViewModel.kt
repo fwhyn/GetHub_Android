@@ -88,7 +88,8 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun MutableStateFlow<List<GitHubUserUi>>.filterByQuery(query: String): List<GitHubUserUi> {
-        return this.value.filter { it.login.contains(query, ignoreCase = true) }
+        val result = this.value.filter { it.login.contains(query, ignoreCase = true) }
+        return result
     }
 
     private suspend fun handleError(error: Throwable) {

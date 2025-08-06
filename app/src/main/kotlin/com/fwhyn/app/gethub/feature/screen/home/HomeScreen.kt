@@ -105,7 +105,7 @@ private fun HomeScreen(
     )
 
     val searchBarParam = getStateOfMySearchBarParam(
-        querySuggestions = vm.properties.gitHubUsers,
+        querySuggestions = vm.properties.querySuggestions,
         queryFlow = vm.properties.query,
         onQueryChange = vm::onQueryChange,
         onSearch = vm::onSearch,
