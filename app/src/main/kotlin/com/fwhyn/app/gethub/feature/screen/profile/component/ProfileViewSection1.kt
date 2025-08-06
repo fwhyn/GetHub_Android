@@ -66,7 +66,7 @@ fun ProfileViewSection1(
 
                     Text(
                         modifier = Modifier.padding(top = 4.dp),
-                        text = param.userProfile.name,
+                        text = param.userProfile.name ?: stringResource(R.string.dash),
                     )
                 }
             }
