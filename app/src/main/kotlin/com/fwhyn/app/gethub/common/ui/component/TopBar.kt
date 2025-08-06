@@ -22,7 +22,9 @@ fun TopBar(
     topBarParam: TopBarParam
 ) {
     Row(
-        modifier = modifier.background(MaterialTheme.colorScheme.primary),
+        modifier = modifier
+            .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.primary),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         MySpacer(8.dp)
