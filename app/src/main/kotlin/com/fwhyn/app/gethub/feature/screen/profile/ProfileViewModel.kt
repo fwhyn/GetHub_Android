@@ -67,6 +67,8 @@ class ProfileViewModel @Inject constructor(
     }
 
     override fun onLoadNextRepos() {
+        if (isAllReposLoaded()) return
+
         getGitHubRepos(
             onStart = { state.value = ProfileState.Loading },
             onFinish = { state.value = ProfileState.Idle }
@@ -155,6 +157,10 @@ class ProfileViewModel @Inject constructor(
             },
             onFinish = onFinish,
         )
+    }
+
+    private fun isAllReposLoaded(): Boolean {
+        return gitHubUserProfile.value.publicRepos == gitHubRepos.value.size
     }
 
     private suspend fun handleError(error: Throwable) {
