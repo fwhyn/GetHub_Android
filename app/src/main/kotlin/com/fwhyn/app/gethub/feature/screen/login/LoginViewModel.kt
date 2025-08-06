@@ -7,7 +7,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-//    private val messageHandler: MessageHandler<Status>,
 //    private val getTokenUseCase: GetAuthTokenUseCase,
 ) : LoginVmInterface() {
 

@@ -149,6 +149,8 @@ fun LoginView(
             modifier = commonFieldModifier,
         )
 
+        // TODO add link to GitHub token creation page
+        // https://github.com/settings/personal-access-tokens/new
         MySpacer(20.dp)
         PasswordField(
             modifier = commonFieldModifier,

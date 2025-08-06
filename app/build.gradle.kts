@@ -82,6 +82,7 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.fwhyn.lib.baze)
     implementation(libs.org.apache.poi.ooxml)
+    implementation(libs.androidx.security.crypto.ktx)
 
     //// Retrofit
     implementation(libs.bundles.retrofit2)

@@ -23,6 +23,7 @@ runner = "1.6.2"
 # Main Dependency --------------------------------
 androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version = "1.2.0-beta02" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidxCoreKtx" }
+androidx-security-crypto-ktx = { module = "androidx.security:security-crypto-ktx", version = "1.1.0" }
 fwhyn-lib-baze = { module = "io.github.fwhyn.lib:baze", version = "1.7.4" }
 org-apache-poi-ooxml = { module = "org.apache.poi:poi-ooxml", version = "5.2.3" }
 
