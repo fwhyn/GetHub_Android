@@ -40,4 +40,8 @@
     <string name="search_by_account">Search by account.</string>
     <string name="clear_search">Clear Search</string>
     <string name="suggestions">Suggestions</string>
+    <string name="password_icon">Password Icon</string>
+    <string name="password_field">Password Field</string>
+    <string name="fine_grained_token">Fine-grained token</string>
+    <string name="enter_the_token">Enter the token.</string>
 </resources>

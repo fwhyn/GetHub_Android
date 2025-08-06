@@ -2,8 +2,9 @@ package com.fwhyn.app.gethub.feature.screen
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
-import com.fwhyn.app.gethub.feature.screen.home.HOME_ROUTE
 import com.fwhyn.app.gethub.feature.screen.home.addHomeScreen
+import com.fwhyn.app.gethub.feature.screen.login.LOGIN_ROUTE
+import com.fwhyn.app.gethub.feature.screen.login.addLoginScreen
 import com.fwhyn.app.gethub.feature.screen.profile.addProfileScreen
 import com.fwhyn.lib.baze.compose.helper.ActivityState
 
@@ -13,8 +14,11 @@ fun NavigationHost(
 ) {
     NavHost(
         navController = activityState.navigation,
-        startDestination = HOME_ROUTE
+        startDestination = LOGIN_ROUTE
     ) {
+        addLoginScreen(
+            activityState = activityState,
+        )
         addHomeScreen(
             activityState = activityState,
         )
