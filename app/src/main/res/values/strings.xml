@@ -36,4 +36,8 @@
     <string name="followers_and_following">Followers and Following</string>
     <string name="stargazers">Stargazers</string>
     <string name="refresh_button">Refresh Button</string>
+    <string name="search_button">Search Button</string>
+    <string name="search_by_account">Search by account.</string>
+    <string name="clear_search">Clear Search</string>
+    <string name="suggestions">Suggestions</string>
 </resources>

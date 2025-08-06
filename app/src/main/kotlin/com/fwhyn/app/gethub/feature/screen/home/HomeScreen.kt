@@ -1,9 +1,9 @@
 package com.fwhyn.app.gethub.feature.screen.home
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -25,9 +25,12 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.fwhyn.app.gethub.R
+import com.fwhyn.app.gethub.common.ui.component.MySearchBar
+import com.fwhyn.app.gethub.common.ui.component.MySearchBarParam
 import com.fwhyn.app.gethub.common.ui.component.MySpacer
 import com.fwhyn.app.gethub.common.ui.component.TopBar
 import com.fwhyn.app.gethub.common.ui.component.TopBarParam
+import com.fwhyn.app.gethub.common.ui.component.getStateOfMySearchBarParam
 import com.fwhyn.app.gethub.common.ui.component.getStateOfTopBarParam
 import com.fwhyn.app.gethub.common.ui.config.MyTheme
 import com.fwhyn.app.gethub.common.ui.config.TopBarHeight
@@ -94,16 +97,25 @@ private fun HomeScreen(
     // ----------------------------------------------------------------
     val topBarParam = getStateOfTopBarParam(title = stringResource(R.string.home_title))
 
-    val dataStreamViewParam = getStateOfGitHubUsersViewParam(
+    val gitHubUsersViewParam = getStateOfGitHubUsersViewParam(
         gitHubUsersFlow = vm.properties.gitHubUsers,
         onItemClicked = { vm.onGoToProfile(it.login) },
         onLoadPrev = {}, // do nothing
         onLoadNext = vm::onLoadNext
     )
 
+    val searchBarParam = getStateOfMySearchBarParam(
+        querySuggestions = vm.properties.gitHubUsers,
+        queryFlow = vm.properties.query,
+        onQueryChange = vm::onQueryChange,
+        onSearch = vm::onSearch,
+        onClearQuery = vm::onClearQuery,
+    )
+
     val param = HomeViewParam(
         topBarParam = topBarParam,
-        gitHubUsersViewParam = dataStreamViewParam,
+        gitHubUsersViewParam = gitHubUsersViewParam,
+        searchBarParam = searchBarParam,
     )
 
     HomeView(
@@ -135,8 +147,6 @@ fun HomeView(
             )
         }
     }
-
-
 }
 
 @Composable
@@ -152,36 +162,29 @@ fun PortraitHomeView(
             topBarParam = TopBarParam(title = stringResource(R.string.home_title))
         )
 
-        Box(
-            modifier = modifier.weight(1f)
-        ) {
-//        LogoutButton(
-//            modifier = Modifier.align(Alignment.TopEnd),
-//            onClick = onLogout,
-//        )
+        MySearchBar(
+            modifier = Modifier.fillMaxWidth(),
+            param = param.searchBarParam
+        )
 
+        Column(
+            modifier = Modifier.fillMaxSize(),
+        ) {
+            Text(
+                text = stringResource(R.string.github_users) + " (${param.gitHubUsersViewParam.gitHubUsers.size})",
+            )
+
+            MySpacer(4.dp)
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(8.dp),
+                    .background(color = MaterialTheme.colorScheme.tertiary, shape = RoundedCornerShape(8.dp))
+                    .clip(RoundedCornerShape(8.dp)),
             ) {
-
-                Text(
-                    text = stringResource(R.string.github_users) + " (${param.gitHubUsersViewParam.gitHubUsers.size})",
+                GitHubUsersView(
+                    modifier = Modifier.padding(8.dp),
+                    param = param.gitHubUsersViewParam
                 )
-
-                MySpacer(4.dp)
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(color = MaterialTheme.colorScheme.tertiary, shape = RoundedCornerShape(8.dp))
-                        .clip(RoundedCornerShape(8.dp)),
-                ) {
-                    GitHubUsersView(
-                        modifier = Modifier.padding(8.dp),
-                        param = param.gitHubUsersViewParam
-                    )
-                }
             }
         }
     }
@@ -190,6 +193,7 @@ fun PortraitHomeView(
 data class HomeViewParam(
     val topBarParam: TopBarParam,
     val gitHubUsersViewParam: GitHubUsersViewParam,
+    val searchBarParam: MySearchBarParam,
 )
 
 @DevicePreviews

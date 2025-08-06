@@ -30,12 +30,16 @@ class HomeViewModel @Inject constructor(
     private val event: MutableSharedFlow<HomeEvent> = MutableSharedFlow()
     private val state: MutableStateFlow<HomeState> = MutableStateFlow(HomeState.Idle)
     private val gitHubUsers: MutableStateFlow<List<GitHubUserUi>> = MutableStateFlow(emptyList())
+    private val querySuggestions: MutableStateFlow<List<GitHubUserUi>> = MutableStateFlow(emptyList())
+    private val query: MutableStateFlow<String> = MutableStateFlow("")
 
     // ----------------------------------------------------------------
     override val properties: HomeProperties = HomeProperties(
         event = event,
         state = state,
         gitHubUsers = gitHubUsers,
+        querySuggestions = querySuggestions,
+        query = query,
     )
 
     // ----------------------------------------------------------------
@@ -50,6 +54,20 @@ class HomeViewModel @Inject constructor(
 
     override fun onLoadNext() {
         getGitHubUsers()
+    }
+
+    override fun onQueryChange(query: String) {
+        this.query.value = query
+        querySuggestions.value = gitHubUsers.filterByQuery(query)
+    }
+
+    override fun onSearch(query: String) {
+        event.emitEvent(scope, HomeEvent.GoToProfile(query))
+    }
+
+    override fun onClearQuery() {
+        query.value = ""
+        querySuggestions.value = emptyList()
     }
 
     // ----------------------------------------------------------------
@@ -67,6 +85,10 @@ class HomeViewModel @Inject constructor(
             },
             onFinish = { state.value = HomeState.Idle },
         )
+    }
+
+    private fun MutableStateFlow<List<GitHubUserUi>>.filterByQuery(query: String): List<GitHubUserUi> {
+        return this.value.filter { it.login.contains(query, ignoreCase = true) }
     }
 
     private suspend fun handleError(error: Throwable) {
