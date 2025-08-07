@@ -7,8 +7,6 @@ abstract class LoginVmInterface : ViewModel() {
 
     abstract val properties: LoginProperties
 
-    open fun onEmailChanged(value: String) {}
     open fun onPasswordChanged(value: String) {}
-    open fun onRememberMeChecked() {}
     open fun onLogin() {}
 }

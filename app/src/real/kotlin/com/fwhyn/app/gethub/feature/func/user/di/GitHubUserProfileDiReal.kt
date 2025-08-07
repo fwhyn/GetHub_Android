@@ -1,7 +1,7 @@
 package com.fwhyn.app.gethub.feature.func.user.di
 
+import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.di.RetrofitGitHubDiReal.GitHubApi
 import com.fwhyn.app.gethub.feature.func.user.data.remote.GitHubUserProfileRemoteDataSource
-import com.fwhyn.app.gethub.feature.func.user.di.RetrofitGitHubDiReal.GitHubApi
 import com.fwhyn.lib.baze.retrofit.api.RetrofitApiService
 import dagger.Module
 import dagger.Provides

@@ -1,89 +1,96 @@
 package com.fwhyn.app.gethub.feature.screen.login
 
+import androidx.lifecycle.viewModelScope
+import com.fwhyn.app.gethub.feature.func.auth.bytoken.domain.model.LoginByTokenParam
+import com.fwhyn.app.gethub.feature.func.auth.bytoken.domain.usecase.LoginByTokenUseCase
+import com.fwhyn.app.gethub.feature.screen.login.component.LoginMessageCode
+import com.fwhyn.app.gethub.feature.screen.login.model.LoginEvent
 import com.fwhyn.app.gethub.feature.screen.login.model.LoginProperties
-import com.fwhyn.app.gethub.feature.screen.login.model.loginPropertiesFake
+import com.fwhyn.app.gethub.feature.screen.login.model.LoginState
+import com.fwhyn.lib.baze.common.model.Exzeption
+import com.fwhyn.lib.baze.common.model.Status
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import java.net.SocketTimeoutException
+import java.net.UnknownHostException
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-//    private val getTokenUseCase: GetAuthTokenUseCase,
+    private val loginByTokenUseCase: LoginByTokenUseCase,
 ) : LoginVmInterface() {
 
-    companion object {
-        const val MAX_LOGIN_TRY = 3
+    private val scope: CoroutineScope
+        get() = viewModelScope
+
+    private val event: MutableSharedFlow<LoginEvent> = MutableSharedFlow()
+    private val state: MutableStateFlow<LoginState> = MutableStateFlow(LoginState.Idle)
+    private val password: MutableStateFlow<String> = MutableStateFlow("")
+    private val isValid: MutableStateFlow<Boolean> = MutableStateFlow(false)
+
+    override val properties: LoginProperties = LoginProperties(
+        event = event,
+        state = state,
+        password = password,
+        isValid = isValid,
+    )
+
+    // ----------------------------------------------------------------
+    init {
+        loginByToken()
     }
 
-    override val properties: LoginProperties = loginPropertiesFake
 
-//    init {
-//        init()
-//    }
-//
-//    private fun init() {
-//        getToken(GetAuthTokenParam.Local)
-//    }
-//
-//    override fun onEmailValueChange(value: String) {
-//        loginUiData.email = value
-//    }
-//
-//    override fun onPasswordValueChange(value: String) {
-//        loginUiData.pwd = value
-//    }
-//
-//    override fun onCheckRememberMe() {
-//        loginUiData.updateRemember()
-//    }
-//
-//    @SuppressLint("NewApi")
-//    override fun onLogin(getAuthTokenParam: GetAuthTokenParam) {
-//        loginUiState.tryCount = getTryCount(loginUiState.tryCount)
-//
-//        getToken(getAuthTokenParam)
-//    }
-//
+    override fun onPasswordChanged(value: String) {
+        password.value = value
+        isValid.value = value.isNotBlank()
+    }
+
+    override fun onLogin() {
+        val param = LoginByTokenParam(token = password.value)
+        loginByToken(param)
+    }
+
 //    override fun onCalledFromBackStack() {
 //        if (loginUiState.loginResult is Rezult.Success) {
 //            loginUiState.state = LoginProperties.State.LoggedIn()
 //        }
 //    }
-//
-//    private fun getToken(getAuthTokenParam: GetAuthTokenParam) {
-//        getTokenUseCase
-//            .setResultNotifier {
-//                when (it) {
-//                    is Rezult.Failure -> {
-//                        if (loginUiState.tryCount > 0) {
-//                            val exception = it.err as? Exzeption
-//                            val status = exception?.status ?: Status.UnknownError
-//                            activityRetainedState.showNotification(messageHandler.getMessage(status))
-//                        }
-//                    }
-//
-//                    is Rezult.Success -> {
-//                        if (it.dat != AuthTokenModel.None) {
-//                            loginUiState.state = LoginProperties.State.LoggedIn()
-//                        }
-//                    }
-//                }
-//
-//                loginUiState.loginResult = it
-//            }
-//            .setLifeCycleNotifier {
-//                when (it) {
-//                    BaseUseCase.LifeCycle.OnStart -> activityRetainedState.showLoading()
-//                    BaseUseCase.LifeCycle.OnFinish -> activityRetainedState.dismissLoading()
-//                }
-//            }
-//            .execute(getAuthTokenParam, viewModelScope)
-//    }
-//
-//    private fun getTryCount(prevValue: Int): Int {
-//        return if (prevValue == MAX_LOGIN_TRY) {
-//            prevValue
-//        } else {
-//            prevValue + 1
-//        }
-//    }
+
+    // ----------------------------------------------------------------
+    private fun loginByToken(param: LoginByTokenParam = LoginByTokenParam.default()) {
+        loginByTokenUseCase.invoke(
+            scope = scope,
+            onStart = { state.value = LoginState.Loading },
+            onFetchParam = { param },
+            onOmitResult = {
+                it.onSuccess {
+                    event.emit(LoginEvent.LoggedIn)
+                }.onFailure {
+                    if (properties.isFirstLogin) {
+                        properties.isFirstLogin = false
+                    } else {
+                        handleError(it)
+                    }
+                }
+            },
+            onFinish = { state.value = LoginState.Idle },
+        )
+    }
+
+    private suspend fun handleError(error: Throwable) {
+        val code = when (error) {
+            is Exzeption -> when (error.status) {
+                is Status.Unauthorized -> LoginMessageCode.Unauthorized
+                else -> LoginMessageCode.LoginError
+            }
+
+            is SocketTimeoutException -> LoginMessageCode.TimeOutError
+            is UnknownHostException -> LoginMessageCode.NetworkError
+            else -> LoginMessageCode.LoginError
+        }
+        event.emit(LoginEvent.Notify(code))
+    }
 }

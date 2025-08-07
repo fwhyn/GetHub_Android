@@ -9,26 +9,25 @@ data class LoginProperties(
     val event: SharedFlow<LoginEvent>,
     val state: StateFlow<LoginState>,
     val password: StateFlow<String>,
-    val isRememberMe: StateFlow<Boolean>,
+    val isValid: StateFlow<Boolean>,
 ) {
-
     companion object {
         fun default(
             event: SharedFlow<LoginEvent> = MutableSharedFlow(),
             state: StateFlow<LoginState> = MutableStateFlow(LoginState.Idle),
             password: StateFlow<String> = MutableStateFlow(""),
-            isRememberMe: StateFlow<Boolean> = MutableStateFlow(false),
+            isValid: StateFlow<Boolean> = MutableStateFlow(false),
         ): LoginProperties {
             return LoginProperties(
                 event = event,
                 state = state,
                 password = password,
-                isRememberMe = isRememberMe,
+                isValid = isValid
             )
         }
     }
 
-    var tryCount: Int = 0
+    var isFirstLogin: Boolean = true
 }
 
 val loginPropertiesFake = LoginProperties.default()

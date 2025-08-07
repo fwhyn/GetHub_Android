@@ -1,6 +1,11 @@
 package com.fwhyn.app.gethub.feature.screen.login.component
 
 enum class LoginMessageCode {
+    UnexpectedError,
     LoginError,
-    LoginSuccess,
+    Unauthorized,
+    TimeOutError,
+    NetworkError
 }
+
+// TODO add network error to all screens

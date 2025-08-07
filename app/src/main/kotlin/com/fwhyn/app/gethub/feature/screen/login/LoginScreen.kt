@@ -26,8 +26,6 @@ import com.fwhyn.app.gethub.R
 import com.fwhyn.app.gethub.common.ui.component.MySpacer
 import com.fwhyn.app.gethub.common.ui.config.MyTheme
 import com.fwhyn.app.gethub.feature.screen.home.navigateToHomeScreen
-import com.fwhyn.app.gethub.feature.screen.login.component.LabeledCheckbox
-import com.fwhyn.app.gethub.feature.screen.login.component.LabeledCheckboxParam
 import com.fwhyn.app.gethub.feature.screen.login.component.LoginButton
 import com.fwhyn.app.gethub.feature.screen.login.component.LoginButtonParam
 import com.fwhyn.app.gethub.feature.screen.login.component.LoginStringManager
@@ -35,7 +33,6 @@ import com.fwhyn.app.gethub.feature.screen.login.component.LoginStringManagerMai
 import com.fwhyn.app.gethub.feature.screen.login.component.LoginTitle
 import com.fwhyn.app.gethub.feature.screen.login.component.PasswordField
 import com.fwhyn.app.gethub.feature.screen.login.component.PasswordFieldParam
-import com.fwhyn.app.gethub.feature.screen.login.component.getStateOfLabeledCheckbox
 import com.fwhyn.app.gethub.feature.screen.login.component.getStateOfLoginButton
 import com.fwhyn.app.gethub.feature.screen.login.component.getStateOfPasswordField
 import com.fwhyn.app.gethub.feature.screen.login.model.LoginEvent
@@ -78,11 +75,11 @@ fun LoginScreen(
     LaunchedEffect(Unit) {
         vm.properties.event.collect { event ->
             when (event) {
-                is LoginEvent.OnNotify -> {
+                is LoginEvent.Notify -> {
                     activityState.notification.showSnackbar(stringManager.getString(event.code))
                 }
 
-                LoginEvent.OnLoggedIn -> {
+                LoginEvent.LoggedIn -> {
                     // remove Login Screen from back stack
                     val navOptions: NavOptions = navOptions { removeFromBackStack(LOGIN_ROUTE) }
                     activityState.navigation.navigateToHomeScreen(navOptions)
@@ -106,12 +103,6 @@ fun LoginScreen(
         placeholder = stringResource(R.string.enter_the_token),
     )
 
-    val labeledCheckboxParam = getStateOfLabeledCheckbox(
-        label = stringResource(R.string.remember_me),
-        onCheckChanged = vm::onRememberMeChecked,
-        isChecked = vm.properties.isRememberMe
-    )
-
     val loginButtonParam = getStateOfLoginButton(
         enabled = vm.properties.isValid,
         onClick = vm::onLogin,
@@ -119,15 +110,13 @@ fun LoginScreen(
 
     val param = LoginScreenParam(
         passwordFieldParam = passwordFieldParam,
-        labeledCheckboxParam = labeledCheckboxParam,
         loginButtonParam = loginButtonParam
     )
 
     LoginView(
         modifier = modifier,
         param = param,
-
-        )
+    )
 }
 
 @Composable
@@ -157,16 +146,6 @@ fun LoginView(
             param = param.passwordFieldParam
         )
 
-        MySpacer(10.dp)
-        Column(
-            horizontalAlignment = Alignment.End,
-            modifier = commonFieldModifier
-        ) {
-            LabeledCheckbox(
-                param = param.labeledCheckboxParam
-            )
-        }
-
         MySpacer(20.dp)
         LoginButton(
             modifier = commonFieldModifier,
@@ -177,7 +156,6 @@ fun LoginView(
 
 data class LoginScreenParam(
     val passwordFieldParam: PasswordFieldParam,
-    val labeledCheckboxParam: LabeledCheckboxParam,
     val loginButtonParam: LoginButtonParam,
 )
 

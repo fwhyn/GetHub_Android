@@ -44,4 +44,6 @@
     <string name="password_field">Password Field</string>
     <string name="fine_grained_token">Fine-grained token</string>
     <string name="enter_the_token">Enter the token.</string>
+    <string name="unauthorized">Unauthorized!</string>
+    <string name="network_error">Network error!</string>
 </resources>
