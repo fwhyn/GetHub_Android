@@ -22,6 +22,8 @@ class LoginViewModel @Inject constructor(
     private val loginByTokenUseCase: LoginByTokenUseCase,
 ) : LoginVmInterface() {
 
+    // TODO add condition when access is limited
+    // TODO add condition when token is expired
     private val scope: CoroutineScope
         get() = viewModelScope
 
@@ -52,12 +54,6 @@ class LoginViewModel @Inject constructor(
         val param = LoginByTokenParam(token = password.value)
         loginByToken(param)
     }
-
-//    override fun onCalledFromBackStack() {
-//        if (loginUiState.loginResult is Rezult.Success) {
-//            loginUiState.state = LoginProperties.State.LoggedIn()
-//        }
-//    }
 
     // ----------------------------------------------------------------
     private fun loginByToken(param: LoginByTokenParam = LoginByTokenParam.default()) {

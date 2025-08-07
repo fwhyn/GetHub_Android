@@ -8,11 +8,13 @@ import com.fwhyn.app.gethub.feature.func.auth.bytoken.domain.helper.toDomain
 import com.fwhyn.app.gethub.feature.func.auth.bytoken.domain.model.AuthTokenDomain
 import com.fwhyn.app.gethub.feature.func.auth.bytoken.domain.model.LoginByTokenParam
 import com.fwhyn.app.gethub.feature.func.auth.bytoken.domain.model.LoginByTokenResult
+import com.fwhyn.lib.baze.common.model.Exzeption
+import com.fwhyn.lib.baze.common.model.Status
 import javax.inject.Inject
 
 class LoginByTokenUseCaseMain @Inject constructor(
-    private val authUserRepository: AuthUserRepository,
     private val authTokenRepository: AuthTokenRepository,
+    private val authUserRepository: AuthUserRepository,
 ) : LoginByTokenUseCase() {
 
     init {
@@ -23,11 +25,28 @@ class LoginByTokenUseCaseMain @Inject constructor(
         param: LoginByTokenParam,
         result: suspend (LoginByTokenResult) -> Unit,
     ) {
-        param.token?.let { authTokenRepository.set(Unit, AuthTokenDomain(value = it).toData()) }
+        param.token?.let { token ->
+            initializeAuthToken(token)
 
-        val data = authUserRepository.get(Unit)
-        val output = LoginByTokenResult(user = data.toDomain())
+            val output = LoginByTokenResult(user = validatedUserDomain)
+            result(output)
+        }
+
+        val authTokenDomain = authTokenRepository.get(Unit).toDomain()
+        val userDomain = authTokenDomain.validatedUser ?: throw Exzeption(Status.NotFound)
+        val output = LoginByTokenResult(user = userDomain)
 
         result(output)
+    }
+
+    private suspend fun initializeAuthToken(token: String) {
+        val unvalidatedTokenData = AuthTokenDomain.default(value = token).toData()
+        authTokenRepository.set(Unit, unvalidatedTokenData)
+    }
+
+    private suspend fun validateAuthToken(token: String): AuthTokenDomain {
+        val validatedUserDomain = authUserRepository.get(Unit).toDomain()
+        val tokenData = AuthTokenDomain(value = token, validatedUser = validatedUserDomain).toData()
+        authTokenRepository.set(Unit, tokenData)
     }
 }

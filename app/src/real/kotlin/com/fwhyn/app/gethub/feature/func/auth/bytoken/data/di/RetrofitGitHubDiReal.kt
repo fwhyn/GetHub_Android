@@ -1,8 +1,7 @@
 package com.fwhyn.app.gethub.feature.func.auth.bytoken.data.di
 
-import com.fwhyn.app.gethub.BuildConfig
+import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.helper.RetrofitProvider
 import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.local.AuthTokenLocalDataSource
-import com.fwhyn.lib.baze.retrofit.api.RetrofitBuilder
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,25 +16,39 @@ import javax.inject.Qualifier
 class RetrofitGitHubDiReal {
 
     @Qualifier
-    annotation class GitHubApi
+    annotation class GitHubUrl
+
+    @Qualifier
+    annotation class GitHubRetrofit
+
+    @Qualifier
+    annotation class GitHubRetrofitWithToken
 
     @Provides
-    @GitHubApi
+    @GitHubUrl
     fun provideBaseUrl(): HttpUrl {
         return "https://api.github.com/".toHttpUrl()
     }
 
     @Provides
-    @GitHubApi
+    @GitHubRetrofit
     fun provideRetrofit(
-        @GitHubApi baseUrl: HttpUrl,
+        @GitHubUrl baseUrl: HttpUrl,
+    ): Retrofit {
+        val builder = RetrofitProvider.getCustomBuilder(baseUrl)
+
+        return builder.build()
+    }
+
+    @Provides
+    @GitHubRetrofitWithToken
+    fun provideRetrofitWithToken(
+        @GitHubUrl baseUrl: HttpUrl,
         authTokenLocalDataSource: AuthTokenLocalDataSource,
     ): Retrofit {
-        val builder = RetrofitBuilder(baseUrl).addBearerAuth { authTokenLocalDataSource.token?.value ?: "" }
-
-        if (BuildConfig.DEBUG) {
-            builder.enableLog()
-        }
+        val builder = RetrofitProvider
+            .getCustomBuilder(baseUrl)
+            .addBearerAuth { authTokenLocalDataSource.token?.value ?: "" }
 
         return builder.build()
     }
