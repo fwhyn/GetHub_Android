@@ -1,7 +1,12 @@
 package com.fwhyn.app.gethub.feature.screen.login.component
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -11,6 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.fwhyn.app.gethub.R
+import com.fwhyn.app.gethub.common.ui.config.Grey50
 import com.fwhyn.app.gethub.common.ui.config.MyTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -29,6 +35,9 @@ fun LoginButton(
         onClick = param.onClick,
         enabled = param.enabled,
         shape = RoundedCornerShape(5.dp),
+        colors = ButtonDefaults.buttonColors(
+            disabledContainerColor = Grey50
+        )
     ) {
         Text(stringResource(R.string.login))
     }
@@ -58,18 +67,24 @@ fun PreviewLoginButton() {
     val isEnabled = MutableStateFlow(true)
 
     MyTheme {
-        LoginButton(
-            param = getStateOfLoginButton(
-                enabled = isEnabled,
-                onClick = {
-                    CoroutineScope(Dispatchers.IO).launch {
-                        isEnabled.value = false
-                        delay(1000)
-                        isEnabled.value = true
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.background),
+        ) {
+            LoginButton(
+                param = getStateOfLoginButton(
+                    enabled = isEnabled,
+                    onClick = {
+                        CoroutineScope(Dispatchers.IO).launch {
+                            isEnabled.value = false
+                            delay(1000)
+                            isEnabled.value = true
+                        }
                     }
-                }
+                )
             )
-        )
+        }
     }
 }
 
