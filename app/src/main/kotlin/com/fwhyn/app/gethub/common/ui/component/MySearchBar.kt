@@ -31,6 +31,7 @@ import com.fwhyn.app.gethub.R
 import com.fwhyn.app.gethub.common.ui.config.Grey90
 import com.fwhyn.app.gethub.common.ui.config.Grey95
 import com.fwhyn.app.gethub.common.ui.config.MyTheme
+import com.fwhyn.app.gethub.common.ui.config.PurpleGrey80
 import com.fwhyn.app.gethub.feature.screen.home.component.GitHubUserView
 import com.fwhyn.app.gethub.feature.screen.home.component.GitHubUserViewParam
 import com.fwhyn.app.gethub.feature.screen.home.model.GitHubUserUi
@@ -83,34 +84,41 @@ fun MySearchBar(
                 },
                 colors = inputFieldColors(
                     focusedTextColor = Grey95,
-                    unfocusedTextColor = Grey90
+                    unfocusedTextColor = Grey90,
                 )
             )
         },
         expanded = expanded,
         onExpandedChange = { expanded = it },
+        colors = SearchBarDefaults.colors(
+            containerColor = PurpleGrey80
+        )
     ) {
-        Text(text = stringResource(R.string.suggestions))
-
-        MySpacer(8.dp)
-        LazyColumn(
+        Column(
             modifier = Modifier.padding(8.dp)
         ) {
-            itemsIndexed(param.querySuggestions) { index, user ->
-                val gitHubUserViewParam = GitHubUserViewParam(
-                    user = user,
-                    onClicked = { param.onSearch(user.login) }
-                )
+            Text(text = stringResource(R.string.suggestions))
 
-                GitHubUserView(
-                    modifier = Modifier.fillMaxWidth(),
-                    param = gitHubUserViewParam,
-                )
+            MySpacer(8.dp)
+            LazyColumn(
+                modifier = Modifier
+            ) {
+                itemsIndexed(param.querySuggestions) { index, user ->
+                    val gitHubUserViewParam = GitHubUserViewParam(
+                        user = user,
+                        onClicked = { param.onSearch(user.login) }
+                    )
 
-                if (index < param.querySuggestions.size - 1) {
-                    // Add a spacer between items
-                    HorizontalDivider()
-                    MySpacer(1.dp)
+                    GitHubUserView(
+                        modifier = Modifier.fillMaxWidth(),
+                        param = gitHubUserViewParam,
+                    )
+
+                    if (index < param.querySuggestions.size - 1) {
+                        // Add a spacer between items
+                        HorizontalDivider()
+                        MySpacer(1.dp)
+                    }
                 }
             }
         }
