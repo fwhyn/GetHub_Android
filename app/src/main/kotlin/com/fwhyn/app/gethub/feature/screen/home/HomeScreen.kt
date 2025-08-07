@@ -1,19 +1,16 @@
 package com.fwhyn.app.gethub.feature.screen.home
 
-import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -157,35 +154,32 @@ fun PortraitHomeView(
     Column(
         modifier = modifier
     ) {
-        TopBar(
-            modifier = Modifier.height(TopBarHeight),
-            topBarParam = TopBarParam(title = stringResource(R.string.home_title))
-        )
+        Box {
+            TopBar(
+                modifier = Modifier.height(TopBarHeight),
+                topBarParam = TopBarParam(title = stringResource(R.string.home_title))
+            )
 
-        MySearchBar(
-            modifier = Modifier.fillMaxWidth(),
-            param = param.searchBarParam
-        )
+            MySearchBar(
+                modifier = Modifier.fillMaxWidth(),
+                param = param.searchBarParam
+            )
+        }
 
         Column(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .weight(1f)
+                .padding(8.dp),
         ) {
             Text(
                 text = stringResource(R.string.github_users) + " (${param.gitHubUsersViewParam.gitHubUsers.size})",
             )
 
             MySpacer(4.dp)
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(color = MaterialTheme.colorScheme.tertiary, shape = RoundedCornerShape(8.dp))
-                    .clip(RoundedCornerShape(8.dp)),
-            ) {
-                GitHubUsersView(
-                    modifier = Modifier.padding(8.dp),
-                    param = param.gitHubUsersViewParam
-                )
-            }
+            GitHubUsersView(
+                modifier = Modifier,
+                param = param.gitHubUsersViewParam
+            )
         }
     }
 }
