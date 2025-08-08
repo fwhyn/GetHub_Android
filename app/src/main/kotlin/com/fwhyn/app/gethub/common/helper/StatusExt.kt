@@ -4,4 +4,5 @@ import com.fwhyn.lib.baze.common.model.Status
 
 object StatusExt {
     val EmptyResult = Status.Instance(403, "Empty result")
+    val LogoutError = Status.Instance(500, "Process cannot be proceed")
 }

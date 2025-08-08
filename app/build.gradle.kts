@@ -83,6 +83,7 @@ dependencies {
     implementation(libs.fwhyn.lib.baze)
     implementation(libs.org.apache.poi.ooxml)
     implementation(libs.androidx.security.crypto.ktx)
+    implementation(libs.com.squareup.okhttp3.mockwebserver)
 
     //// Retrofit
     implementation(libs.bundles.retrofit2)

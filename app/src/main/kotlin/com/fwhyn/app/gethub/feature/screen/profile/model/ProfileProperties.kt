@@ -30,7 +30,7 @@ data class ProfileProperties(
         }
     }
 
-    var isAllEventsLoaded = false
+    var lastFetchEventsIsEmpty = false
 }
 
 val profilePropertiesFake = ProfileProperties.default(

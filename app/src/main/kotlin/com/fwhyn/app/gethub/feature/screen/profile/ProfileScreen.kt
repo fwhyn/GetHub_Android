@@ -95,7 +95,7 @@ private fun ProfileScreen(
         vm.properties.event.collect { event ->
             when (event) {
                 is ProfileEvent.Notify -> activityState.notification.showSnackbar(stringManager.getString(event.code))
-                is ProfileEvent.GoToHome -> {} // TODO Handle go to home
+                is ProfileEvent.LoggedOut -> {} // TODO Handle logout
             }
         }
     }
@@ -178,7 +178,7 @@ fun PortraitProfileView(
     ) {
         TopBar(
             modifier = Modifier.height(TopBarHeight),
-            topBarParam = TopBarParam.default(title = stringResource(R.string.profile_title))
+            param = TopBarParam.default(title = stringResource(R.string.profile_title))
         )
 
         Column(
@@ -210,7 +210,7 @@ fun LandscapeProfileView(
     ) {
         TopBar(
             modifier = Modifier.height(TopBarHeight),
-            topBarParam = TopBarParam.default(title = stringResource(R.string.profile_title))
+            param = TopBarParam.default(title = stringResource(R.string.profile_title))
         )
 
         Row(

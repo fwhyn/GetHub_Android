@@ -7,5 +7,6 @@ enum class HomeMessageCode {
     NetworkError,
     DataNotFound,
     ReadDataError,
-    EmptyResult
+    EmptyResult,
+    LogoutError,
 }

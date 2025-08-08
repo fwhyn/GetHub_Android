@@ -3,6 +3,7 @@ package com.fwhyn.app.gethub.feature.screen.home
 import androidx.lifecycle.viewModelScope
 import com.fwhyn.app.gethub.common.helper.StatusExt
 import com.fwhyn.app.gethub.common.helper.emitEvent
+import com.fwhyn.app.gethub.feature.func.auth.bytoken.domain.usecase.LogoutUseCase
 import com.fwhyn.app.gethub.feature.func.user.data.model.GetGitHubUsersRepoParam
 import com.fwhyn.app.gethub.feature.func.user.data.repository.GetGitHubUsersRepository
 import com.fwhyn.app.gethub.feature.screen.home.component.HomeMessageCode
@@ -24,6 +25,7 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val getGitHubUsers: GetGitHubUsersRepository,
+    private val logoutUseCase: LogoutUseCase,
 ) : HomeVmInterface() {
 
     private val scope: CoroutineScope
@@ -52,6 +54,10 @@ class HomeViewModel @Inject constructor(
     // ----------------------------------------------------------------
     override fun onGoToProfile(user: String) {
         event.emitEvent(scope, HomeEvent.GoToProfile(user))
+    }
+
+    override fun onLogout() {
+        logout()
     }
 
     override fun onLoadNext() {
@@ -94,6 +100,22 @@ class HomeViewModel @Inject constructor(
         return result
     }
 
+    private fun logout() {
+        logoutUseCase.invoke(
+            scope = scope,
+            onStart = { state.value = HomeState.Loading },
+            onFetchParam = {},
+            onOmitResult = {
+                it.onSuccess {
+                    event.emit(HomeEvent.LoggedOut)
+                }.onFailure { error ->
+                    handleError(error)
+                }
+            },
+            onFinish = { state.value = HomeState.Idle },
+        )
+    }
+
     private suspend fun handleError(error: Throwable) {
         val errorCode = when (error) {
             is Exzeption -> handleExzeptionError(error.status)
@@ -105,18 +127,23 @@ class HomeViewModel @Inject constructor(
         event.emit(HomeEvent.Notify(errorCode))
     }
 
-    private fun handleExzeptionError(status: Status): HomeMessageCode {
+    private suspend fun handleExzeptionError(status: Status): HomeMessageCode {
         return when (status) {
             Status.NotFound -> HomeMessageCode.DataNotFound
             Status.ReadError -> HomeMessageCode.ReadDataError
+            Status.Unauthorized -> {
+                event.emit(HomeEvent.LoggedOut)
+                HomeMessageCode.Unauthorized
+            }
             is Status.Instance -> handleErrorStatusCode(status)
             else -> HomeMessageCode.UnexpectedError
         }
     }
 
     private fun handleErrorStatusCode(status: Status.Instance): HomeMessageCode {
-        return when {
-            status == StatusExt.EmptyResult -> HomeMessageCode.EmptyResult
+        return when (status) {
+            StatusExt.EmptyResult -> HomeMessageCode.EmptyResult
+            StatusExt.LogoutError -> HomeMessageCode.LogoutError
             else -> HomeMessageCode.UnexpectedError
         }
     }

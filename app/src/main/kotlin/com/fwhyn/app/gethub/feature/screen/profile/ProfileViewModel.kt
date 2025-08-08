@@ -78,7 +78,7 @@ class ProfileViewModel @Inject constructor(
     }
 
     override fun onLoadNextEvents() {
-        if (properties.isAllEventsLoaded && gitHubEvents.value.isNotEmpty()) return
+        if (isAllEventsLoaded()) return
 
         getGitHubEvents(
             onStart = { state.value = ProfileState.Loading },
@@ -156,7 +156,6 @@ class ProfileViewModel @Inject constructor(
                 it.onSuccess { data ->
                     gitHubEvents.value = data.toUi()
                 }.onFailure { error ->
-                    checkIfAllEventsLoaded(error)
                     handleError(error)
                 }
             },
@@ -168,10 +167,8 @@ class ProfileViewModel @Inject constructor(
         return gitHubUserProfile.value.publicRepos == gitHubRepos.value.size
     }
 
-    private fun checkIfAllEventsLoaded(error: Throwable) {
-        if (error is Exzeption && error.status == StatusExt.EmptyResult) {
-            properties.isAllEventsLoaded = true
-        }
+    private fun isAllEventsLoaded(): Boolean {
+        return properties.lastFetchEventsIsEmpty && gitHubEvents.value.isNotEmpty()
     }
 
     private suspend fun handleError(error: Throwable) {
@@ -185,18 +182,25 @@ class ProfileViewModel @Inject constructor(
         event.emit(ProfileEvent.Notify(errorCode))
     }
 
-    private fun handleExzeptionError(status: Status): ProfileMessageCode {
+    private suspend fun handleExzeptionError(status: Status): ProfileMessageCode {
         return when (status) {
             Status.NotFound -> ProfileMessageCode.DataNotFound
             Status.ReadError -> ProfileMessageCode.ReadDataError
+            Status.Unauthorized -> {
+                event.emit(ProfileEvent.LoggedOut)
+                ProfileMessageCode.Unauthorized
+            }
             is Status.Instance -> handleErrorStatusCode(status)
             else -> ProfileMessageCode.UnexpectedError
         }
     }
 
     private fun handleErrorStatusCode(status: Status.Instance): ProfileMessageCode {
-        return when {
-            status == StatusExt.EmptyResult -> ProfileMessageCode.EmptyResult
+        return when (status) {
+            StatusExt.EmptyResult -> {
+                properties.lastFetchEventsIsEmpty = true
+                ProfileMessageCode.EmptyResult
+            }
             else -> ProfileMessageCode.UnexpectedError
         }
     }

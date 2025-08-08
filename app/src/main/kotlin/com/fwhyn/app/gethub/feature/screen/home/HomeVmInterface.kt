@@ -8,6 +8,7 @@ abstract class HomeVmInterface : ViewModel() {
     abstract val properties: HomeProperties
 
     open fun onGoToProfile(user: String) {}
+    open fun onLogout() {}
     open fun onLoadNext() {}
     open fun onQueryChange(query: String) {}
     open fun onSearch(query: String) {}

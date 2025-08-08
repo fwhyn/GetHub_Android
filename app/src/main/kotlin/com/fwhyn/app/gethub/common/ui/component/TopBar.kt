@@ -15,11 +15,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.fwhyn.app.gethub.common.ui.config.MyTheme
+import com.fwhyn.app.gethub.feature.screen.home.component.LogoutBtnParam
+import com.fwhyn.app.gethub.feature.screen.home.component.LogoutButton
 
 @Composable
 fun TopBar(
     modifier: Modifier,
-    topBarParam: TopBarParam
+    param: TopBarParam,
 ) {
     Row(
         modifier = modifier
@@ -29,24 +31,29 @@ fun TopBar(
     ) {
         MySpacer(8.dp)
         Text(
-            modifier = Modifier,
-            text = topBarParam.title,
+            modifier = Modifier.weight(1f),
+            text = param.title,
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onSurface,
             textAlign = TextAlign.Start,
         )
+
+        param.trailingContent?.invoke()
     }
 }
 
 data class TopBarParam(
     val title: String,
+    val trailingContent: (@Composable () -> Unit)?,
 ) {
     companion object {
         fun default(
             title: String = "No Title",
+            trailingContent: (@Composable () -> Unit)? = null,
         ) = TopBarParam(
             title = title,
+            trailingContent = trailingContent
         )
     }
 }
@@ -54,9 +61,11 @@ data class TopBarParam(
 @Composable
 fun getStateOfTopBarParam(
     title: String,
+    trailingContent: (@Composable () -> Unit)? = null,
 ): TopBarParam {
     return TopBarParam(
         title = title,
+        trailingContent = trailingContent
     )
 }
 
@@ -68,7 +77,26 @@ fun TopBarPreview() {
             modifier = Modifier
                 .fillMaxWidth()
                 .height(50.dp),
-            topBarParam = getStateOfTopBarParam(title = "Home")
+            param = getStateOfTopBarParam(
+                title = "Home",
+            )
+        )
+    }
+}
+
+@Composable
+@Preview
+fun TopBarWithButtonPreview() {
+    MyTheme {
+        TopBar(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(50.dp),
+            param = getStateOfTopBarParam(
+                title = "Home",
+            ) {
+                LogoutButton(param = LogoutBtnParam.default())
+            }
         )
     }
 }

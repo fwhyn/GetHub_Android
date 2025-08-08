@@ -35,6 +35,8 @@ import com.fwhyn.app.gethub.feature.screen.home.component.GitHubUsersView
 import com.fwhyn.app.gethub.feature.screen.home.component.GitHubUsersViewParam
 import com.fwhyn.app.gethub.feature.screen.home.component.HomeStringManager
 import com.fwhyn.app.gethub.feature.screen.home.component.HomeStringManagerMain
+import com.fwhyn.app.gethub.feature.screen.home.component.LogoutBtnParam
+import com.fwhyn.app.gethub.feature.screen.home.component.LogoutButton
 import com.fwhyn.app.gethub.feature.screen.home.component.getStateOfGitHubUsersViewParam
 import com.fwhyn.app.gethub.feature.screen.home.model.HomeEvent
 import com.fwhyn.app.gethub.feature.screen.home.model.HomeProperties
@@ -72,14 +74,13 @@ private fun HomeScreen(
     stringManager: HomeStringManager,
     vm: HomeVmInterface,
 ) {
-    // TODO add search bar
-    // TODO add reload button when error occurs
     // ----------------------------------------------------------------
     LaunchedEffect(Unit) {
         vm.properties.event.collect { event ->
             when (event) {
                 is HomeEvent.Notify -> activityState.notification.showSnackbar(stringManager.getString(event.code))
                 is HomeEvent.GoToProfile -> activityState.navigation.navigateToProfileScreen(event.user)
+                HomeEvent.LoggedOut -> {} // TODO Handle logout
             }
         }
     }
@@ -113,6 +114,7 @@ private fun HomeScreen(
         topBarParam = topBarParam,
         gitHubUsersViewParam = gitHubUsersViewParam,
         searchBarParam = searchBarParam,
+        onLogout = vm::onLogout,
     )
 
     HomeView(
@@ -155,9 +157,17 @@ fun PortraitHomeView(
         modifier = modifier
     ) {
         Box {
+            val topBarParam = TopBarParam.default(
+                title = stringResource(R.string.home_title)
+            ) {
+                LogoutButton(
+                    param = LogoutBtnParam.default(onClick = param.onLogout)
+                )
+            }
+
             TopBar(
                 modifier = Modifier.height(TopBarHeight),
-                topBarParam = TopBarParam(title = stringResource(R.string.home_title))
+                param = topBarParam
             )
 
             MySearchBar(
@@ -188,6 +198,7 @@ data class HomeViewParam(
     val topBarParam: TopBarParam,
     val gitHubUsersViewParam: GitHubUsersViewParam,
     val searchBarParam: MySearchBarParam,
+    val onLogout: (() -> Unit),
 )
 
 @DevicePreviews
