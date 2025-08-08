@@ -78,15 +78,19 @@ class LoginViewModel @Inject constructor(
 
     private suspend fun handleError(error: Throwable) {
         val code = when (error) {
-            is Exzeption -> when (error.status) {
-                is Status.Unauthorized -> LoginMessageCode.Unauthorized
-                else -> LoginMessageCode.LoginError
-            }
-
+            is Exzeption -> handleExzeptionError(error.status)
             is SocketTimeoutException -> LoginMessageCode.TimeOutError
             is UnknownHostException -> LoginMessageCode.NetworkError
             else -> LoginMessageCode.LoginError
         }
+
         event.emit(LoginEvent.Notify(code))
+    }
+
+    private fun handleExzeptionError(status: Status): LoginMessageCode {
+        return when (status) {
+            Status.Unauthorized -> LoginMessageCode.Unauthorized
+            else -> LoginMessageCode.UnexpectedError
+        }
     }
 }

@@ -24,6 +24,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import java.net.SocketTimeoutException
+import java.net.UnknownHostException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -175,8 +176,9 @@ class ProfileViewModel @Inject constructor(
 
     private suspend fun handleError(error: Throwable) {
         val errorCode = when (error) {
-            is SocketTimeoutException -> ProfileMessageCode.TimeOutError
             is Exzeption -> handleExzeptionError(error.status)
+            is SocketTimeoutException -> ProfileMessageCode.TimeOutError
+            is UnknownHostException -> ProfileMessageCode.NetworkError
             else -> ProfileMessageCode.UnexpectedError
         }
 

@@ -16,7 +16,7 @@ class ProfileStringManagerMain(
             ProfileMessageCode.NetworkError -> R.string.network_error
             ProfileMessageCode.DataNotFound -> R.string.data_not_found
             ProfileMessageCode.ReadDataError -> R.string.read_data_error
-            ProfileMessageCode.EmptyResult -> R.string.emmpty_result
+            ProfileMessageCode.EmptyResult -> R.string.empty_result
             ProfileMessageCode.Unauthorized -> R.string.unauthorized
         }
 

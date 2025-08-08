@@ -1,6 +1,7 @@
 package com.fwhyn.app.gethub.feature.screen.home
 
 import androidx.lifecycle.viewModelScope
+import com.fwhyn.app.gethub.common.helper.StatusExt
 import com.fwhyn.app.gethub.common.helper.emitEvent
 import com.fwhyn.app.gethub.feature.func.user.data.model.GetGitHubUsersRepoParam
 import com.fwhyn.app.gethub.feature.func.user.data.repository.GetGitHubUsersRepository
@@ -17,6 +18,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import java.net.SocketTimeoutException
+import java.net.UnknownHostException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -94,15 +96,28 @@ class HomeViewModel @Inject constructor(
 
     private suspend fun handleError(error: Throwable) {
         val errorCode = when (error) {
+            is Exzeption -> handleExzeptionError(error.status)
             is SocketTimeoutException -> HomeMessageCode.TimeOutError
-            is Exzeption -> when (error.status) {
-                Status.NotFound -> HomeMessageCode.DataNotFound
-                Status.ReadError -> HomeMessageCode.ReadDataError
-                else -> HomeMessageCode.UnexpectedError
-            }
+            is UnknownHostException -> HomeMessageCode.NetworkError
             else -> HomeMessageCode.UnexpectedError
         }
 
         event.emit(HomeEvent.Notify(errorCode))
+    }
+
+    private fun handleExzeptionError(status: Status): HomeMessageCode {
+        return when (status) {
+            Status.NotFound -> HomeMessageCode.DataNotFound
+            Status.ReadError -> HomeMessageCode.ReadDataError
+            is Status.Instance -> handleErrorStatusCode(status)
+            else -> HomeMessageCode.UnexpectedError
+        }
+    }
+
+    private fun handleErrorStatusCode(status: Status.Instance): HomeMessageCode {
+        return when {
+            status == StatusExt.EmptyResult -> HomeMessageCode.EmptyResult
+            else -> HomeMessageCode.UnexpectedError
+        }
     }
 }

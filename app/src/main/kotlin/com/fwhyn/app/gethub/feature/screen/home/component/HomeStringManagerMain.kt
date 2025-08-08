@@ -17,7 +17,7 @@ class HomeStringManagerMain(
             HomeMessageCode.DataNotFound -> R.string.data_not_found
             HomeMessageCode.ReadDataError -> R.string.read_data_error
             HomeMessageCode.Unauthorized -> R.string.unauthorized
-            HomeMessageCode.EmptyResult -> R.string.emmpty_result
+            HomeMessageCode.EmptyResult -> R.string.empty_result
         }
 
         return context.getString(id)

@@ -1,5 +1,6 @@
 package com.fwhyn.app.gethub.feature.func.user.data.repository
 
+import com.fwhyn.app.gethub.common.helper.StatusExt
 import com.fwhyn.app.gethub.feature.func.user.data.model.GetGitHubUsersRepoParam
 import com.fwhyn.app.gethub.feature.func.user.data.model.GitHubUserData
 import com.fwhyn.app.gethub.feature.func.user.data.remote.GitHubUsersRemoteDataSource
@@ -25,7 +26,8 @@ class GetGitHubUsersRepositoryMain @Inject constructor(
 
         if (response.isSuccessful) {
             val users = response.body()
-            if (users == null || users.isEmpty()) throw Exzeption(Status.NotFound)
+            if (users == null) throw Exzeption(Status.NotFound)
+            if (users.isEmpty()) throw Exzeption(StatusExt.EmptyResult)
 
             loadedUsers.addAll(users)
             lastId = loadedUsers.lastOrNull()?.id ?: 0

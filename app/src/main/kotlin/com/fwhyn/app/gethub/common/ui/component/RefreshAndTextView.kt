@@ -48,7 +48,7 @@ data class RefreshAndTextViewParam(
 
 @Composable
 fun getStateOfRefreshAndTextViewParam(
-    errorFlow: StateFlow<String> = MutableStateFlow(stringResource(R.string.empty_data)),
+    errorFlow: StateFlow<String> = MutableStateFlow(stringResource(R.string.empty_result)),
     onClicked: () -> Unit,
 ): RefreshAndTextViewParam {
     val error: String by errorFlow.collectAsStateWithLifecycle()
