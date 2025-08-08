@@ -26,6 +26,7 @@ class PreferenceDi {
         const val ENCRYPTED_PREFS_NAME = "ENCRYPTED_PREFS_NAME"
     }
 
+    // TODO fix deprecated API
     @Provides
     @Singleton
     @EncryptedPrefs

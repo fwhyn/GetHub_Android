@@ -1,6 +1,6 @@
 package com.fwhyn.app.gethub.feature.func.auth.bytoken.data.di
 
-import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.di.RetrofitGitHubDiReal.GitHubRetrofit
+import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.di.RetrofitGitHubDiReal.GitHubApi
 import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.local.AuthTokenLocalDataSource
 import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.local.AuthTokenLocalDataSourceReal
 import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.remote.AuthUserRemoteDataSource
@@ -24,7 +24,7 @@ class AuthTokenDiReal {
 
     @Provides
     fun provideAuthUserRemoteDataSource(
-        @GitHubRetrofit retrofit: Retrofit,
+        @GitHubApi retrofit: Retrofit,
     ): AuthUserRemoteDataSource {
         return RetrofitApiService(
             retrofit = retrofit,
