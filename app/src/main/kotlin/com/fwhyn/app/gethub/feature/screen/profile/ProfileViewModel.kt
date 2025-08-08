@@ -68,7 +68,7 @@ class ProfileViewModel @Inject constructor(
     }
 
     override fun onLoadNextRepos() {
-        if (isAllReposLoaded()) return
+        if (isAllReposLoaded() && gitHubRepos.value.isNotEmpty()) return
 
         getGitHubRepos(
             onStart = { state.value = ProfileState.Loading },
@@ -77,6 +77,8 @@ class ProfileViewModel @Inject constructor(
     }
 
     override fun onLoadNextEvents() {
+        if (properties.isAllEventsLoaded && gitHubEvents.value.isNotEmpty()) return
+
         getGitHubEvents(
             onStart = { state.value = ProfileState.Loading },
             onFinish = { state.value = ProfileState.Idle }
