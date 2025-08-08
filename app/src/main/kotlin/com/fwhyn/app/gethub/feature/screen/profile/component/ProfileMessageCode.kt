@@ -2,8 +2,9 @@ package com.fwhyn.app.gethub.feature.screen.profile.component
 
 enum class ProfileMessageCode {
     UnexpectedError,
+    Unauthorized,
     TimeOutError,
-    NoInternetConnection,
+    NetworkError,
     DataNotFound,
     ReadDataError,
     EmptyResult

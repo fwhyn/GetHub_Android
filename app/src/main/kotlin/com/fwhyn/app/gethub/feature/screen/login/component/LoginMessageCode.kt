@@ -5,7 +5,5 @@ enum class LoginMessageCode {
     LoginError,
     Unauthorized,
     TimeOutError,
-    NetworkError
+    NetworkError,
 }
-
-// TODO add network error to all screens
