@@ -20,12 +20,14 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
+import androidx.navigation.NavType
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import androidx.navigation.navOptions
 import com.fwhyn.app.gethub.R
 import com.fwhyn.app.gethub.common.ui.component.MySpacer
 import com.fwhyn.app.gethub.common.ui.config.MyTheme
-import com.fwhyn.app.gethub.feature.screen.home.navigateToHomeScreen
+import com.fwhyn.app.gethub.feature.screen.home.HOME_ROUTE
 import com.fwhyn.app.gethub.feature.screen.login.component.LoginButton
 import com.fwhyn.app.gethub.feature.screen.login.component.LoginButtonParam
 import com.fwhyn.app.gethub.feature.screen.login.component.LoginStringManager
@@ -45,17 +47,25 @@ import com.fwhyn.lib.baze.compose.helper.ActivityState
 import com.fwhyn.lib.baze.compose.helper.DevicePreviews
 import com.fwhyn.lib.baze.compose.helper.rememberActivityState
 
-const val LOGIN_ROUTE = "LOGIN_ROUTE"
+private const val CALLER_ROUTE = "CALLER_ROUTE"
+const val LOGIN_ROUTE = "LOGIN_ROUTE/{$CALLER_ROUTE}"
 
 fun NavGraphBuilder.addLoginScreen(
     activityState: ActivityState,
 ) {
-    composable(LOGIN_ROUTE) {
+    composable(
+        route = LOGIN_ROUTE,
+        arguments = listOf(navArgument(CALLER_ROUTE) { type = NavType.StringType })
+    ) { backStack ->
+        val vm = hiltViewModel<LoginViewModel>()
+        val callerRoute = backStack.arguments?.getString(CALLER_ROUTE) ?: ""
+        vm.onUpdateCallerRoute(callerRoute)
+
         LoginScreen(
             modifier = Modifier.fillMaxSize(),
             stringManager = LoginStringManagerMain(LocalContext.current),
             activityState = activityState,
-            vm = hiltViewModel<LoginViewModel>(),
+            vm = vm,
         )
     }
 }
@@ -82,7 +92,8 @@ fun LoginScreen(
                 LoginEvent.LoggedIn -> {
                     // remove Login Screen from back stack
                     val navOptions: NavOptions = navOptions { removeFromBackStack(LOGIN_ROUTE) }
-                    activityState.navigation.navigateToHomeScreen(navOptions)
+                    val route = vm.properties.callerRoute.ifBlank { HOME_ROUTE }
+                    activityState.navigation.navigate(route, navOptions)
                 }
             }
         }

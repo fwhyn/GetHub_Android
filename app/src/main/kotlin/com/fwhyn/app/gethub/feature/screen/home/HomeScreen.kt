@@ -21,6 +21,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
+import androidx.navigation.navOptions
 import com.fwhyn.app.gethub.R
 import com.fwhyn.app.gethub.common.ui.component.MySearchBar
 import com.fwhyn.app.gethub.common.ui.component.MySearchBarParam
@@ -42,7 +43,9 @@ import com.fwhyn.app.gethub.feature.screen.home.model.HomeEvent
 import com.fwhyn.app.gethub.feature.screen.home.model.HomeProperties
 import com.fwhyn.app.gethub.feature.screen.home.model.HomeState
 import com.fwhyn.app.gethub.feature.screen.home.model.homePropertiesFake
+import com.fwhyn.app.gethub.feature.screen.login.navigateToLoginScreen
 import com.fwhyn.app.gethub.feature.screen.profile.navigateToProfileScreen
+import com.fwhyn.lib.baze.common.helper.extension.removeFromBackStack
 import com.fwhyn.lib.baze.compose.dialog.CircularProgressDialog
 import com.fwhyn.lib.baze.compose.helper.ActivityState
 import com.fwhyn.lib.baze.compose.helper.DevicePreviews
@@ -80,7 +83,11 @@ private fun HomeScreen(
             when (event) {
                 is HomeEvent.Notify -> activityState.notification.showSnackbar(stringManager.getString(event.code))
                 is HomeEvent.GoToProfile -> activityState.navigation.navigateToProfileScreen(event.user)
-                HomeEvent.LoggedOut -> {} // TODO Handle logout
+                HomeEvent.LoggedOut -> {
+                    activityState.navigation.navigateToLoginScreen(navOptions {
+                        removeFromBackStack(HOME_ROUTE)
+                    })
+                } // TODO Handle logout
             }
         }
     }

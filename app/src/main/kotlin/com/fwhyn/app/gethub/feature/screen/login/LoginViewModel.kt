@@ -44,6 +44,9 @@ class LoginViewModel @Inject constructor(
         loginByToken()
     }
 
+    override fun onUpdateCallerRoute(route: String) {
+        properties.callerRoute = route
+    }
 
     override fun onPasswordChanged(value: String) {
         password.value = value

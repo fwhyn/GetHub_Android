@@ -28,6 +28,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import androidx.navigation.navOptions
 import com.fwhyn.app.gethub.R
 import com.fwhyn.app.gethub.common.ui.component.MySpacer
 import com.fwhyn.app.gethub.common.ui.component.TopBar
@@ -35,6 +36,7 @@ import com.fwhyn.app.gethub.common.ui.component.TopBarParam
 import com.fwhyn.app.gethub.common.ui.component.getStateOfTopBarParam
 import com.fwhyn.app.gethub.common.ui.config.MyTheme
 import com.fwhyn.app.gethub.common.ui.config.TopBarHeight
+import com.fwhyn.app.gethub.feature.screen.login.navigateToLoginScreen
 import com.fwhyn.app.gethub.feature.screen.profile.component.ProfileStringManager
 import com.fwhyn.app.gethub.feature.screen.profile.component.ProfileStringManagerMain
 import com.fwhyn.app.gethub.feature.screen.profile.component.ProfileViewSection1
@@ -47,6 +49,7 @@ import com.fwhyn.app.gethub.feature.screen.profile.model.ProfileEvent
 import com.fwhyn.app.gethub.feature.screen.profile.model.ProfileProperties
 import com.fwhyn.app.gethub.feature.screen.profile.model.ProfileState
 import com.fwhyn.app.gethub.feature.screen.profile.model.profilePropertiesFake
+import com.fwhyn.lib.baze.common.helper.extension.removeFromBackStack
 import com.fwhyn.lib.baze.compose.dialog.CircularProgressDialog
 import com.fwhyn.lib.baze.compose.helper.ActivityState
 import com.fwhyn.lib.baze.compose.helper.DevicePreviews
@@ -95,7 +98,11 @@ private fun ProfileScreen(
         vm.properties.event.collect { event ->
             when (event) {
                 is ProfileEvent.Notify -> activityState.notification.showSnackbar(stringManager.getString(event.code))
-                is ProfileEvent.LoggedOut -> {} // TODO Handle logout
+                is ProfileEvent.LoggedOut -> {
+                    activityState.navigation.navigateToLoginScreen(navOptions {
+                        removeFromBackStack(PROFILE_ROUTE)
+                    })
+                }
             }
         }
     }
