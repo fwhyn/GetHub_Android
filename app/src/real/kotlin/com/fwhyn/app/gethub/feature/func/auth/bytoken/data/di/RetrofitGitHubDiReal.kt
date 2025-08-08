@@ -41,7 +41,10 @@ class RetrofitGitHubDiReal {
         @GitHubApi builder: RetrofitBuilder,
         authTokenLocalDataSource: AuthTokenLocalDataSource,
     ): Retrofit {
-        builder.addBearerAuth { authTokenLocalDataSource.token?.value ?: "" }
+        builder.addBearerAuth {
+            val token = authTokenLocalDataSource.token?.value ?: ""
+            token
+        }
 
         return builder.build()
     }
