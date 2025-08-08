@@ -34,10 +34,15 @@ class GetGitHubUsersRepositoryMain @Inject constructor(
 
             result(loadedUsers.toList())
         } else {
-            throw Exzeption(
-                status = Status.ReadError,
-                throwable = Throwable("Error fetching users: ${response.errorBody()?.string()}")
-            )
+            when {
+                (response.message().contains("API rate limit exceeded", ignoreCase = true)) ||
+                        (response.code() == 401) -> throw Exzeption(Status.Unauthorized)
+
+                else -> throw Exzeption(
+                    status = Status.ReadError,
+                    throwable = Throwable("Error fetching users: ${response.errorBody()?.string()}")
+                )
+            }
         }
     }
 }

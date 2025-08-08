@@ -22,10 +22,13 @@ class GetGitHubUserProfileRepositoryMain @Inject constructor(
             val data = response.body() ?: throw Exzeption(Status.NotFound)
             result(data)
         } else {
-            throw Exzeption(
-                status = Status.ReadError,
-                throwable = Throwable("Error fetching user profile: ${response.errorBody()?.string()}")
-            )
+            when (response.code()) {
+                401 -> throw Exzeption(Status.Unauthorized)
+                else -> throw Exzeption(
+                    status = Status.ReadError,
+                    throwable = Throwable("Error fetching user profile: ${response.errorBody()?.string()}")
+                )
+            }
         }
     }
 

@@ -36,10 +36,13 @@ class GetGitHubReposRepositoryMain @Inject constructor(
 
             result(loadedData.toList())
         } else {
-            throw throw Exzeption(
-                status = Status.ReadError,
-                throwable = Throwable("Error fetching repositories: ${response.errorBody()?.string()}")
-            )
+            when (response.code()) {
+                401 -> throw Exzeption(Status.Unauthorized)
+                else -> throw Exzeption(
+                    status = Status.ReadError,
+                    throwable = Throwable("Error fetching repositories: ${response.errorBody()?.string()}")
+                )
+            }
         }
     }
 

@@ -36,10 +36,13 @@ class GetGitHubEventsRepositoryMain @Inject constructor(
 
             result(loadedData.toList())
         } else {
-            throw Exzeption(
-                status = Status.ReadError,
-                throwable = Throwable("Error fetching events: ${response.errorBody()?.string()}")
-            )
+            when (response.code()) {
+                401 -> throw Exzeption(Status.Unauthorized)
+                else -> throw Exzeption(
+                    status = Status.ReadError,
+                    throwable = Throwable("Error fetching events: ${response.errorBody()?.string()}")
+                )
+            }
         }
     }
 
