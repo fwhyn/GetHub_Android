@@ -177,7 +177,7 @@ fun PortraitHomeView(
 
             MySpacer(4.dp)
             GitHubUsersView(
-                modifier = Modifier,
+                modifier = Modifier.fillMaxSize(),
                 param = param.gitHubUsersViewParam
             )
         }
