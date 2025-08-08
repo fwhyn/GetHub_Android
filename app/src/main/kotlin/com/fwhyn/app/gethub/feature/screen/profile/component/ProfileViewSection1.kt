@@ -179,3 +179,23 @@ fun ProfileViewSection1Preview() {
         }
     }
 }
+
+@Preview
+@Composable
+fun ProfileViewSection1EmptyPreview() {
+    MyTheme {
+        Column(
+            modifier = Modifier
+                .background(MaterialTheme.colorScheme.background)
+                .fillMaxSize()
+                .padding(8.dp)
+        ) {
+            ProfileViewSection1(
+                modifier = Modifier.fillMaxWidth(),
+                param = profileViewSection1Param.copy(
+                    reposViewParam = reposViewParamFake.copy(repos = emptyList())
+                )
+            )
+        }
+    }
+}

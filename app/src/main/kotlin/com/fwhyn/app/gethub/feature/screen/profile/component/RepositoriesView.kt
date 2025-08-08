@@ -1,10 +1,9 @@
 package com.fwhyn.app.gethub.feature.screen.profile.component
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
@@ -23,7 +22,6 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -33,6 +31,7 @@ import com.fwhyn.app.gethub.common.ui.component.getStateOfRefreshAndTextViewPara
 import com.fwhyn.app.gethub.common.ui.config.MyTheme
 import com.fwhyn.app.gethub.feature.screen.profile.model.GitHubRepoUi
 import com.fwhyn.app.gethub.feature.screen.profile.model.gitHubReposUiFake
+import com.fwhyn.lib.baze.compose.helper.DevicePreviews
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -43,54 +42,44 @@ fun RepositoriesView(
 ) {
     if (param.repos.isEmpty()) {
         RefreshAndTextView(
-            modifier = Modifier.fillMaxSize(),
+            modifier = modifier,
             param = getStateOfRefreshAndTextViewParam(onClicked = param.onLoadNext)
         )
 
         return
     }
 
-    Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        // Custom scroll listener
-        val nestedScrollConnection = remember {
-            object : NestedScrollConnection {
-                override fun onPostScroll(consumed: Offset, available: Offset, source: NestedScrollSource): Offset {
-                    when {
-                        available.x > 0f && consumed.x == 0f -> param.onLoadPrev()
-                        available.x < 0f && consumed.x == 0f -> param.onLoadNext()
-                    }
-
-                    return Offset.Zero
+    // Custom scroll listener
+    val nestedScrollConnection = remember {
+        object : NestedScrollConnection {
+            override fun onPostScroll(consumed: Offset, available: Offset, source: NestedScrollSource): Offset {
+                when {
+                    available.x > 0f && consumed.x == 0f -> param.onLoadPrev()
+                    available.x < 0f && consumed.x == 0f -> param.onLoadNext()
                 }
+
+                return Offset.Zero
             }
         }
+    }
+    val listState = rememberLazyListState()
+    LazyRow(
+        modifier = modifier.nestedScroll(nestedScrollConnection),
+        state = listState
+    ) {
+        itemsIndexed(param.repos) { index, repo ->
+            val repositoryViewParam = RepositoryViewParam(
+                repo = repo,
+            )
 
-        val listState = rememberLazyListState()
+            RepositoryView(
+                modifier = Modifier.size(width = defaultRepoItemWidth, height = defaultRepoItemHeight),
+                param = repositoryViewParam,
+            )
 
-        LazyRow(
-            modifier = Modifier
-                .fillMaxSize()
-                .nestedScroll(nestedScrollConnection),
-            state = listState
-        ) {
-            itemsIndexed(param.repos) { index, repo ->
-                val repositoryViewParam = RepositoryViewParam(
-                    repo = repo,
-                )
-
-                RepositoryView(
-                    modifier = Modifier.size(width = defaultRepoItemWidth, height = defaultRepoItemHeight),
-                    param = repositoryViewParam,
-                )
-
-                if (index < param.repos.size - 1) {
-                    // Add a spacer between items
-                    MySpacer(8.dp)
-                }
+            if (index < param.repos.size - 1) {
+                // Add a spacer between items
+                MySpacer(8.dp)
             }
         }
     }
@@ -141,7 +130,7 @@ fun getStateOfRepositoriesViewParam(
 }
 
 @Composable
-@Preview
+@DevicePreviews
 fun RepositoriesPreview() {
     var status by remember { mutableStateOf("None") }
 
@@ -156,7 +145,8 @@ fun RepositoriesPreview() {
             RepositoriesView(
                 modifier = Modifier
                     .background(MaterialTheme.colorScheme.tertiary)
-                    .fillMaxSize()
+                    .fillMaxWidth()
+                    .height(defaultRepoItemHeight)
                     .padding(4.dp),
                 param = param
             )
@@ -173,7 +163,7 @@ fun RepositoriesPreview() {
 }
 
 @Composable
-@Preview
+@DevicePreviews
 fun RepositoriesEmptyPreview() {
     var status by remember { mutableStateOf("None") }
 
@@ -188,7 +178,8 @@ fun RepositoriesEmptyPreview() {
             RepositoriesView(
                 modifier = Modifier
                     .background(MaterialTheme.colorScheme.tertiary)
-                    .fillMaxSize()
+                    .fillMaxWidth()
+                    .height(defaultRepoItemHeight)
                     .padding(4.dp),
                 param = param
             )

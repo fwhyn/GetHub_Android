@@ -41,7 +41,7 @@ import com.fwhyn.app.gethub.feature.screen.profile.component.ProfileViewSection1
 import com.fwhyn.app.gethub.feature.screen.profile.component.ProfileViewSection1Param
 import com.fwhyn.app.gethub.feature.screen.profile.component.ProfileViewSection2
 import com.fwhyn.app.gethub.feature.screen.profile.component.ProfileViewSection2Param
-import com.fwhyn.app.gethub.feature.screen.profile.component.getStateOfDataStreamViewParam
+import com.fwhyn.app.gethub.feature.screen.profile.component.getStateOfEventsViewParam
 import com.fwhyn.app.gethub.feature.screen.profile.component.getStateOfRepositoriesViewParam
 import com.fwhyn.app.gethub.feature.screen.profile.model.ProfileEvent
 import com.fwhyn.app.gethub.feature.screen.profile.model.ProfileProperties
@@ -121,7 +121,7 @@ private fun ProfileScreen(
         reposViewParam = reposViewParam,
     )
 
-    val eventsViewParam = getStateOfDataStreamViewParam(
+    val eventsViewParam = getStateOfEventsViewParam(
         eventsFlow = vm.properties.gitHubEvents,
         onLoadPrev = {},
         onLoadNext = vm::onLoadNextEvents,

@@ -1,9 +1,11 @@
 package com.fwhyn.app.gethub.common.ui.component
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -46,7 +48,7 @@ data class RefreshAndTextViewParam(
 
 @Composable
 fun getStateOfRefreshAndTextViewParam(
-    errorFlow: StateFlow<String> = MutableStateFlow(stringResource(R.string.data_not_found)),
+    errorFlow: StateFlow<String> = MutableStateFlow(stringResource(R.string.empty_data)),
     onClicked: () -> Unit,
 ): RefreshAndTextViewParam {
     val error: String by errorFlow.collectAsStateWithLifecycle()
@@ -62,7 +64,9 @@ fun getStateOfRefreshAndTextViewParam(
 fun RefreshAndTextPreview() {
     MyTheme {
         RefreshAndTextView(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.background),
             param = getStateOfRefreshAndTextViewParam(
                 onClicked = {},
             )

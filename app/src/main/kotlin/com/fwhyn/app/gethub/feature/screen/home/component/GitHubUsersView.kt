@@ -2,7 +2,6 @@ package com.fwhyn.app.gethub.feature.screen.home.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -23,7 +22,6 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -33,6 +31,7 @@ import com.fwhyn.app.gethub.common.ui.component.getStateOfRefreshAndTextViewPara
 import com.fwhyn.app.gethub.common.ui.config.MyTheme
 import com.fwhyn.app.gethub.feature.screen.home.model.GitHubUserUi
 import com.fwhyn.app.gethub.feature.screen.home.model.gitHubUsersUiFake
+import com.fwhyn.lib.baze.compose.helper.DevicePreviews
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -41,56 +40,50 @@ fun GitHubUsersView(
     modifier: Modifier,
     param: GitHubUsersViewParam,
 ) {
-    Column(
-        modifier = modifier
-    ) {
-        if (param.gitHubUsers.isEmpty()) {
-            RefreshAndTextView(
-                modifier = Modifier.fillMaxSize(),
-                param = getStateOfRefreshAndTextViewParam(onClicked = param.onLoadNext)
-            )
+    if (param.gitHubUsers.isEmpty()) {
+        RefreshAndTextView(
+            modifier = modifier,
+            param = getStateOfRefreshAndTextViewParam(onClicked = param.onLoadNext)
+        )
 
-            return
-        }
+        return
+    }
 
-        // Custom scroll listener
-        val nestedScrollConnection = remember {
-            object : NestedScrollConnection {
-                override fun onPostScroll(consumed: Offset, available: Offset, source: NestedScrollSource): Offset {
-                    when {
-                        available.y > 0f && consumed.y == 0f -> param.onLoadPrev()
-                        available.y < 0f && consumed.y == 0f -> param.onLoadNext()
-                    }
-
-                    return Offset.Zero
+    // Custom scroll listener
+    val nestedScrollConnection = remember {
+        object : NestedScrollConnection {
+            override fun onPostScroll(consumed: Offset, available: Offset, source: NestedScrollSource): Offset {
+                when {
+                    available.y > 0f && consumed.y == 0f -> param.onLoadPrev()
+                    available.y < 0f && consumed.y == 0f -> param.onLoadNext()
                 }
+
+                return Offset.Zero
             }
         }
+    }
 
-        val listState = rememberLazyListState()
+    val listState = rememberLazyListState()
 
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .nestedScroll(nestedScrollConnection),
-            state = listState
-        ) {
-            itemsIndexed(param.gitHubUsers) { index, user ->
-                val gitHubUserViewParam = GitHubUserViewParam(
-                    user = user,
-                    onClicked = { param.onItemClicked(user) }
-                )
+    LazyColumn(
+        modifier = modifier.nestedScroll(nestedScrollConnection),
+        state = listState
+    ) {
+        itemsIndexed(param.gitHubUsers) { index, user ->
+            val gitHubUserViewParam = GitHubUserViewParam(
+                user = user,
+                onClicked = { param.onItemClicked(user) }
+            )
 
-                GitHubUserView(
-                    modifier = Modifier.fillMaxWidth(),
-                    param = gitHubUserViewParam,
-                )
+            GitHubUserView(
+                modifier = Modifier.fillMaxWidth(),
+                param = gitHubUserViewParam,
+            )
 
-                if (index < param.gitHubUsers.size - 1) {
-                    // Add a spacer between items
-                    HorizontalDivider()
-                    MySpacer(1.dp)
-                }
+            if (index < param.gitHubUsers.size - 1) {
+                // Add a spacer between items
+                HorizontalDivider()
+                MySpacer(1.dp)
             }
         }
     }
@@ -138,7 +131,7 @@ fun getStateOfGitHubUsersViewParam(
 }
 
 @Composable
-@Preview
+@DevicePreviews
 fun GitHubUsersPreview() {
 
     var status by remember { mutableStateOf("None") }
@@ -172,7 +165,7 @@ fun GitHubUsersPreview() {
 }
 
 @Composable
-@Preview
+@DevicePreviews
 fun GitHubUsersEmptyPreview() {
     var status by remember { mutableStateOf("None") }
 

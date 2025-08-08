@@ -1,9 +1,8 @@
 package com.fwhyn.app.gethub.feature.screen.profile.component
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -17,7 +16,6 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.fwhyn.app.gethub.common.ui.component.RefreshAndTextView
@@ -25,6 +23,7 @@ import com.fwhyn.app.gethub.common.ui.component.getStateOfRefreshAndTextViewPara
 import com.fwhyn.app.gethub.common.ui.config.MyTheme
 import com.fwhyn.app.gethub.feature.screen.profile.model.GitHubEventUi
 import com.fwhyn.app.gethub.feature.screen.profile.model.gitHubEventsUiFake
+import com.fwhyn.lib.baze.compose.helper.DevicePreviews
 import com.yeocak.timelineview.TimelineView
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -34,57 +33,49 @@ fun EventsView(
     modifier: Modifier,
     param: EventsViewParam,
 ) {
-    Column(
-        modifier = modifier
+    if (param.events.isEmpty()) {
+        RefreshAndTextView(
+            modifier = modifier,
+            param = getStateOfRefreshAndTextViewParam(onClicked = param.onLoadNext)
+        )
+
+        return
+    }
+
+    // Custom scroll listener
+    val nestedScrollConnection = remember {
+        object : NestedScrollConnection {
+            override fun onPostScroll(consumed: Offset, available: Offset, source: NestedScrollSource): Offset {
+                when {
+                    available.y > 0f && consumed.y == 0f -> param.onLoadPrev()
+                    available.y < 0f && consumed.y == 0f -> param.onLoadNext()
+                }
+
+                return Offset.Zero
+            }
+        }
+    }
+    val listState = rememberLazyListState()
+    LazyColumn(
+        modifier = modifier.nestedScroll(nestedScrollConnection),
+        state = listState
     ) {
-        if (param.events.isEmpty()) {
-            RefreshAndTextView(
-                modifier = Modifier.fillMaxSize(),
-                param = getStateOfRefreshAndTextViewParam(onClicked = param.onLoadNext)
+        itemsIndexed(param.events) { index, event ->
+            val nodeType = when (index) {
+                0 -> TimelineView.NodeType.FIRST
+                param.events.lastIndex -> TimelineView.NodeType.LAST
+                else -> TimelineView.NodeType.MIDDLE
+            }
+
+            val eventViewParam = EventViewParam(
+                event = event,
+                nodeType = nodeType,
             )
 
-            return
-        }
-
-        // Custom scroll listener
-        val nestedScrollConnection = remember {
-            object : NestedScrollConnection {
-                override fun onPostScroll(consumed: Offset, available: Offset, source: NestedScrollSource): Offset {
-                    when {
-                        available.y > 0f && consumed.y == 0f -> param.onLoadPrev()
-                        available.y < 0f && consumed.y == 0f -> param.onLoadNext()
-                    }
-
-                    return Offset.Zero
-                }
-            }
-        }
-
-        val listState = rememberLazyListState()
-
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .nestedScroll(nestedScrollConnection),
-            state = listState
-        ) {
-            itemsIndexed(param.events) { index, event ->
-                val nodeType = when (index) {
-                    0 -> TimelineView.NodeType.FIRST
-                    param.events.lastIndex -> TimelineView.NodeType.LAST
-                    else -> TimelineView.NodeType.MIDDLE
-                }
-
-                val eventViewParam = EventViewParam(
-                    event = event,
-                    nodeType = nodeType,
-                )
-
-                EventView(
-                    modifier = Modifier.fillMaxWidth(),
-                    param = eventViewParam,
-                )
-            }
+            EventView(
+                modifier = Modifier.fillMaxWidth(),
+                param = eventViewParam,
+            )
         }
     }
 }
@@ -114,7 +105,7 @@ val eventsViewParamFake = EventsViewParam(
 )
 
 @Composable
-fun getStateOfDataStreamViewParam(
+fun getStateOfEventsViewParam(
     eventsFlow: StateFlow<List<GitHubEventUi>>,
     onLoadPrev: () -> Unit,
     onLoadNext: () -> Unit,
@@ -129,9 +120,9 @@ fun getStateOfDataStreamViewParam(
 }
 
 @Composable
-@Preview
+@DevicePreviews
 fun EventsPreview() {
-    val param = getStateOfDataStreamViewParam(
+    val param = getStateOfEventsViewParam(
         eventsFlow = MutableStateFlow(gitHubEventsUiFake),
         onLoadPrev = { /* Handle load previous */ },
         onLoadNext = { /* Handle load next */ }
@@ -141,7 +132,8 @@ fun EventsPreview() {
         EventsView(
             modifier = Modifier
                 .background(MaterialTheme.colorScheme.tertiary)
-                .fillMaxSize()
+                .fillMaxWidth()
+                .height(100.dp)
                 .padding(4.dp),
             param = param
         )
@@ -149,9 +141,9 @@ fun EventsPreview() {
 }
 
 @Composable
-@Preview
+@DevicePreviews
 fun EventsEmptyPreview() {
-    val param = getStateOfDataStreamViewParam(
+    val param = getStateOfEventsViewParam(
         eventsFlow = MutableStateFlow(emptyList()),
         onLoadPrev = { /* Handle load previous */ },
         onLoadNext = { /* Handle load next */ }
@@ -161,7 +153,8 @@ fun EventsEmptyPreview() {
         EventsView(
             modifier = Modifier
                 .background(MaterialTheme.colorScheme.tertiary)
-                .fillMaxSize()
+                .fillMaxWidth()
+                .height(100.dp)
                 .padding(4.dp),
             param = param
         )
