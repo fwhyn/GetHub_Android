@@ -1,5 +1,6 @@
 package com.fwhyn.app.gethub.feature.screen.profile.helper.extension
 
+import com.fwhyn.app.gethub.common.ui.helper.UiUtil
 import com.fwhyn.app.gethub.feature.func.event.data.model.GitHubEventData
 import com.fwhyn.app.gethub.feature.screen.profile.model.GitHubEventUi
 import kotlinx.coroutines.flow.Flow
@@ -10,7 +11,7 @@ fun GitHubEventData.toUi(): GitHubEventUi {
         id = id,
         type = type,
         repoName = repo.name,
-        createdAt = createdAt,
+        createdAt = UiUtil.formatToUserTimeZone(createdAt),
     )
 }
 
