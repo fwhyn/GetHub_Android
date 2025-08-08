@@ -1,6 +1,7 @@
 package com.fwhyn.app.gethub.feature.screen.profile
 
 import androidx.lifecycle.viewModelScope
+import com.fwhyn.app.gethub.common.helper.StatusExt
 import com.fwhyn.app.gethub.common.helper.emitEvent
 import com.fwhyn.app.gethub.feature.func.event.data.model.GetGitHubEventsRepoParam
 import com.fwhyn.app.gethub.feature.func.event.data.repository.GetGitHubEventsRepository
@@ -152,6 +153,7 @@ class ProfileViewModel @Inject constructor(
                 it.onSuccess { data ->
                     gitHubEvents.value = data.toUi()
                 }.onFailure { error ->
+                    checkIfAllEventsLoaded(error)
                     handleError(error)
                 }
             },
@@ -163,17 +165,35 @@ class ProfileViewModel @Inject constructor(
         return gitHubUserProfile.value.publicRepos == gitHubRepos.value.size
     }
 
+    private fun checkIfAllEventsLoaded(error: Throwable) {
+        if (error is Exzeption && error.status == StatusExt.EmptyResult) {
+            properties.isAllEventsLoaded = true
+        }
+    }
+
     private suspend fun handleError(error: Throwable) {
         val errorCode = when (error) {
             is SocketTimeoutException -> ProfileMessageCode.TimeOutError
-            is Exzeption -> when (error.status) {
-                Status.NotFound -> ProfileMessageCode.DataNotFound
-                Status.ReadError -> ProfileMessageCode.ReadDataError
-                else -> ProfileMessageCode.UnexpectedError
-            }
+            is Exzeption -> handleExzeptionError(error.status)
             else -> ProfileMessageCode.UnexpectedError
         }
 
         event.emit(ProfileEvent.Notify(errorCode))
+    }
+
+    private fun handleExzeptionError(status: Status): ProfileMessageCode {
+        return when (status) {
+            Status.NotFound -> ProfileMessageCode.DataNotFound
+            Status.ReadError -> ProfileMessageCode.ReadDataError
+            is Status.Instance -> handleErrorStatusCode(status)
+            else -> ProfileMessageCode.UnexpectedError
+        }
+    }
+
+    private fun handleErrorStatusCode(status: Status.Instance): ProfileMessageCode {
+        return when {
+            status == StatusExt.EmptyResult -> ProfileMessageCode.EmptyResult
+            else -> ProfileMessageCode.UnexpectedError
+        }
     }
 }

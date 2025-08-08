@@ -6,4 +6,5 @@ enum class ProfileMessageCode {
     NoInternetConnection,
     DataNotFound,
     ReadDataError,
+    EmptyResult
 }

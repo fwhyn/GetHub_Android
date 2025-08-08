@@ -16,6 +16,7 @@ class ProfileStringManagerMain(
             ProfileMessageCode.NoInternetConnection -> R.string.no_internet_connection
             ProfileMessageCode.DataNotFound -> R.string.data_not_found
             ProfileMessageCode.ReadDataError -> R.string.read_data_error
+            ProfileMessageCode.EmptyResult -> R.string.emmpty_result
         }
 
         return context.getString(id)

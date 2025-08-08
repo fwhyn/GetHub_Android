@@ -1,5 +1,6 @@
 package com.fwhyn.app.gethub.feature.func.event.data.repository
 
+import com.fwhyn.app.gethub.common.helper.StatusExt
 import com.fwhyn.app.gethub.feature.func.event.data.model.GetGitHubEventsRepoParam
 import com.fwhyn.app.gethub.feature.func.event.data.model.GitHubEventData
 import com.fwhyn.app.gethub.feature.func.event.data.remote.GitHubEventsRemoteDataSource
@@ -27,7 +28,8 @@ class GetGitHubEventsRepositoryMain @Inject constructor(
 
         if (response.isSuccessful) {
             val data = response.body()
-            if (data == null || data.isEmpty()) throw Exzeption(Status.NotFound)
+            if (data == null) throw Exzeption(Status.NotFound)
+            if (data.isEmpty()) throw Exzeption(StatusExt.EmptyResult)
 
             loadedData.addAll(data)
             pageToLoad++

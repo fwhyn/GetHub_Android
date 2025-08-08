@@ -29,6 +29,8 @@ data class ProfileProperties(
             )
         }
     }
+
+    var isAllEventsLoaded = false
 }
 
 val profilePropertiesFake = ProfileProperties.default(
