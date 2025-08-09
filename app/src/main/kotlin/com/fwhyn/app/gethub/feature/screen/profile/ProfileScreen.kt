@@ -28,7 +28,6 @@ import androidx.navigation.NavOptions
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import androidx.navigation.navOptions
 import com.fwhyn.app.gethub.R
 import com.fwhyn.app.gethub.common.ui.component.MySpacer
 import com.fwhyn.app.gethub.common.ui.component.TopBar
@@ -49,7 +48,6 @@ import com.fwhyn.app.gethub.feature.screen.profile.model.ProfileEvent
 import com.fwhyn.app.gethub.feature.screen.profile.model.ProfileProperties
 import com.fwhyn.app.gethub.feature.screen.profile.model.ProfileState
 import com.fwhyn.app.gethub.feature.screen.profile.model.profilePropertiesFake
-import com.fwhyn.lib.baze.common.helper.extension.removeFromBackStack
 import com.fwhyn.lib.baze.compose.dialog.CircularProgressDialog
 import com.fwhyn.lib.baze.compose.helper.ActivityState
 import com.fwhyn.lib.baze.compose.helper.DevicePreviews
@@ -98,11 +96,7 @@ private fun ProfileScreen(
         vm.properties.event.collect { event ->
             when (event) {
                 is ProfileEvent.Notify -> activityState.notification.showSnackbar(stringManager.getString(event.code))
-                is ProfileEvent.LoggedOut -> {
-                    activityState.navigation.navigateToLoginScreen(navOptions {
-                        removeFromBackStack(PROFILE_ROUTE)
-                    })
-                }
+                is ProfileEvent.LoggedOut -> activityState.navigation.navigateToLoginScreen()
             }
         }
     }

@@ -1,5 +1,7 @@
 package com.fwhyn.app.gethub.feature.screen.login
 
+import androidx.activity.compose.BackHandler
+import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,11 +25,10 @@ import androidx.navigation.NavOptions
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import androidx.navigation.navOptions
 import com.fwhyn.app.gethub.R
 import com.fwhyn.app.gethub.common.ui.component.MySpacer
 import com.fwhyn.app.gethub.common.ui.config.MyTheme
-import com.fwhyn.app.gethub.feature.screen.home.HOME_ROUTE
+import com.fwhyn.app.gethub.feature.screen.home.navigateToHomeScreen
 import com.fwhyn.app.gethub.feature.screen.login.component.LoginButton
 import com.fwhyn.app.gethub.feature.screen.login.component.LoginButtonParam
 import com.fwhyn.app.gethub.feature.screen.login.component.LoginStringManager
@@ -41,14 +42,13 @@ import com.fwhyn.app.gethub.feature.screen.login.model.LoginEvent
 import com.fwhyn.app.gethub.feature.screen.login.model.LoginProperties
 import com.fwhyn.app.gethub.feature.screen.login.model.LoginState
 import com.fwhyn.app.gethub.feature.screen.login.model.loginPropertiesFake
-import com.fwhyn.lib.baze.common.helper.extension.removeFromBackStack
 import com.fwhyn.lib.baze.compose.dialog.CircularProgressDialog
 import com.fwhyn.lib.baze.compose.helper.ActivityState
 import com.fwhyn.lib.baze.compose.helper.DevicePreviews
 import com.fwhyn.lib.baze.compose.helper.rememberActivityState
 
 private const val CALLER_ROUTE = "CALLER_ROUTE"
-const val LOGIN_ROUTE = "LOGIN_ROUTE/{$CALLER_ROUTE}"
+const val LOGIN_ROUTE = "LOGIN_ROUTE"
 
 fun NavGraphBuilder.addLoginScreen(
     activityState: ActivityState,
@@ -57,15 +57,15 @@ fun NavGraphBuilder.addLoginScreen(
         route = LOGIN_ROUTE,
         arguments = listOf(navArgument(CALLER_ROUTE) { type = NavType.StringType })
     ) { backStack ->
-        val vm = hiltViewModel<LoginViewModel>()
-        val callerRoute = backStack.arguments?.getString(CALLER_ROUTE) ?: ""
-        vm.onUpdateCallerRoute(callerRoute)
+//        val vm = hiltViewModel<LoginViewModel>()
+//        val callerRoute = backStack.arguments?.getString(CALLER_ROUTE) ?: ""
+//        vm.onUpdateCallerRoute(callerRoute)
 
         LoginScreen(
             modifier = Modifier.fillMaxSize(),
             stringManager = LoginStringManagerMain(LocalContext.current),
             activityState = activityState,
-            vm = vm,
+            vm = hiltViewModel<LoginViewModel>(),
         )
     }
 }
@@ -81,6 +81,11 @@ fun LoginScreen(
     stringManager: LoginStringManager,
     vm: LoginVmInterface,
 ) {
+    val activity = LocalActivity.current
+    BackHandler {
+        activity?.moveTaskToBack(true)
+    }
+
     // ----------------------------------------------------------------
     LaunchedEffect(Unit) {
         vm.properties.event.collect { event ->
@@ -90,10 +95,11 @@ fun LoginScreen(
                 }
 
                 LoginEvent.LoggedIn -> {
-                    // remove Login Screen from back stack
-                    val navOptions: NavOptions = navOptions { removeFromBackStack(LOGIN_ROUTE) }
-                    val route = vm.properties.callerRoute.ifBlank { HOME_ROUTE }
-                    activityState.navigation.navigate(route, navOptions)
+                    if (activityState.navigation.previousBackStackEntry != null) {
+                        activityState.navigation.popBackStack()
+                    } else {
+                        activityState.navigation.navigateToHomeScreen()
+                    }
                 }
             }
         }
