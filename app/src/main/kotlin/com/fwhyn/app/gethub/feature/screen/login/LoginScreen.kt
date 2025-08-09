@@ -4,11 +4,13 @@ import androidx.activity.compose.BackHandler
 import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -25,6 +27,8 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.navOptions
 import com.fwhyn.app.gethub.R
+import com.fwhyn.app.gethub.common.ui.component.LinkTxtBtnParam
+import com.fwhyn.app.gethub.common.ui.component.LinkTxtButton
 import com.fwhyn.app.gethub.common.ui.component.MySpacer
 import com.fwhyn.app.gethub.common.ui.config.MyTheme
 import com.fwhyn.app.gethub.feature.screen.home.navigateToHomeScreen
@@ -37,6 +41,7 @@ import com.fwhyn.app.gethub.feature.screen.login.component.PasswordField
 import com.fwhyn.app.gethub.feature.screen.login.component.PasswordFieldParam
 import com.fwhyn.app.gethub.feature.screen.login.component.getStateOfLoginButton
 import com.fwhyn.app.gethub.feature.screen.login.component.getStateOfPasswordField
+import com.fwhyn.app.gethub.feature.screen.login.helper.LoginConstant
 import com.fwhyn.app.gethub.feature.screen.login.model.LoginEvent
 import com.fwhyn.app.gethub.feature.screen.login.model.LoginProperties
 import com.fwhyn.app.gethub.feature.screen.login.model.LoginState
@@ -54,7 +59,9 @@ fun NavGraphBuilder.addLoginScreen(
 ) {
     composable(LOGIN_ROUTE) { backStack ->
         LoginScreen(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(24.dp),
             stringManager = LoginStringManagerMain(LocalContext.current),
             activityState = activityState,
             vm = hiltViewModel<LoginViewModel>(),
@@ -139,10 +146,7 @@ fun LoginView(
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = modifier
-            .fillMaxSize()
-            .padding(16.dp)
-            .verticalScroll(rememberScrollState())
+        modifier = modifier.verticalScroll(rememberScrollState())
     ) {
         val commonFieldModifier = Modifier.fillMaxWidth()
 
@@ -150,8 +154,6 @@ fun LoginView(
             modifier = commonFieldModifier,
         )
 
-        // TODO add link to GitHub token creation page
-        // https://github.com/settings/personal-access-tokens/new
         MySpacer(20.dp)
         PasswordField(
             modifier = commonFieldModifier,
@@ -163,6 +165,20 @@ fun LoginView(
             modifier = commonFieldModifier,
             param = param.loginButtonParam
         )
+
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center,
+        ) {
+            Text(text = stringResource(R.string.or))
+            LinkTxtButton(
+                param = LinkTxtBtnParam(
+                    url = LoginConstant.GENERATE_FINE_GRAINED_TOKEN_URL,
+                    label = stringResource(R.string.generate_token)
+                )
+            )
+        }
+
     }
 }
 

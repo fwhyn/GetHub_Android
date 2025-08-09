@@ -47,4 +47,6 @@
     <string name="network_error">Network error!</string>
     <string name="empty_result">Empty result.</string>
     <string name="logout_error">Logout error!</string>
+    <string name="generate_token">Generate Token</string>
+    <string name="or">Or</string>
 </resources>
