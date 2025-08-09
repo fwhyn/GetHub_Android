@@ -23,6 +23,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
+import androidx.navigation.navOptions
 import com.fwhyn.app.gethub.R
 import com.fwhyn.app.gethub.common.ui.component.MySpacer
 import com.fwhyn.app.gethub.common.ui.config.MyTheme
@@ -40,22 +41,18 @@ import com.fwhyn.app.gethub.feature.screen.login.model.LoginEvent
 import com.fwhyn.app.gethub.feature.screen.login.model.LoginProperties
 import com.fwhyn.app.gethub.feature.screen.login.model.LoginState
 import com.fwhyn.app.gethub.feature.screen.login.model.loginPropertiesFake
+import com.fwhyn.lib.baze.common.helper.extension.removeFromBackStack
 import com.fwhyn.lib.baze.compose.dialog.CircularProgressDialog
 import com.fwhyn.lib.baze.compose.helper.ActivityState
 import com.fwhyn.lib.baze.compose.helper.DevicePreviews
 import com.fwhyn.lib.baze.compose.helper.rememberActivityState
 
-private const val CALLER_ROUTE = "CALLER_ROUTE"
 const val LOGIN_ROUTE = "LOGIN_ROUTE"
 
 fun NavGraphBuilder.addLoginScreen(
     activityState: ActivityState,
 ) {
     composable(LOGIN_ROUTE) { backStack ->
-//        val vm = hiltViewModel<LoginViewModel>()
-//        val callerRoute = backStack.arguments?.getString(CALLER_ROUTE) ?: ""
-//        vm.onUpdateCallerRoute(callerRoute)
-
         LoginScreen(
             modifier = Modifier.fillMaxSize(),
             stringManager = LoginStringManagerMain(LocalContext.current),
@@ -92,8 +89,11 @@ fun LoginScreen(
                 LoginEvent.LoggedIn -> {
                     if (activityState.navigation.previousBackStackEntry != null) {
                         activityState.navigation.popBackStack()
+                        activityState.navigation.popBackStack("asdf", false)
                     } else {
-                        activityState.navigation.navigateToHomeScreen()
+                        activityState.navigation.navigateToHomeScreen(
+                            navOptions = navOptions { removeFromBackStack(LOGIN_ROUTE) }
+                        )
                     }
                 }
             }

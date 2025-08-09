@@ -28,7 +28,6 @@ data class LoginProperties(
     }
 
     var isFirstLogin: Boolean = true
-    var callerRoute: String = ""
 }
 
 val loginPropertiesFake = LoginProperties.default()
