@@ -1,14 +1,12 @@
 package com.fwhyn.app.gethub.common.ui.component
 
-import android.content.Intent
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.core.net.toUri
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.fwhyn.app.gethub.common.ui.config.Pink80
 import kotlinx.coroutines.flow.StateFlow
@@ -18,14 +16,14 @@ fun LinkTxtButton(
     modifier: Modifier = Modifier,
     param: LinkTxtBtnParam
 ) {
-    val context = LocalContext.current
-
+    // TODO fix bug that does not work in some devices
+    val uriHandler = LocalUriHandler.current
     TextButton(
         modifier = modifier,
         onClick = {
-            val intent = Intent(Intent.ACTION_VIEW, param.url.toUri())
-            context.startActivity(intent)
-        }) {
+            uriHandler.openUri(param.url)
+        }
+    ) {
         Text(
             text = param.label,
             color = Pink80
