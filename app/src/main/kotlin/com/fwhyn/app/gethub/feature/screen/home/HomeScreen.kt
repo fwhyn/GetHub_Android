@@ -131,15 +131,7 @@ fun HomeView(
 ) {
     val configuration = LocalConfiguration.current
 
-    // TODO add landscape view
     when (configuration.orientation) {
-//        Configuration.ORIENTATION_LANDSCAPE -> {
-//            LandscapeHomeView(
-//                modifier = modifier,
-//                param = param
-//            )
-//        }
-
         else -> {
             PortraitHomeView(
                 modifier = modifier,

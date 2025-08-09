@@ -11,7 +11,6 @@ import dagger.hilt.android.scopes.ActivityRetainedScoped
 @Module
 class ActivityRetainedDi {
 
-    // TODO delete ActivityRetainedDi
     @Provides
     @ActivityRetainedScoped
     fun provideActivityRetainedState(): ActivityRetainedState = ActivityRetainedState()

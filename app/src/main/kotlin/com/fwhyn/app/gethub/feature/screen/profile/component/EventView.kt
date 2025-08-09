@@ -45,7 +45,6 @@ fun EventView(
     modifier: Modifier,
     param: EventViewParam,
 ) {
-    // TODO change time format
     Column(
         modifier = modifier,
     ) {

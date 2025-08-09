@@ -11,7 +11,6 @@ android {
     // TODO add ui test
     // TODO add integrated test
     // TODO add unit test
-    // TODO add proguard rules
     // TODO add release notes
     // TODO check warnings
     // TODO add app icon

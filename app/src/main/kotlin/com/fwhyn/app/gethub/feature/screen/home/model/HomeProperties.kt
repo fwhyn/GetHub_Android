@@ -31,4 +31,6 @@ data class HomeProperties(
     }
 }
 
-val homePropertiesFake = HomeProperties.default()
+val homePropertiesFake = HomeProperties.default(
+    gitHubUsers = MutableStateFlow(gitHubUsersUiFake)
+)

@@ -90,7 +90,6 @@ private fun ProfileScreen(
     stringManager: ProfileStringManager,
     vm: ProfileVmInterface,
 ) {
-    // TODO add reload button when error occurs
     // ----------------------------------------------------------------
     LaunchedEffect(Unit) {
         vm.properties.event.collect { event ->

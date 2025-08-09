@@ -22,8 +22,6 @@ class LoginViewModel @Inject constructor(
     private val loginByTokenUseCase: LoginByTokenUseCase,
 ) : LoginVmInterface() {
 
-    // TODO add condition when access is limited
-    // TODO add condition when token is expired
     private val scope: CoroutineScope
         get() = viewModelScope
 

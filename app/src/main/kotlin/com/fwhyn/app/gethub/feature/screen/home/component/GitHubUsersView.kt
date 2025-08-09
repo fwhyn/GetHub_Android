@@ -1,14 +1,14 @@
 package com.fwhyn.app.gethub.feature.screen.home.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.HorizontalDivider
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,7 +25,6 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.fwhyn.app.gethub.common.ui.component.MySpacer
 import com.fwhyn.app.gethub.common.ui.component.RefreshAndTextView
 import com.fwhyn.app.gethub.common.ui.component.getStateOfRefreshAndTextViewParam
 import com.fwhyn.app.gethub.common.ui.config.MyTheme
@@ -63,11 +62,12 @@ fun GitHubUsersView(
         }
     }
 
-    val listState = rememberLazyListState()
 
-    LazyColumn(
+    LazyVerticalGrid(
         modifier = modifier.nestedScroll(nestedScrollConnection),
-        state = listState
+        columns = GridCells.Adaptive(minSize = 300.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp),
+        horizontalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         itemsIndexed(param.gitHubUsers) { index, user ->
             val gitHubUserViewParam = GitHubUserViewParam(
@@ -79,12 +79,6 @@ fun GitHubUsersView(
                 modifier = Modifier.fillMaxWidth(),
                 param = gitHubUserViewParam,
             )
-
-            if (index < param.gitHubUsers.size - 1) {
-                // Add a spacer between items
-                HorizontalDivider()
-                MySpacer(1.dp)
-            }
         }
     }
 }
