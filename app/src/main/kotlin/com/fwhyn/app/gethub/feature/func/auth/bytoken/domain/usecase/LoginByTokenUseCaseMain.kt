@@ -29,7 +29,7 @@ class LoginByTokenUseCaseMain @Inject constructor(
         val token = param.token
         val output: LoginByTokenResult
 
-        if (token == null || token.isBlank() == true) {
+        if (token == null || token.isBlank()) {
             val userDomain = getUserFromExistingToken()
             output = LoginByTokenResult(user = userDomain)
         } else {
