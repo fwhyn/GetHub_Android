@@ -22,9 +22,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
-import androidx.navigation.NavType
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
 import com.fwhyn.app.gethub.R
 import com.fwhyn.app.gethub.common.ui.component.MySpacer
 import com.fwhyn.app.gethub.common.ui.config.MyTheme
@@ -53,10 +51,7 @@ const val LOGIN_ROUTE = "LOGIN_ROUTE"
 fun NavGraphBuilder.addLoginScreen(
     activityState: ActivityState,
 ) {
-    composable(
-        route = LOGIN_ROUTE,
-        arguments = listOf(navArgument(CALLER_ROUTE) { type = NavType.StringType })
-    ) { backStack ->
+    composable(LOGIN_ROUTE) { backStack ->
 //        val vm = hiltViewModel<LoginViewModel>()
 //        val callerRoute = backStack.arguments?.getString(CALLER_ROUTE) ?: ""
 //        vm.onUpdateCallerRoute(callerRoute)
