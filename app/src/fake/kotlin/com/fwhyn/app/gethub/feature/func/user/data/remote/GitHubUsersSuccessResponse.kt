@@ -1,6 +1,6 @@
 package com.fwhyn.app.gethub.feature.func.user.data.remote
 
-object GitHubUsersJsonSuccessResponse {
+object GitHubUsersSuccessResponse {
     val success_item20_since0 = """
         [
             {

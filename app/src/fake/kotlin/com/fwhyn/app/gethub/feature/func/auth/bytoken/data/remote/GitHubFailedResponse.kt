@@ -2,7 +2,7 @@ package com.fwhyn.app.gethub.feature.func.auth.bytoken.data.remote
 
 import okhttp3.mockwebserver.MockResponse
 
-object GitHubJsonFailedResponse {
+object GitHubFailedResponse {
     val badCredential = """
         {
             "message": "Bad credentials",

@@ -3,8 +3,8 @@ package com.fwhyn.app.gethub.feature.func.user.data.remote
 import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.remote.GitHubAuthFailedResponse.errorAuthResponse
 import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.remote.GitHubAuthFailedResponse.isBadCredential
 import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.remote.GitHubAuthFailedResponse.isRequiredAuthentication
-import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.remote.GitHubJsonFailedResponse
-import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.remote.GitHubJsonFailedResponse.notFoundResponse
+import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.remote.GitHubFailedResponse
+import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.remote.GitHubFailedResponse.notFoundResponse
 import com.fwhyn.app.gethub.feature.func.user.data.remote.GitHubReposSuccessResponse.fwhyn_item10_page1
 import com.fwhyn.app.gethub.feature.func.user.data.remote.GitHubReposSuccessResponse.fwhyn_item10_page2
 import com.fwhyn.app.gethub.feature.func.user.data.remote.GitHubReposSuccessResponse.fwhyn_item10_page3
@@ -23,11 +23,11 @@ class GitHubReposMockWebServerProvider {
         mockWebServer.dispatcher = object : Dispatcher() {
             override fun dispatch(request: RecordedRequest): MockResponse {
                 if (isRequiredAuthentication(request)) {
-                    return errorAuthResponse.setBody(GitHubJsonFailedResponse.requireAuthentication)
+                    return errorAuthResponse.setBody(GitHubFailedResponse.requireAuthentication)
                 }
 
                 if (isBadCredential(request)) {
-                    return errorAuthResponse.setBody(GitHubJsonFailedResponse.badCredential)
+                    return errorAuthResponse.setBody(GitHubFailedResponse.badCredential)
                 }
 
                 val users = "/users/"
