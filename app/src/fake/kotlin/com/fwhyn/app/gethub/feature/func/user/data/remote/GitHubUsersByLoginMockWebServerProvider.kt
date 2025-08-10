@@ -16,7 +16,7 @@ import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import okhttp3.mockwebserver.RecordedRequest
 
-class GitHubReposMockWebServerProvider {
+class GitHubUsersByLoginMockWebServerProvider {
     fun get(): MockWebServer {
         val mockWebServer = MockWebServer()
 
@@ -31,7 +31,6 @@ class GitHubReposMockWebServerProvider {
                 }
 
                 val users = "/users/"
-                val repos = "/repos"
                 val path = request.path
                 val perPage = GitHubQueryParam.perPageParam(request)?.toIntOrNull()
                 val page = GitHubQueryParam.pageParam(request)?.toIntOrNull()
@@ -39,14 +38,14 @@ class GitHubReposMockWebServerProvider {
                 val successResponse = MockResponse().setResponseCode(200)
 
                 return when {
-                    path == (users + "swycats" + repos) && perPage == 10 -> when (page) {
+                    path == (users + "swycats") && perPage == 10 -> when (page) {
                         1 -> successResponse.setBody(wycats_item10_page1)
                         2 -> successResponse.setBody(wycats_item10_page2)
                         3 -> successResponse.setBody(wycats_item10_page3)
                         else -> notFoundResponse
                     }
 
-                    path == (users + "fwhyn" + repos) && perPage == 10 -> when (page) {
+                    path == (users + "fwhyn") && perPage == 10 -> when (page) {
                         1 -> successResponse.setBody(fwhyn_item10_page1)
                         2 -> successResponse.setBody(fwhyn_item10_page2)
                         3 -> successResponse.setBody(fwhyn_item10_page3)
