@@ -1,6 +1,6 @@
 package com.fwhyn.app.gethub.feature.func.user.data.remote
 
-class GitHubReposSuccessResponse {
+object GitHubReposSuccessResponse {
     val wycats_item10_page1 = """
         [
             {
