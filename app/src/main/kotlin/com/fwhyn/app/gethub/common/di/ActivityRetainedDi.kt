@@ -13,5 +13,5 @@ class ActivityRetainedDi {
 
     @Provides
     @ActivityRetainedScoped
-    fun provideActivityRetainedState(): ActivityRetainedState = ActivityRetainedState()
+    fun activityRetainedState(): ActivityRetainedState = ActivityRetainedState()
 }

@@ -4,7 +4,6 @@ import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.remote.GitHubAuthFail
 import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.remote.GitHubAuthFailedResponse.isBadCredential
 import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.remote.GitHubAuthFailedResponse.isRequiredAuthentication
 import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.remote.GitHubJsonFailedResponse
-import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.remote.GitHubJsonFailedResponse.notFoundResponse
 import com.fwhyn.app.gethub.feature.func.user.data.remote.GitHubUsersJsonSuccessResponse.success_item20_since0
 import com.fwhyn.app.gethub.feature.func.user.data.remote.GitHubUsersJsonSuccessResponse.success_item20_since30
 import com.fwhyn.app.gethub.feature.func.user.data.remote.GitHubUsersJsonSuccessResponse.success_item20_since70
@@ -13,7 +12,7 @@ import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import okhttp3.mockwebserver.RecordedRequest
 
-class GitHubUsersMockWebServerProvider {
+class GitHubReposMockWebServerProvider {
     fun get(): MockWebServer {
         val mockWebServer = MockWebServer()
 
@@ -27,10 +26,8 @@ class GitHubUsersMockWebServerProvider {
                     return errorAuthResponse.setBody(GitHubJsonFailedResponse.badCredential)
                 }
 
-                if (request.path?.startsWith("/users") != true) {
-                    return notFoundResponse
-                }
-
+                val users = "/users"
+                val path = request.path
                 val perPage = GitHubQueryParam.perPageParam(request)
                 val since = GitHubQueryParam.sinceParam(request)
 
@@ -38,13 +35,9 @@ class GitHubUsersMockWebServerProvider {
 
                 return when {
                     perPage == null || since == null -> successResponse.setBody(success_item20_since0)
-                    perPage == "20" -> when (since) {
-                        "0" -> successResponse.setBody(success_item20_since0)
-                        "30" -> successResponse.setBody(success_item20_since30)
-                        "70" -> successResponse.setBody(success_item20_since70)
-                        else -> successResponse.setBody("[]")
-                    }
-
+                    perPage == "20" && since == "0" -> successResponse.setBody(success_item20_since0)
+                    perPage == "20" && since == "30" -> successResponse.setBody(success_item20_since30)
+                    perPage == "20" && since == "70" -> successResponse.setBody(success_item20_since70)
                     else -> successResponse.setBody("[]")
                 }
             }

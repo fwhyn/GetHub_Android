@@ -1,5 +1,6 @@
 package com.fwhyn.app.gethub.feature.func.auth.bytoken.di
 
+import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.remote.AuthUserRemoteDataSource
 import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.repository.AuthTokenRepository
 import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.repository.AuthTokenRepositoryMain
 import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.repository.AuthUserRepository
@@ -8,32 +9,52 @@ import com.fwhyn.app.gethub.feature.func.auth.bytoken.domain.usecase.LoginByToke
 import com.fwhyn.app.gethub.feature.func.auth.bytoken.domain.usecase.LoginByTokenUseCaseMain
 import com.fwhyn.app.gethub.feature.func.auth.bytoken.domain.usecase.LogoutUseCase
 import com.fwhyn.app.gethub.feature.func.auth.bytoken.domain.usecase.LogoutUseCaseMain
-import dagger.Binds
+import com.fwhyn.lib.baze.retrofit.api.RetrofitApiService
 import dagger.Module
+import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityRetainedComponent
+import retrofit2.Retrofit
 
 @Module
 @InstallIn(ActivityRetainedComponent::class)
-abstract class AuthTokenDiMain {
+class AuthTokenDiMain {
 
-    @Binds
-    abstract fun bindAuthTokenRepository(
+    @Provides
+    fun authUserRemoteDataSource(
+        @GitHubApi retrofit: Retrofit,
+    ): AuthUserRemoteDataSource {
+        return RetrofitApiService(
+            retrofit = retrofit,
+            cls = AuthUserRemoteDataSource::class.java
+        ).create()
+    }
+
+    @Provides
+    fun authTokenRepository(
         dataSource: AuthTokenRepositoryMain,
-    ): AuthTokenRepository
+    ): AuthTokenRepository {
+        return dataSource
+    }
 
-    @Binds
-    abstract fun bindAuthUserRepository(
+    @Provides
+    fun authUserRepository(
         dataSource: AuthUserRepositoryMain,
-    ): AuthUserRepository
+    ): AuthUserRepository {
+        return dataSource
+    }
 
-    @Binds
-    abstract fun bindLoginByTokenUseCase(
+    @Provides
+    fun loginByTokenUseCase(
         useCase: LoginByTokenUseCaseMain,
-    ): LoginByTokenUseCase
+    ): LoginByTokenUseCase {
+        return useCase
+    }
 
-    @Binds
-    abstract fun bindLogoutUseCase(
+    @Provides
+    fun logoutUseCase(
         useCase: LogoutUseCaseMain,
-    ): LogoutUseCase
+    ): LogoutUseCase {
+        return useCase
+    }
 }

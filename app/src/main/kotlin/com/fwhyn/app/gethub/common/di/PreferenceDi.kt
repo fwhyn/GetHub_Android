@@ -30,7 +30,7 @@ class PreferenceDi {
     @Provides
     @Singleton
     @EncryptedPrefs
-    fun provideSharedPreferences(@ApplicationContext context: Context): SharedPreferences {
+    fun sharedPreferences(@ApplicationContext context: Context): SharedPreferences {
         val masterKey = MasterKey.Builder(context, MasterKey.DEFAULT_MASTER_KEY_ALIAS)
             .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
             .build()

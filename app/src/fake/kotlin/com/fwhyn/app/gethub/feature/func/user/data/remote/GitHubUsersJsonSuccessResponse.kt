@@ -1,7 +1,7 @@
 package com.fwhyn.app.gethub.feature.func.user.data.remote
 
-object GitHubUsersJsonResponse {
-    val success = """
+object GitHubUsersJsonSuccessResponse {
+    val success_item20_since0 = """
         [
             {
                 "login": "mojombo",
@@ -422,7 +422,12 @@ object GitHubUsersJsonResponse {
                 "type": "User",
                 "user_view_type": "public",
                 "site_admin": false
-            },
+            }
+        ]
+    """.trimIndent()
+
+    val success_item20_since30 = """
+        [
             {
                 "login": "tomtt",
                 "id": 31,
@@ -842,217 +847,11 @@ object GitHubUsersJsonResponse {
                 "type": "User",
                 "user_view_type": "public",
                 "site_admin": false
-            },
-            {
-                "login": "uggedal",
-                "id": 71,
-                "node_id": "MDQ6VXNlcjcx",
-                "avatar_url": "https://avatars.githubusercontent.com/u/71?v=4",
-                "gravatar_id": "",
-                "url": "https://api.github.com/users/uggedal",
-                "html_url": "https://github.com/uggedal",
-                "followers_url": "https://api.github.com/users/uggedal/followers",
-                "following_url": "https://api.github.com/users/uggedal/following{/other_user}",
-                "gists_url": "https://api.github.com/users/uggedal/gists{/gist_id}",
-                "starred_url": "https://api.github.com/users/uggedal/starred{/owner}{/repo}",
-                "subscriptions_url": "https://api.github.com/users/uggedal/subscriptions",
-                "organizations_url": "https://api.github.com/users/uggedal/orgs",
-                "repos_url": "https://api.github.com/users/uggedal/repos",
-                "events_url": "https://api.github.com/users/uggedal/events{/privacy}",
-                "received_events_url": "https://api.github.com/users/uggedal/received_events",
-                "type": "User",
-                "user_view_type": "public",
-                "site_admin": false
-            },
-            {
-                "login": "bruce",
-                "id": 72,
-                "node_id": "MDQ6VXNlcjcy",
-                "avatar_url": "https://avatars.githubusercontent.com/u/72?v=4",
-                "gravatar_id": "",
-                "url": "https://api.github.com/users/bruce",
-                "html_url": "https://github.com/bruce",
-                "followers_url": "https://api.github.com/users/bruce/followers",
-                "following_url": "https://api.github.com/users/bruce/following{/other_user}",
-                "gists_url": "https://api.github.com/users/bruce/gists{/gist_id}",
-                "starred_url": "https://api.github.com/users/bruce/starred{/owner}{/repo}",
-                "subscriptions_url": "https://api.github.com/users/bruce/subscriptions",
-                "organizations_url": "https://api.github.com/users/bruce/orgs",
-                "repos_url": "https://api.github.com/users/bruce/repos",
-                "events_url": "https://api.github.com/users/bruce/events{/privacy}",
-                "received_events_url": "https://api.github.com/users/bruce/received_events",
-                "type": "User",
-                "user_view_type": "public",
-                "site_admin": false
-            },
-            {
-                "login": "sam",
-                "id": 73,
-                "node_id": "MDQ6VXNlcjcz",
-                "avatar_url": "https://avatars.githubusercontent.com/u/73?v=4",
-                "gravatar_id": "",
-                "url": "https://api.github.com/users/sam",
-                "html_url": "https://github.com/sam",
-                "followers_url": "https://api.github.com/users/sam/followers",
-                "following_url": "https://api.github.com/users/sam/following{/other_user}",
-                "gists_url": "https://api.github.com/users/sam/gists{/gist_id}",
-                "starred_url": "https://api.github.com/users/sam/starred{/owner}{/repo}",
-                "subscriptions_url": "https://api.github.com/users/sam/subscriptions",
-                "organizations_url": "https://api.github.com/users/sam/orgs",
-                "repos_url": "https://api.github.com/users/sam/repos",
-                "events_url": "https://api.github.com/users/sam/events{/privacy}",
-                "received_events_url": "https://api.github.com/users/sam/received_events",
-                "type": "User",
-                "user_view_type": "public",
-                "site_admin": false
-            },
-            {
-                "login": "mmower",
-                "id": 74,
-                "node_id": "MDQ6VXNlcjc0",
-                "avatar_url": "https://avatars.githubusercontent.com/u/74?v=4",
-                "gravatar_id": "",
-                "url": "https://api.github.com/users/mmower",
-                "html_url": "https://github.com/mmower",
-                "followers_url": "https://api.github.com/users/mmower/followers",
-                "following_url": "https://api.github.com/users/mmower/following{/other_user}",
-                "gists_url": "https://api.github.com/users/mmower/gists{/gist_id}",
-                "starred_url": "https://api.github.com/users/mmower/starred{/owner}{/repo}",
-                "subscriptions_url": "https://api.github.com/users/mmower/subscriptions",
-                "organizations_url": "https://api.github.com/users/mmower/orgs",
-                "repos_url": "https://api.github.com/users/mmower/repos",
-                "events_url": "https://api.github.com/users/mmower/events{/privacy}",
-                "received_events_url": "https://api.github.com/users/mmower/received_events",
-                "type": "User",
-                "user_view_type": "public",
-                "site_admin": false
-            },
-            {
-                "login": "abhay",
-                "id": 75,
-                "node_id": "MDQ6VXNlcjc1",
-                "avatar_url": "https://avatars.githubusercontent.com/u/75?v=4",
-                "gravatar_id": "",
-                "url": "https://api.github.com/users/abhay",
-                "html_url": "https://github.com/abhay",
-                "followers_url": "https://api.github.com/users/abhay/followers",
-                "following_url": "https://api.github.com/users/abhay/following{/other_user}",
-                "gists_url": "https://api.github.com/users/abhay/gists{/gist_id}",
-                "starred_url": "https://api.github.com/users/abhay/starred{/owner}{/repo}",
-                "subscriptions_url": "https://api.github.com/users/abhay/subscriptions",
-                "organizations_url": "https://api.github.com/users/abhay/orgs",
-                "repos_url": "https://api.github.com/users/abhay/repos",
-                "events_url": "https://api.github.com/users/abhay/events{/privacy}",
-                "received_events_url": "https://api.github.com/users/abhay/received_events",
-                "type": "User",
-                "user_view_type": "public",
-                "site_admin": false
-            },
-            {
-                "login": "rabble",
-                "id": 76,
-                "node_id": "MDQ6VXNlcjc2",
-                "avatar_url": "https://avatars.githubusercontent.com/u/76?v=4",
-                "gravatar_id": "",
-                "url": "https://api.github.com/users/rabble",
-                "html_url": "https://github.com/rabble",
-                "followers_url": "https://api.github.com/users/rabble/followers",
-                "following_url": "https://api.github.com/users/rabble/following{/other_user}",
-                "gists_url": "https://api.github.com/users/rabble/gists{/gist_id}",
-                "starred_url": "https://api.github.com/users/rabble/starred{/owner}{/repo}",
-                "subscriptions_url": "https://api.github.com/users/rabble/subscriptions",
-                "organizations_url": "https://api.github.com/users/rabble/orgs",
-                "repos_url": "https://api.github.com/users/rabble/repos",
-                "events_url": "https://api.github.com/users/rabble/events{/privacy}",
-                "received_events_url": "https://api.github.com/users/rabble/received_events",
-                "type": "User",
-                "user_view_type": "public",
-                "site_admin": false
-            },
-            {
-                "login": "benburkert",
-                "id": 77,
-                "node_id": "MDQ6VXNlcjc3",
-                "avatar_url": "https://avatars.githubusercontent.com/u/77?v=4",
-                "gravatar_id": "",
-                "url": "https://api.github.com/users/benburkert",
-                "html_url": "https://github.com/benburkert",
-                "followers_url": "https://api.github.com/users/benburkert/followers",
-                "following_url": "https://api.github.com/users/benburkert/following{/other_user}",
-                "gists_url": "https://api.github.com/users/benburkert/gists{/gist_id}",
-                "starred_url": "https://api.github.com/users/benburkert/starred{/owner}{/repo}",
-                "subscriptions_url": "https://api.github.com/users/benburkert/subscriptions",
-                "organizations_url": "https://api.github.com/users/benburkert/orgs",
-                "repos_url": "https://api.github.com/users/benburkert/repos",
-                "events_url": "https://api.github.com/users/benburkert/events{/privacy}",
-                "received_events_url": "https://api.github.com/users/benburkert/received_events",
-                "type": "User",
-                "user_view_type": "public",
-                "site_admin": false
-            },
-            {
-                "login": "indirect",
-                "id": 78,
-                "node_id": "MDQ6VXNlcjc4",
-                "avatar_url": "https://avatars.githubusercontent.com/u/78?v=4",
-                "gravatar_id": "",
-                "url": "https://api.github.com/users/indirect",
-                "html_url": "https://github.com/indirect",
-                "followers_url": "https://api.github.com/users/indirect/followers",
-                "following_url": "https://api.github.com/users/indirect/following{/other_user}",
-                "gists_url": "https://api.github.com/users/indirect/gists{/gist_id}",
-                "starred_url": "https://api.github.com/users/indirect/starred{/owner}{/repo}",
-                "subscriptions_url": "https://api.github.com/users/indirect/subscriptions",
-                "organizations_url": "https://api.github.com/users/indirect/orgs",
-                "repos_url": "https://api.github.com/users/indirect/repos",
-                "events_url": "https://api.github.com/users/indirect/events{/privacy}",
-                "received_events_url": "https://api.github.com/users/indirect/received_events",
-                "type": "User",
-                "user_view_type": "public",
-                "site_admin": false
-            },
-            {
-                "login": "fearoffish",
-                "id": 79,
-                "node_id": "MDQ6VXNlcjc5",
-                "avatar_url": "https://avatars.githubusercontent.com/u/79?v=4",
-                "gravatar_id": "",
-                "url": "https://api.github.com/users/fearoffish",
-                "html_url": "https://github.com/fearoffish",
-                "followers_url": "https://api.github.com/users/fearoffish/followers",
-                "following_url": "https://api.github.com/users/fearoffish/following{/other_user}",
-                "gists_url": "https://api.github.com/users/fearoffish/gists{/gist_id}",
-                "starred_url": "https://api.github.com/users/fearoffish/starred{/owner}{/repo}",
-                "subscriptions_url": "https://api.github.com/users/fearoffish/subscriptions",
-                "organizations_url": "https://api.github.com/users/fearoffish/orgs",
-                "repos_url": "https://api.github.com/users/fearoffish/repos",
-                "events_url": "https://api.github.com/users/fearoffish/events{/privacy}",
-                "received_events_url": "https://api.github.com/users/fearoffish/received_events",
-                "type": "User",
-                "user_view_type": "public",
-                "site_admin": false
-            },
-            {
-                "login": "ry",
-                "id": 80,
-                "node_id": "MDQ6VXNlcjgw",
-                "avatar_url": "https://avatars.githubusercontent.com/u/80?v=4",
-                "gravatar_id": "",
-                "url": "https://api.github.com/users/ry",
-                "html_url": "https://github.com/ry",
-                "followers_url": "https://api.github.com/users/ry/followers",
-                "following_url": "https://api.github.com/users/ry/following{/other_user}",
-                "gists_url": "https://api.github.com/users/ry/gists{/gist_id}",
-                "starred_url": "https://api.github.com/users/ry/starred{/owner}{/repo}",
-                "subscriptions_url": "https://api.github.com/users/ry/subscriptions",
-                "organizations_url": "https://api.github.com/users/ry/orgs",
-                "repos_url": "https://api.github.com/users/ry/repos",
-                "events_url": "https://api.github.com/users/ry/events{/privacy}",
-                "received_events_url": "https://api.github.com/users/ry/received_events",
-                "type": "User",
-                "user_view_type": "public",
-                "site_admin": false
             }
         ]
-        """.trimIndent()
+    """.trimIndent()
+
+    val success_item20_since70 = """
+        []
+    """.trimIndent()
 }

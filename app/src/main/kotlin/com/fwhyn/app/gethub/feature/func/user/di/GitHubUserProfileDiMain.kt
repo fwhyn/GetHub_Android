@@ -1,6 +1,6 @@
 package com.fwhyn.app.gethub.feature.func.user.di
 
-import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.di.RetrofitGitHubDiReal.GitHubApi
+import com.fwhyn.app.gethub.feature.func.auth.bytoken.di.GitHubApi
 import com.fwhyn.app.gethub.feature.func.user.data.remote.GitHubUserProfileRemoteDataSource
 import com.fwhyn.app.gethub.feature.func.user.data.repository.GetGitHubUserProfileRepository
 import com.fwhyn.app.gethub.feature.func.user.data.repository.GetGitHubUserProfileRepositoryMain
@@ -16,7 +16,7 @@ import retrofit2.Retrofit
 class GitHubUserProfileDiMain {
 
     @Provides
-    fun provideGitHubUsersRemoteDataSource(
+    fun gitHubUsersRemoteDataSource(
         @GitHubApi retrofit: Retrofit,
     ): GitHubUserProfileRemoteDataSource {
         return RetrofitApiService(
@@ -26,7 +26,7 @@ class GitHubUserProfileDiMain {
     }
 
     @Provides
-    fun bindGetGitHubUserProfileRepository(
+    fun gitHubUserProfileRepository(
         repository: GetGitHubUserProfileRepositoryMain,
     ): GetGitHubUserProfileRepository {
         return repository

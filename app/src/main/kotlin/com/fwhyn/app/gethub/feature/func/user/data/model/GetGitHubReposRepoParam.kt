@@ -7,7 +7,7 @@ class GetGitHubReposRepoParam(
     companion object {
         fun default(
             username: String,
-            perPage: Int = 20,
+            perPage: Int = 10,
         ) = GetGitHubReposRepoParam(
             username = username,
             perPage = perPage,

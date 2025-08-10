@@ -16,19 +16,9 @@ import retrofit2.Retrofit
 class AuthTokenDiReal {
 
     @Provides
-    fun provideAuthTokenLocalDataSource(
+    fun authTokenLocalDataSource(
         dataSource: AuthTokenLocalDataSourceReal,
     ): AuthTokenLocalDataSource {
         return dataSource
-    }
-
-    @Provides
-    fun provideAuthUserRemoteDataSource(
-        @GitHubApi retrofit: Retrofit,
-    ): AuthUserRemoteDataSource {
-        return RetrofitApiService(
-            retrofit = retrofit,
-            cls = AuthUserRemoteDataSource::class.java
-        ).create()
     }
 }

@@ -1,6 +1,6 @@
 package com.fwhyn.app.gethub.feature.func.event.di
 
-import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.di.RetrofitGitHubDiReal.GitHubApi
+import com.fwhyn.app.gethub.feature.func.auth.bytoken.di.GitHubApi
 import com.fwhyn.app.gethub.feature.func.event.data.remote.GitHubEventsRemoteDataSource
 import com.fwhyn.app.gethub.feature.func.event.data.repository.GetGitHubEventsRepository
 import com.fwhyn.app.gethub.feature.func.event.data.repository.GetGitHubEventsRepositoryMain
@@ -16,7 +16,7 @@ import retrofit2.Retrofit
 class GitHubEventsDiMain {
 
     @Provides
-    fun provideGitHubEventsRemoteDataSource(
+    fun gitHubEventsRemoteDataSource(
         @GitHubApi retrofit: Retrofit,
     ): GitHubEventsRemoteDataSource {
         return RetrofitApiService(
@@ -26,7 +26,7 @@ class GitHubEventsDiMain {
     }
 
     @Provides
-    fun bindGetGitHubEventsRepository(
+    fun getGitHubEventsRepository(
         repository: GetGitHubEventsRepositoryMain,
     ): GetGitHubEventsRepository {
         return repository
