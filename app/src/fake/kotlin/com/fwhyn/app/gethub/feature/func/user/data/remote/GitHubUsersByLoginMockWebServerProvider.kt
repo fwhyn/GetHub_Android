@@ -5,12 +5,12 @@ import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.remote.GitHubAuthFail
 import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.remote.GitHubAuthFailedResponse.isRequiredAuthentication
 import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.remote.GitHubFailedResponse
 import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.remote.GitHubFailedResponse.notFoundResponse
-import com.fwhyn.app.gethub.feature.func.user.data.remote.GitHubReposSuccessResponse.fwhyn_item10_page1
-import com.fwhyn.app.gethub.feature.func.user.data.remote.GitHubReposSuccessResponse.fwhyn_item10_page2
-import com.fwhyn.app.gethub.feature.func.user.data.remote.GitHubReposSuccessResponse.fwhyn_item10_page3
-import com.fwhyn.app.gethub.feature.func.user.data.remote.GitHubReposSuccessResponse.wycats_item10_page1
-import com.fwhyn.app.gethub.feature.func.user.data.remote.GitHubReposSuccessResponse.wycats_item10_page2
-import com.fwhyn.app.gethub.feature.func.user.data.remote.GitHubReposSuccessResponse.wycats_item10_page3
+import com.fwhyn.app.gethub.feature.func.user.data.remote.GitHubUsersByLoginSuccessResponse.defunkt
+import com.fwhyn.app.gethub.feature.func.user.data.remote.GitHubUsersByLoginSuccessResponse.ezmobius
+import com.fwhyn.app.gethub.feature.func.user.data.remote.GitHubUsersByLoginSuccessResponse.fwhyn
+import com.fwhyn.app.gethub.feature.func.user.data.remote.GitHubUsersByLoginSuccessResponse.mojombo
+import com.fwhyn.app.gethub.feature.func.user.data.remote.GitHubUsersByLoginSuccessResponse.pjhyett
+import com.fwhyn.app.gethub.feature.func.user.data.remote.GitHubUsersByLoginSuccessResponse.wycats
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -32,26 +32,15 @@ class GitHubUsersByLoginMockWebServerProvider {
 
                 val users = "/users/"
                 val path = request.path
-                val perPage = GitHubQueryParam.perPageParam(request)?.toIntOrNull()
-                val page = GitHubQueryParam.pageParam(request)?.toIntOrNull()
-
                 val successResponse = MockResponse().setResponseCode(200)
 
-                return when {
-                    path == (users + "swycats") && perPage == 10 -> when (page) {
-                        1 -> successResponse.setBody(wycats_item10_page1)
-                        2 -> successResponse.setBody(wycats_item10_page2)
-                        3 -> successResponse.setBody(wycats_item10_page3)
-                        else -> notFoundResponse
-                    }
-
-                    path == (users + "fwhyn") && perPage == 10 -> when (page) {
-                        1 -> successResponse.setBody(fwhyn_item10_page1)
-                        2 -> successResponse.setBody(fwhyn_item10_page2)
-                        3 -> successResponse.setBody(fwhyn_item10_page3)
-                        else -> notFoundResponse
-                    }
-
+                return when (path) {
+                    (users + "mojombo") -> successResponse.setBody(mojombo)
+                    (users + "defunkt") -> successResponse.setBody(defunkt)
+                    (users + "pjhyett") -> successResponse.setBody(pjhyett)
+                    (users + "wycats") -> successResponse.setBody(wycats)
+                    (users + "ezmobius") -> successResponse.setBody(ezmobius)
+                    (users + "fwhyn") -> successResponse.setBody(fwhyn)
                     else -> notFoundResponse
                 }
             }

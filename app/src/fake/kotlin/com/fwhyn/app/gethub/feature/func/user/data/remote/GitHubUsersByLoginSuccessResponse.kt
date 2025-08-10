@@ -1,6 +1,6 @@
 package com.fwhyn.app.gethub.feature.func.user.data.remote
 
-class GitHubUsersByLoginSuccessResponse {
+object GitHubUsersByLoginSuccessResponse {
     val mojombo = """
         {
             "login": "mojombo",
