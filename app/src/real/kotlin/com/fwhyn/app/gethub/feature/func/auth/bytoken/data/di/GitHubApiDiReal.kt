@@ -14,35 +14,11 @@ import retrofit2.Retrofit
 
 @Module
 @InstallIn(ActivityRetainedComponent::class)
-class RetrofitGitHubDiReal {
+class GitHubApiDiReal {
 
     @Provides
     @GitHubApi
     fun baseUrl(): HttpUrl {
         return "https://api.github.com/".toHttpUrl()
-    }
-
-    @Provides
-    @GitHubApi
-    fun retrofitBuilder(
-        @GitHubApi baseUrl: HttpUrl,
-    ): RetrofitBuilder {
-        val builder = RetrofitProvider.getCustomBuilder(baseUrl)
-
-        return builder
-    }
-
-    @Provides
-    @GitHubApi
-    fun retrofit(
-        @GitHubApi builder: RetrofitBuilder,
-        authTokenLocalDataSource: AuthTokenLocalDataSource,
-    ): Retrofit {
-        builder.addBearerAuth {
-            val token = authTokenLocalDataSource.token?.value ?: ""
-            token
-        }
-
-        return builder.build()
     }
 }

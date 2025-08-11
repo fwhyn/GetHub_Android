@@ -1,5 +1,7 @@
 package com.fwhyn.app.gethub.feature.func.auth.bytoken.di
 
+import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.local.AuthTokenLocalDataSource
+import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.local.AuthTokenLocalDataSourceMain
 import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.remote.AuthUserRemoteDataSource
 import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.repository.AuthTokenRepository
 import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.repository.AuthTokenRepositoryMain
@@ -19,6 +21,13 @@ import retrofit2.Retrofit
 @Module
 @InstallIn(ActivityRetainedComponent::class)
 class AuthTokenDiMain {
+
+    @Provides
+    fun authTokenLocalDataSource(
+        dataSource: AuthTokenLocalDataSourceMain,
+    ): AuthTokenLocalDataSource {
+        return dataSource
+    }
 
     @Provides
     fun authUserRemoteDataSource(
