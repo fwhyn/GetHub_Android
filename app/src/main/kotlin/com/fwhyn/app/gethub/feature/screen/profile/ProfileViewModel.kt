@@ -88,36 +88,26 @@ class ProfileViewModel @Inject constructor(
 
     // ----------------------------------------------------------------
     private fun loadGitHubUserProfile() {
-        getGitHubUserProfile(
-            onStart = { state.value = ProfileState.Loading },
-            onFinish = {
-                getGitHubRepos(onFinish = {
-                    getGitHubEvents(onFinish = {
-                        state.value = ProfileState.Idle
-                    })
-                })
-            },
-        )
-    }
-
-    private fun getGitHubUserProfile(
-        onStart: () -> Unit = {},
-        onFinish: () -> Unit = {},
-    ) {
         getGitHubUserProfile.invoke(
             scope = scope,
-            onStart = onStart,
+            onStart = { state.value = ProfileState.Loading },
             onFetchParam = {
                 GetGitHubUserProfileRepoParam(username = userName.value)
             },
             onOmitResult = {
                 it.onSuccess { data ->
                     gitHubUserProfile.value = data.toUi()
+
+                    getGitHubRepos(onFinish = {
+                        getGitHubEvents(onFinish = {
+                            state.value = ProfileState.Idle
+                        })
+                    })
                 }.onFailure { error ->
                     handleError(error)
+                    state.value = ProfileState.Idle
                 }
             },
-            onFinish = onFinish,
         )
     }
 
