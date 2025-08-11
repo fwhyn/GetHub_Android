@@ -11,6 +11,7 @@ import com.fwhyn.app.gethub.feature.func.auth.bytoken.domain.model.LoginByTokenP
 import com.fwhyn.app.gethub.feature.func.auth.bytoken.domain.model.LoginByTokenResult
 import com.fwhyn.lib.baze.common.model.Exzeption
 import com.fwhyn.lib.baze.common.model.Status
+import kotlinx.coroutines.delay
 import javax.inject.Inject
 
 class LoginByTokenUseCaseMain @Inject constructor(
@@ -42,6 +43,7 @@ class LoginByTokenUseCaseMain @Inject constructor(
 
     private suspend fun getUserFromNewValidatedToken(token: String): AuthUserDomain {
         initializeAuthToken(token)
+        delay(100) // Give some time for the token to be initialized
         return validateAuthToken(token)
     }
 

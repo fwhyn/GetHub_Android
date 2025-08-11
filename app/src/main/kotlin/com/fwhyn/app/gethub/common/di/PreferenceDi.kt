@@ -21,7 +21,7 @@ class PreferenceDi {
         const val ENCRYPTED_PREFS_NAME = "ENCRYPTED_PREFS_GETHUB"
     }
 
-    // TODO fix deprecated API
+    // TODO encrypt shared preferences
     @Provides
     @Singleton
     @EncryptedPrefs

@@ -16,16 +16,11 @@ class AuthTokenLocalDataSourceMain @Inject constructor(
 
     @get:Synchronized
     @set:Synchronized
-    override var token: AuthTokenData? = null
+    override var token: AuthTokenData?
         get() {
-            if (field == null) {
-                field = encryptedPreferences.get<AuthTokenData>(TOKEN_KEY)
-            }
-
-            return field
+            return encryptedPreferences.get<AuthTokenData>(TOKEN_KEY)
         }
         set(value) {
-            field = value
-            encryptedPreferences.put(TOKEN_KEY, field)
+            encryptedPreferences.put(TOKEN_KEY, value)
         }
 }
