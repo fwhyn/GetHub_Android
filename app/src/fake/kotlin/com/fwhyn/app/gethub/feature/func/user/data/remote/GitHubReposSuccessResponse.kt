@@ -2197,6 +2197,10 @@ object GitHubReposSuccessResponse {
         ]
     """.trimIndent()
 
+    val wycats_item10_page4 = """
+        []
+    """.trimIndent()
+
     val fwhyn_item10_page1 = """
         [
             {

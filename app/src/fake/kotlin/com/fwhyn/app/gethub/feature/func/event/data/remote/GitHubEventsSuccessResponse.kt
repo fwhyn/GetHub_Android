@@ -1,6 +1,6 @@
 package com.fwhyn.app.gethub.feature.func.event.data.remote
 
-class GitHubEventsSuccessResponse {
+object GitHubEventsSuccessResponse {
     val wycats_item20_page1 = """
         [
             {

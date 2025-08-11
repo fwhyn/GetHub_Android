@@ -1,12 +1,10 @@
 package com.fwhyn.app.gethub.feature.func.auth.bytoken.data.remote
 
+import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.remote.MockWebServerProvider.Companion.TOKEN
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.RecordedRequest
 
 object GitHubAuthFailedResponse {
-
-    // TODO use this token in fake mode variant
-    const val TOKEN = "admin"
 
     val errorAuthResponse = MockResponse().setResponseCode(401)
 
