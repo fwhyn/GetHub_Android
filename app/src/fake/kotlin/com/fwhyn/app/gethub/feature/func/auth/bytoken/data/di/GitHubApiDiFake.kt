@@ -19,6 +19,9 @@ class GitHubApiDiFake {
     @Provides
     @GitHubApi
     fun baseUrl(): HttpUrl {
+
+        // Allow network operations on the main thread for testing purposes.
+        // This is not recommended for production code, but can be useful in tests.
         val sdkInt = Build.VERSION.SDK_INT
         if (sdkInt > 8) {
             val policy = ThreadPolicy.Builder().permitAll().build()

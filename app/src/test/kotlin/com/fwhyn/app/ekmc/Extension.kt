@@ -1,7 +1,7 @@
 package com.fwhyn.app.gethub
 
 import app.cash.turbine.ReceiveTurbine
-import com.fwhyn.lib.baze.common.domain.helper.Rezult
+import com.fwhyn.lib.baze.common.helper.Rezult
 import org.junit.Assert
 
 suspend fun <T> ReceiveTurbine<T>.assertNoProducedValue() {
