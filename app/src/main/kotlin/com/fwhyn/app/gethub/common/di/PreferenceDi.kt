@@ -2,8 +2,6 @@ package com.fwhyn.app.gethub.common.di
 
 import android.content.Context
 import android.content.SharedPreferences
-import androidx.security.crypto.EncryptedSharedPreferences
-import androidx.security.crypto.MasterKey
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,11 +17,8 @@ class PreferenceDi {
     @Qualifier
     annotation class EncryptedPrefs
 
-    @Qualifier
-    annotation class SharedPrefs
-
     companion object {
-        const val ENCRYPTED_PREFS_NAME = "ENCRYPTED_PREFS_NAME"
+        const val ENCRYPTED_PREFS_NAME = "ENCRYPTED_PREFS_GETHUB"
     }
 
     // TODO fix deprecated API
@@ -31,16 +26,6 @@ class PreferenceDi {
     @Singleton
     @EncryptedPrefs
     fun sharedPreferences(@ApplicationContext context: Context): SharedPreferences {
-        val masterKey = MasterKey.Builder(context, MasterKey.DEFAULT_MASTER_KEY_ALIAS)
-            .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
-            .build()
-
-        return EncryptedSharedPreferences.create(
-            context,
-            ENCRYPTED_PREFS_NAME,
-            masterKey,
-            EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-            EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
-        )
+        return context.getSharedPreferences(ENCRYPTED_PREFS_NAME, Context.MODE_PRIVATE)
     }
 }

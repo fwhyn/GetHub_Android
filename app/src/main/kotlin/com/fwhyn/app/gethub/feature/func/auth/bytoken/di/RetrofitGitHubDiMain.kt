@@ -1,8 +1,7 @@
-package com.fwhyn.app.gethub.feature.func.auth.bytoken.data.di
+package com.fwhyn.app.gethub.feature.func.auth.bytoken.di
 
 import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.helper.RetrofitProvider
 import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.local.AuthTokenLocalDataSource
-import com.fwhyn.app.gethub.feature.func.auth.bytoken.di.GitHubApi
 import com.fwhyn.lib.baze.retrofit.api.RetrofitBuilder
 import dagger.Module
 import dagger.Provides
