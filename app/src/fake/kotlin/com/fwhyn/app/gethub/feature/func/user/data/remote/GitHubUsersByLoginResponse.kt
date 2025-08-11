@@ -11,7 +11,7 @@ import okhttp3.mockwebserver.RecordedRequest
 
 object GitHubUsersByLoginResponse {
 
-    fun getOrnUll(request: RecordedRequest): MockResponse? {
+    fun getOrNull(request: RecordedRequest): MockResponse? {
         val users = "/users/"
         val path = request.path
         val successResponse = MockResponse().setResponseCode(200)

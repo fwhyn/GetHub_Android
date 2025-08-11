@@ -6,6 +6,7 @@ import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.remote.GitHubAuthResp
 import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.remote.GitHubFailedResponse.notFoundResponse
 import com.fwhyn.app.gethub.feature.func.event.data.remote.GitHubEventsResponse
 import com.fwhyn.app.gethub.feature.func.user.data.remote.GitHubReposResponse
+import com.fwhyn.app.gethub.feature.func.user.data.remote.GitHubUsersByLoginResponse
 import com.fwhyn.app.gethub.feature.func.user.data.remote.GitHubUsersResponse
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
@@ -28,6 +29,7 @@ object MockWebServerProvider {
 
                     else -> sequenceOf(
                         GitHubUserResponse.getOrNull(request),
+                        GitHubUsersByLoginResponse.getOrNull(request),
                         GitHubEventsResponse.getOrNull(request),
                         GitHubReposResponse.getOrNull(request),
                         GitHubUsersResponse.getOrNull(request)

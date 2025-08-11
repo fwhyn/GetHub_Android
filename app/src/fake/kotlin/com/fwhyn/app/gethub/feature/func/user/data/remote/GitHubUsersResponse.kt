@@ -8,7 +8,7 @@ import okhttp3.mockwebserver.RecordedRequest
 
 object GitHubUsersResponse {
     fun getOrNull(request: RecordedRequest): MockResponse? {
-        if (request.path != "/users") {
+        if (request.path?.startsWith("/users") != true) {
             return null
         }
 
