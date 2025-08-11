@@ -12,7 +12,7 @@ import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import okhttp3.mockwebserver.RecordedRequest
 
-class MockWebServerProvider {
+object MockWebServerProvider {
 
     fun get(): MockWebServer {
         val mockWebServer = MockWebServer()
