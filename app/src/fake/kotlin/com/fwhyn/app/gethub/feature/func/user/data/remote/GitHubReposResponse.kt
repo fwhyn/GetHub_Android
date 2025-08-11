@@ -13,7 +13,7 @@ import okhttp3.mockwebserver.RecordedRequest
 object GitHubReposResponse {
 
     fun getOrNull(request: RecordedRequest): MockResponse? {
-        val users = "/users/"
+        val users = "/users"
         val repos = "/repos"
         val path = request.path
         val perPage = GitHubQueryParam.perPageParam(request)?.toIntOrNull()
@@ -22,7 +22,7 @@ object GitHubReposResponse {
         val successResponse = MockResponse().setResponseCode(200)
 
         return when {
-            path == (users + "swycats" + repos) && perPage == 10 -> when (page) {
+            path == (users + "wycats" + repos) && perPage == 10 -> when (page) {
                 1 -> successResponse.setBody(wycats_item10_page1)
                 2 -> successResponse.setBody(wycats_item10_page2)
                 3 -> successResponse.setBody(wycats_item10_page3)

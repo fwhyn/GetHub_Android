@@ -127,12 +127,12 @@ class HomeViewModel @Inject constructor(
         event.emit(HomeEvent.Notify(errorCode))
     }
 
-    private suspend fun handleExzeptionError(status: Status): HomeMessageCode {
+    private fun handleExzeptionError(status: Status): HomeMessageCode {
         return when (status) {
             Status.NotFound -> HomeMessageCode.DataNotFound
             Status.ReadError -> HomeMessageCode.ReadDataError
             Status.Unauthorized -> {
-                event.emit(HomeEvent.LoggedOut)
+                logout()
                 HomeMessageCode.Unauthorized
             }
             is Status.Instance -> handleErrorStatusCode(status)

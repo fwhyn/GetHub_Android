@@ -3,6 +3,7 @@ package com.fwhyn.app.gethub.feature.screen.profile
 import androidx.lifecycle.viewModelScope
 import com.fwhyn.app.gethub.common.helper.StatusExt
 import com.fwhyn.app.gethub.common.helper.emitEvent
+import com.fwhyn.app.gethub.feature.func.auth.bytoken.domain.usecase.LogoutUseCase
 import com.fwhyn.app.gethub.feature.func.event.data.model.GetGitHubEventsRepoParam
 import com.fwhyn.app.gethub.feature.func.event.data.repository.GetGitHubEventsRepository
 import com.fwhyn.app.gethub.feature.func.user.data.model.GetGitHubReposRepoParam
@@ -32,6 +33,7 @@ class ProfileViewModel @Inject constructor(
     private val getGitHubUserProfile: GetGitHubUserProfileRepository,
     private val getGitHubRepos: GetGitHubReposRepository,
     private val getGitHubEvents: GetGitHubEventsRepository,
+    private val logoutUseCase: LogoutUseCase,
 ) : ProfileVmInterface() {
 
     private val scope: CoroutineScope
@@ -161,6 +163,22 @@ class ProfileViewModel @Inject constructor(
         return properties.lastFetchEventsIsEmpty && gitHubEvents.value.isNotEmpty()
     }
 
+    private fun logout() {
+        logoutUseCase.invoke(
+            scope = scope,
+            onStart = { state.value = ProfileState.Loading },
+            onFetchParam = {},
+            onOmitResult = {
+                it.onSuccess {
+                    event.emit(ProfileEvent.LoggedOut)
+                }.onFailure { error ->
+                    handleError(error)
+                }
+            },
+            onFinish = { state.value = ProfileState.Idle },
+        )
+    }
+
     private suspend fun handleError(error: Throwable) {
         val errorCode = when (error) {
             is Exzeption -> handleExzeptionError(error.status)
@@ -172,14 +190,15 @@ class ProfileViewModel @Inject constructor(
         event.emit(ProfileEvent.Notify(errorCode))
     }
 
-    private suspend fun handleExzeptionError(status: Status): ProfileMessageCode {
+    private fun handleExzeptionError(status: Status): ProfileMessageCode {
         return when (status) {
             Status.NotFound -> ProfileMessageCode.DataNotFound
             Status.ReadError -> ProfileMessageCode.ReadDataError
             Status.Unauthorized -> {
-                event.emit(ProfileEvent.LoggedOut)
+                logout()
                 ProfileMessageCode.Unauthorized
             }
+
             is Status.Instance -> handleErrorStatusCode(status)
             else -> ProfileMessageCode.UnexpectedError
         }
@@ -191,6 +210,7 @@ class ProfileViewModel @Inject constructor(
                 properties.lastFetchEventsIsEmpty = true
                 ProfileMessageCode.EmptyResult
             }
+
             else -> ProfileMessageCode.UnexpectedError
         }
     }
