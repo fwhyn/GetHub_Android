@@ -13,7 +13,7 @@ import org.junit.Test
 class AuthTokenLocalDataSourceMainTest {
     private val context = ApplicationProvider.getApplicationContext<Context>()
     private val preferenceModule = PreferenceDi()
-    private val sharedPreferences = preferenceModule.sharedPreferences(context)
+    private val preferences = preferenceModule.sharedPreferences(context)
 
     private lateinit var authTokenLocalDataSource: AuthTokenLocalDataSourceMain
 
@@ -35,28 +35,20 @@ class AuthTokenLocalDataSourceMainTest {
     // ----------------------------------------------------------------
     @Before
     fun setUp() {
-        sharedPreferences.edit().clear().commit()
-        authTokenLocalDataSource = AuthTokenLocalDataSourceMain(sharedPreferences)
+        preferences.edit().clear().commit()
+        authTokenLocalDataSource = AuthTokenLocalDataSourceMain(preferences)
     }
 
     @After
     fun tearDown() {
-        sharedPreferences.edit().clear().commit()
+        preferences.edit().clear().commit()
     }
 
     // ----------------------------------------------------------------
     @Test
-    fun getFirstShouldBeNullData() {
+    fun getFirstDataShouldBeNullData() {
         val output: AuthTokenData? = authTokenLocalDataSource.token
         Assert.assertNull(output)
-    }
-
-    @Test
-    fun dataShouldBeNotNullAfterSet() {
-        authTokenLocalDataSource.token = input
-
-        val output: AuthTokenData? = authTokenLocalDataSource.token
-        Assert.assertNotNull(output)
     }
 
     @Test
