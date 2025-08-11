@@ -5,5 +5,5 @@ import com.fwhyn.lib.baze.common.helper.BaseGetter
 import com.fwhyn.lib.baze.common.helper.BaseSetter
 
 interface AuthTokenRepository :
-    BaseGetter<Unit, AuthTokenData>,
-    BaseSetter<Unit, AuthTokenData>
+    BaseGetter<Unit, AuthTokenData?>,
+    BaseSetter<Unit, AuthTokenData?>

@@ -3,8 +3,6 @@ package com.fwhyn.app.gethub.feature.func.auth.bytoken.domain.usecase
 import com.fwhyn.app.gethub.common.helper.Constant.TIMEOUT_MILLIS
 import com.fwhyn.app.gethub.common.helper.StatusExt
 import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.repository.AuthTokenRepository
-import com.fwhyn.app.gethub.feature.func.auth.bytoken.domain.helper.toData
-import com.fwhyn.app.gethub.feature.func.auth.bytoken.domain.model.AuthTokenDomain
 import com.fwhyn.app.gethub.feature.func.auth.bytoken.domain.model.LogoutResult
 import com.fwhyn.lib.baze.common.model.Exzeption
 import javax.inject.Inject
@@ -22,7 +20,7 @@ class LogoutUseCaseMain @Inject constructor(
         result: suspend (LogoutResult) -> Unit,
     ) {
         try {
-            authTokenRepository.set(Unit, AuthTokenDomain.default().toData())
+            authTokenRepository.set(Unit, null)
             result(LogoutResult.default())
         } catch (_: Exception) {
             throw Exzeption(StatusExt.LogoutError)

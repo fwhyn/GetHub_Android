@@ -59,8 +59,8 @@ class LoginByTokenUseCaseMain @Inject constructor(
     }
 
     private suspend fun getUserFromExistingToken(): AuthUserDomain {
-        val authTokenDomain = authTokenRepository.get(Unit).toDomain()
-        val userDomain = authTokenDomain.validatedUser ?: throw Exzeption(Status.NotFound)
+        val authTokenDomain = authTokenRepository.get(Unit)?.toDomain()
+        val userDomain = authTokenDomain?.validatedUser ?: throw Exzeption(Status.NotFound)
 
         return userDomain
     }

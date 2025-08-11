@@ -14,7 +14,7 @@ class AuthTokenRepositoryMain @Inject constructor(
         return data
     }
 
-    override suspend fun set(param: Unit, data: AuthTokenData) {
+    override suspend fun set(param: Unit, data: AuthTokenData?) {
         authTokenLocalDataSource.token = data
     }
 }

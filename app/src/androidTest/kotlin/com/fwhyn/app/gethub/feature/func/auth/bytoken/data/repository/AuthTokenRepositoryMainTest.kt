@@ -82,7 +82,7 @@ class AuthTokenRepositoryMainTest {
     @Test
     fun dataShouldBeNotFoundAfterClear() = runTest {
         authTokenRepository.set(Unit, input)
-        authTokenRepository.set(Unit, AuthTokenData.default())
+        authTokenRepository.set(Unit, null)
 
         var status: Status? = null
         try {
@@ -93,13 +93,13 @@ class AuthTokenRepositoryMainTest {
         Assert.assertEquals(Status.NotFound, status)
     }
 
-//    @Test
-//    fun dataShouldBeEqualAfterClearAndSet() {
-//        authTokenLocalDataSource.token = input
-//        authTokenLocalDataSource.token = null
-//        authTokenLocalDataSource.token = newInput
-//
-//        val output: AuthTokenData? = authTokenLocalDataSource.token
-//        Assert.assertEquals(newInput, output)
-//    }
+    @Test
+    fun dataShouldBeEqualAfterClearAndSet() = runTest {
+        authTokenRepository.set(Unit, input)
+        authTokenRepository.set(Unit, null)
+        authTokenRepository.set(Unit, newInput)
+
+        val output: AuthTokenData? = authTokenRepository.get(Unit)
+        Assert.assertEquals(newInput, output)
+    }
 }
