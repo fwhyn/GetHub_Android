@@ -4,7 +4,7 @@ import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.remote.GitHubUserSucc
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.RecordedRequest
 
-class GitHubUserResponse {
+object GitHubUserResponse {
     fun getOrNull(request: RecordedRequest): MockResponse? {
         if (request.path != "/user") {
             return null

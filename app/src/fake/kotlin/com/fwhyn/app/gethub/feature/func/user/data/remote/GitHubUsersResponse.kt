@@ -6,7 +6,7 @@ import com.fwhyn.app.gethub.feature.func.user.data.remote.GitHubUsersSuccessResp
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.RecordedRequest
 
-class GitHubUsersResponse {
+object GitHubUsersResponse {
     fun getOrNull(request: RecordedRequest): MockResponse? {
         if (request.path != "/users") {
             return null
