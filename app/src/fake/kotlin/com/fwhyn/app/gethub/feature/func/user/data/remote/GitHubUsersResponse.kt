@@ -12,8 +12,8 @@ object GitHubUsersResponse {
             return null
         }
 
-        val perPage = GitHubQueryParam.perPageParam(request)?.toIntOrNull()
-        val since = GitHubQueryParam.sinceParam(request)?.toIntOrNull()
+        val perPage = GitHubQueryParam.perPageParam(request)
+        val since = GitHubQueryParam.sinceParam(request)
 
         val successResponse = MockResponse().setResponseCode(200)
 

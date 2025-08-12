@@ -12,32 +12,32 @@ import okhttp3.mockwebserver.RecordedRequest
 
 object GitHubReposResponse {
 
+    private val mockData = mapOf(
+        "wycats" to mapOf(
+            1 to wycats_item10_page1,
+            2 to wycats_item10_page2,
+            3 to wycats_item10_page3,
+            4 to wycats_item10_page4
+        ),
+        "fwhyn" to mapOf(
+            1 to fwhyn_item10_page1,
+            2 to fwhyn_item10_page2,
+            3 to fwhyn_item10_page3
+        )
+    )
+
     fun getOrNull(request: RecordedRequest): MockResponse? {
-        val users = "/users"
-        val repos = "/repos"
-        val path = request.path
-        val perPage = GitHubQueryParam.perPageParam(request)?.toIntOrNull()
-        val page = GitHubQueryParam.pageParam(request)?.toIntOrNull()
+        val url = request.requestUrl
+        val perPage = GitHubQueryParam.perPageParam(request)
+        val repos = url?.pathSegments?.getOrNull(2)
+        if (perPage != 10 || repos != "repos") return null
 
-        val successResponse = MockResponse().setResponseCode(200)
+        val login = url.pathSegments.getOrNull(1)
+        val page = GitHubQueryParam.pageParam(request)
+        val body = mockData[login]?.get(page) ?: return null
 
-        return when {
-            path == (users + "wycats" + repos) && perPage == 10 -> when (page) {
-                1 -> successResponse.setBody(wycats_item10_page1)
-                2 -> successResponse.setBody(wycats_item10_page2)
-                3 -> successResponse.setBody(wycats_item10_page3)
-                4 -> successResponse.setBody(wycats_item10_page4)
-                else -> null
-            }
-
-            path == (users + "fwhyn" + repos) && perPage == 10 -> when (page) {
-                1 -> successResponse.setBody(fwhyn_item10_page1)
-                2 -> successResponse.setBody(fwhyn_item10_page2)
-                3 -> successResponse.setBody(fwhyn_item10_page3)
-                else -> null
-            }
-
-            else -> null
-        }
+        return MockResponse()
+            .setResponseCode(200)
+            .setBody(body)
     }
 }

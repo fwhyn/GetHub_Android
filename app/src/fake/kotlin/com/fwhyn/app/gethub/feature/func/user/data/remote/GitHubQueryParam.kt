@@ -4,15 +4,15 @@ import okhttp3.mockwebserver.RecordedRequest
 
 object GitHubQueryParam {
 
-    fun perPageParam(request: RecordedRequest): String? {
-        return request.requestUrl?.queryParameter("per_page")
+    fun perPageParam(request: RecordedRequest): Int? {
+        return request.requestUrl?.queryParameter("per_page")?.toIntOrNull()
     }
 
-    fun pageParam(request: RecordedRequest): String? {
-        return request.requestUrl?.queryParameter("page")
+    fun pageParam(request: RecordedRequest): Int? {
+        return request.requestUrl?.queryParameter("page")?.toIntOrNull()
     }
 
-    fun sinceParam(request: RecordedRequest): String? {
-        return request.requestUrl?.queryParameter("since")
+    fun sinceParam(request: RecordedRequest): Int? {
+        return request.requestUrl?.queryParameter("since")?.toIntOrNull()
     }
 }
