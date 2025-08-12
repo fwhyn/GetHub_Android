@@ -7,11 +7,11 @@ plugins {
 }
 
 android {
-    // TODO correct system design doc
     // TODO add ui test
     // TODO add integrated test
     // TODO add unit test
     // TODO check warnings
+    // TODO release latest baze
 
     namespace = "com.fwhyn.app.gethub"
     compileSdk = 36
