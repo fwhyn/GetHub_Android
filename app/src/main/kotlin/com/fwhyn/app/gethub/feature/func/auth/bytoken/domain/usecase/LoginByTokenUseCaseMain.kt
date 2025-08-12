@@ -1,6 +1,7 @@
 package com.fwhyn.app.gethub.feature.func.auth.bytoken.domain.usecase
 
 import com.fwhyn.app.gethub.common.helper.Constant.TIMEOUT_MILLIS
+import com.fwhyn.app.gethub.common.helper.trimSpaceTabEnter
 import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.repository.AuthTokenRepository
 import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.repository.AuthUserRepository
 import com.fwhyn.app.gethub.feature.func.auth.bytoken.domain.helper.toData
@@ -27,7 +28,7 @@ class LoginByTokenUseCaseMain @Inject constructor(
         param: LoginByTokenParam,
         result: suspend (LoginByTokenResult) -> Unit,
     ) {
-        val token = param.token
+        val token = param.token?.trimSpaceTabEnter()
         val output: LoginByTokenResult
 
         if (token == null || token.isBlank()) {

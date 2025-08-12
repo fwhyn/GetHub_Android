@@ -1,6 +1,7 @@
 package com.fwhyn.app.gethub.feature.screen.login
 
 import androidx.lifecycle.viewModelScope
+import com.fwhyn.app.gethub.common.helper.trimSpaceTabEnter
 import com.fwhyn.app.gethub.feature.func.auth.bytoken.domain.model.LoginByTokenParam
 import com.fwhyn.app.gethub.feature.func.auth.bytoken.domain.usecase.LoginByTokenUseCase
 import com.fwhyn.app.gethub.feature.screen.login.component.LoginMessageCode
@@ -43,8 +44,9 @@ class LoginViewModel @Inject constructor(
     }
 
     override fun onPasswordChanged(value: String) {
-        password.value = value
-        isValid.value = value.isNotBlank()
+        val trimmedValue = value.trimSpaceTabEnter()
+        password.value = trimmedValue
+        isValid.value = trimmedValue.isNotBlank()
     }
 
     override fun onLogin() {
