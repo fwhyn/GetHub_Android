@@ -1,5 +1,6 @@
 package com.fwhyn.app.gethub.feature.func.user.data.repository
 
+import com.fwhyn.app.gethub.common.helper.Constant.TIMEOUT_MILLIS
 import com.fwhyn.app.gethub.feature.func.user.data.model.GetGitHubUserProfileRepoParam
 import com.fwhyn.app.gethub.feature.func.user.data.model.GitHubUserProfileData
 import com.fwhyn.app.gethub.feature.func.user.data.remote.GitHubUserProfileRemoteDataSource
@@ -10,6 +11,11 @@ import javax.inject.Inject
 class GetGitHubUserProfileRepositoryMain @Inject constructor(
     private val gitHubUserProfileRemoteDataSource: GitHubUserProfileRemoteDataSource,
 ) : GetGitHubUserProfileRepository() {
+
+    init {
+        setTimeOutMillis(TIMEOUT_MILLIS)
+    }
+
     override suspend fun onRunning(
         param: GetGitHubUserProfileRepoParam,
         result: suspend (GitHubUserProfileData) -> Unit,

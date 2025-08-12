@@ -1,5 +1,6 @@
 package com.fwhyn.app.gethub.feature.func.user.data.repository
 
+import com.fwhyn.app.gethub.common.helper.Constant.TIMEOUT_MILLIS
 import com.fwhyn.app.gethub.common.helper.StatusExt
 import com.fwhyn.app.gethub.feature.func.user.data.model.GetGitHubReposRepoParam
 import com.fwhyn.app.gethub.feature.func.user.data.model.GitHubRepoData
@@ -15,6 +16,10 @@ class GetGitHubReposRepositoryMain @Inject constructor(
 
     private val loadedData: MutableSet<GitHubRepoData> = mutableSetOf()
     private var pageToLoad: Int = 1
+
+    init {
+        setTimeOutMillis(TIMEOUT_MILLIS)
+    }
 
     override suspend fun onRunning(
         param: GetGitHubReposRepoParam,

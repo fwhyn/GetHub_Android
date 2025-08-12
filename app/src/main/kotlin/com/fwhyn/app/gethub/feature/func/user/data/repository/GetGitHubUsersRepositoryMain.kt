@@ -1,5 +1,6 @@
 package com.fwhyn.app.gethub.feature.func.user.data.repository
 
+import com.fwhyn.app.gethub.common.helper.Constant.TIMEOUT_MILLIS
 import com.fwhyn.app.gethub.common.helper.StatusExt
 import com.fwhyn.app.gethub.feature.func.user.data.model.GetGitHubUsersRepoParam
 import com.fwhyn.app.gethub.feature.func.user.data.model.GitHubUserData
@@ -14,6 +15,10 @@ class GetGitHubUsersRepositoryMain @Inject constructor(
 
     private var lastId = 0
     private var loadedUsers = mutableSetOf<GitHubUserData>()
+
+    init {
+        setTimeOutMillis(TIMEOUT_MILLIS)
+    }
 
     override suspend fun onRunning(
         param: GetGitHubUsersRepoParam,
