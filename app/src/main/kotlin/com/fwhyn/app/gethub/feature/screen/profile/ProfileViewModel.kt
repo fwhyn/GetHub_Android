@@ -20,6 +20,7 @@ import com.fwhyn.app.gethub.feature.screen.profile.model.ProfileProperties
 import com.fwhyn.app.gethub.feature.screen.profile.model.ProfileState
 import com.fwhyn.lib.baze.common.model.Exzeption
 import com.fwhyn.lib.baze.common.model.Status
+import com.fwhyn.lib.baze.compose.model.CommonProperties
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -40,16 +41,16 @@ class ProfileViewModel @Inject constructor(
         get() = viewModelScope
 
     private val event = MutableSharedFlow<ProfileEvent>()
-    private val state = MutableStateFlow<ProfileState>(ProfileState.Idle)
     private val userName = MutableStateFlow<String>("")
     private val gitHubUserProfile = MutableStateFlow(GitHubUserProfileUi.default())
     private val gitHubRepos = MutableStateFlow<List<GitHubRepoUi>>(emptyList())
     private val gitHubEvents = MutableStateFlow<List<GitHubEventUi>>(emptyList())
 
     // ----------------------------------------------------------------
+    override val commonProp: CommonProperties = CommonProperties()
+
     override val properties: ProfileProperties = ProfileProperties(
         event = event,
-        state = state,
         gitHubUserProfile = gitHubUserProfile,
         gitHubRepos = gitHubRepos,
         gitHubEvents = gitHubEvents,
@@ -71,55 +72,42 @@ class ProfileViewModel @Inject constructor(
     }
 
     override fun onLoadNextRepos() {
-        if (isAllReposLoaded() && gitHubRepos.value.isNotEmpty()) return
-
-        getGitHubRepos(
-            onStart = { state.value = ProfileState.Loading },
-            onFinish = { state.value = ProfileState.Idle }
-        )
+        if (isUnableToLoadMoreRepos()) return
+        getGitHubRepos()
     }
 
     override fun onLoadNextEvents() {
         if (isAllEventsLoaded()) return
-
-        getGitHubEvents(
-            onStart = { state.value = ProfileState.Loading },
-            onFinish = { state.value = ProfileState.Idle }
-        )
+        getGitHubEvents()
     }
 
     // ----------------------------------------------------------------
     private fun loadGitHubUserProfile() {
+        val id = getGitHubUserProfile.getId()
         getGitHubUserProfile.invoke(
             scope = scope,
-            onStart = { state.value = ProfileState.Loading },
+            onStart = { showLoading(id) },
             onFetchParam = {
                 GetGitHubUserProfileRepoParam(username = userName.value)
             },
             onOmitResult = {
                 it.onSuccess { data ->
                     gitHubUserProfile.value = data.toUi()
-
-                    getGitHubRepos(onFinish = {
-                        getGitHubEvents(onFinish = {
-                            state.value = ProfileState.Idle
-                        })
-                    })
+                    getGitHubRepos()
+                    getGitHubEvents()
                 }.onFailure { error ->
                     handleError(error)
-                    state.value = ProfileState.Idle
                 }
             },
+            onFinish = { dismissLoading(id) }
         )
     }
 
-    fun getGitHubRepos(
-        onStart: () -> Unit = {},
-        onFinish: () -> Unit = {},
-    ) {
+    fun getGitHubRepos() {
+        val id = getGitHubRepos.getId()
         getGitHubRepos.invoke(
             scope = scope,
-            onStart = onStart,
+            onStart = { showLoading(id) },
             onFetchParam = {
                 GetGitHubReposRepoParam.default(username = userName.value)
             },
@@ -130,17 +118,15 @@ class ProfileViewModel @Inject constructor(
                     handleError(error)
                 }
             },
-            onFinish = onFinish,
+            onFinish = { dismissLoading(id) },
         )
     }
 
-    fun getGitHubEvents(
-        onStart: () -> Unit = {},
-        onFinish: () -> Unit = {},
-    ) {
+    fun getGitHubEvents() {
+        val id = getGitHubEvents.getId()
         getGitHubEvents.invoke(
             scope = scope,
-            onStart = onStart,
+            onStart = { showLoading(id) },
             onFetchParam = {
                 GetGitHubEventsRepoParam.default(username = userName.value)
             },
@@ -151,8 +137,12 @@ class ProfileViewModel @Inject constructor(
                     handleError(error)
                 }
             },
-            onFinish = onFinish,
+            onFinish = { dismissLoading(id) },
         )
+    }
+
+    private fun isUnableToLoadMoreRepos(): Boolean {
+        return isAllReposLoaded() && gitHubRepos.value.isNotEmpty()
     }
 
     private fun isAllReposLoaded(): Boolean {
@@ -164,9 +154,10 @@ class ProfileViewModel @Inject constructor(
     }
 
     private fun logout() {
+        val id = logoutUseCase.getId()
         logoutUseCase.invoke(
             scope = scope,
-            onStart = { state.value = ProfileState.Loading },
+            onStart = { showLoading(id) },
             onFetchParam = {},
             onOmitResult = {
                 it.onSuccess {
@@ -175,8 +166,16 @@ class ProfileViewModel @Inject constructor(
                     handleError(error)
                 }
             },
-            onFinish = { state.value = ProfileState.Idle },
+            onFinish = { dismissLoading(id) },
         )
+    }
+
+    private fun showLoading(tag: String) {
+        commonProp.showDialog(tag, ProfileState.Loading)
+    }
+
+    private fun dismissLoading(tag: String) {
+        commonProp.dismissDialog(tag)
     }
 
     private suspend fun handleError(error: Throwable) {

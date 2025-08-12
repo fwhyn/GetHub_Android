@@ -52,6 +52,8 @@ import com.fwhyn.lib.baze.compose.dialog.CircularProgressDialog
 import com.fwhyn.lib.baze.compose.helper.ActivityState
 import com.fwhyn.lib.baze.compose.helper.DevicePreviews
 import com.fwhyn.lib.baze.compose.helper.rememberActivityState
+import com.fwhyn.lib.baze.compose.model.CommonProperties
+import com.fwhyn.lib.baze.compose.model.CommonState
 
 private const val USERNAME = "userName"
 const val PROFILE_ROUTE = "PROFILE_ROUTE/{$USERNAME}"
@@ -101,10 +103,9 @@ private fun ProfileScreen(
     }
 
     // ----------------------------------------------------------------
-    val state by vm.properties.state.collectAsStateWithLifecycle()
-    when (state) {
-        ProfileState.Idle -> {} // do nothing
-        ProfileState.Loading -> CircularProgressDialog()
+    val state by vm.commonProp.state.collectAsStateWithLifecycle()
+    when ((state as? CommonState.Dialog<*>)?.dat) {
+        is ProfileState.Loading -> CircularProgressDialog()
     }
 
     // ----------------------------------------------------------------
@@ -252,6 +253,8 @@ fun ProfileScreenPreview() {
             activityState = rememberActivityState(),
             stringManager = ProfileStringManagerMain(LocalContext.current),
             vm = object : ProfileVmInterface() {
+                override val commonProp: CommonProperties
+                    get() = CommonProperties()
                 override val properties: ProfileProperties
                     get() = profilePropertiesFake
 
