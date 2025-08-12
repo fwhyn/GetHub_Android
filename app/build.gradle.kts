@@ -12,7 +12,6 @@ android {
     // TODO add integrated test
     // TODO add unit test
     // TODO check warnings
-    // TODO add app icon
 
     namespace = "com.fwhyn.app.gethub"
     compileSdk = 36
