@@ -14,6 +14,7 @@ import com.fwhyn.app.gethub.feature.screen.home.model.HomeProperties
 import com.fwhyn.app.gethub.feature.screen.home.model.HomeState
 import com.fwhyn.lib.baze.common.model.Exzeption
 import com.fwhyn.lib.baze.common.model.Status
+import com.fwhyn.lib.baze.compose.model.CommonProperties
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -32,15 +33,15 @@ class HomeViewModel @Inject constructor(
         get() = viewModelScope
 
     private val event: MutableSharedFlow<HomeEvent> = MutableSharedFlow()
-    private val state: MutableStateFlow<HomeState> = MutableStateFlow(HomeState.Idle)
     private val gitHubUsers: MutableStateFlow<List<GitHubUserUi>> = MutableStateFlow(emptyList())
     private val querySuggestions: MutableStateFlow<List<GitHubUserUi>> = MutableStateFlow(emptyList())
     private val query: MutableStateFlow<String> = MutableStateFlow("")
 
     // ----------------------------------------------------------------
+    override val commonProp: CommonProperties = CommonProperties()
+
     override val properties: HomeProperties = HomeProperties(
         event = event,
-        state = state,
         gitHubUsers = gitHubUsers,
         querySuggestions = querySuggestions,
         query = query,
@@ -80,9 +81,10 @@ class HomeViewModel @Inject constructor(
 
     // ----------------------------------------------------------------
     private fun getGitHubUsers(param: GetGitHubUsersRepoParam = GetGitHubUsersRepoParam.default()) {
+        val id = getGitHubUsers.getId()
         getGitHubUsers.invoke(
             scope = scope,
-            onStart = { state.value = HomeState.Loading },
+            onStart = { showLoading(id) },
             onFetchParam = { param },
             onOmitResult = {
                 it.onSuccess { data ->
@@ -91,7 +93,7 @@ class HomeViewModel @Inject constructor(
                     handleError(error)
                 }
             },
-            onFinish = { state.value = HomeState.Idle },
+            onFinish = { dismissLoading(id) },
         )
     }
 
@@ -101,9 +103,10 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun logout() {
+        val id = logoutUseCase.getId()
         logoutUseCase.invoke(
             scope = scope,
-            onStart = { state.value = HomeState.Loading },
+            onStart = { showLoading(id) },
             onFetchParam = {},
             onOmitResult = {
                 it.onSuccess {
@@ -112,8 +115,16 @@ class HomeViewModel @Inject constructor(
                     handleError(error)
                 }
             },
-            onFinish = { state.value = HomeState.Idle },
+            onFinish = { dismissLoading(id) },
         )
+    }
+
+    private fun showLoading(tag: String) {
+        commonProp.showDialog(tag, HomeState.Loading)
+    }
+
+    private fun dismissLoading(tag: String) {
+        commonProp.dismissDialog(tag)
     }
 
     private suspend fun handleError(error: Throwable) {
@@ -135,6 +146,7 @@ class HomeViewModel @Inject constructor(
                 logout()
                 HomeMessageCode.Unauthorized
             }
+
             is Status.Instance -> handleErrorStatusCode(status)
             else -> HomeMessageCode.UnexpectedError
         }

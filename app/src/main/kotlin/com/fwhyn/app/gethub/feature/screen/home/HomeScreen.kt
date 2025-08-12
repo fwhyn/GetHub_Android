@@ -40,14 +40,16 @@ import com.fwhyn.app.gethub.feature.screen.home.component.LogoutButton
 import com.fwhyn.app.gethub.feature.screen.home.component.getStateOfGitHubUsersViewParam
 import com.fwhyn.app.gethub.feature.screen.home.model.HomeEvent
 import com.fwhyn.app.gethub.feature.screen.home.model.HomeProperties
-import com.fwhyn.app.gethub.feature.screen.home.model.HomeState
 import com.fwhyn.app.gethub.feature.screen.home.model.homePropertiesFake
 import com.fwhyn.app.gethub.feature.screen.login.navigateToLoginScreen
+import com.fwhyn.app.gethub.feature.screen.profile.model.ProfileState
 import com.fwhyn.app.gethub.feature.screen.profile.navigateToProfileScreen
 import com.fwhyn.lib.baze.compose.dialog.CircularProgressDialog
 import com.fwhyn.lib.baze.compose.helper.ActivityState
 import com.fwhyn.lib.baze.compose.helper.DevicePreviews
 import com.fwhyn.lib.baze.compose.helper.rememberActivityState
+import com.fwhyn.lib.baze.compose.model.CommonProperties
+import com.fwhyn.lib.baze.compose.model.CommonState
 
 const val HOME_ROUTE = "HOME_ROUTE"
 
@@ -87,10 +89,9 @@ private fun HomeScreen(
     }
 
     // ----------------------------------------------------------------
-    val state by vm.properties.state.collectAsStateWithLifecycle()
-    when (state) {
-        HomeState.Idle -> {} // do nothing
-        HomeState.Loading -> CircularProgressDialog()
+    val state by vm.commonProp.state.collectAsStateWithLifecycle()
+    when ((state as? CommonState.Dialog<*>)?.dat) {
+        is ProfileState.Loading -> CircularProgressDialog()
     }
 
     // ----------------------------------------------------------------
@@ -202,6 +203,8 @@ fun HomeScreenPreview() {
             activityState = rememberActivityState(),
             stringManager = HomeStringManagerMain(LocalContext.current),
             vm = object : HomeVmInterface() {
+                override val commonProp: CommonProperties
+                    get() = CommonProperties()
                 override val properties: HomeProperties
                     get() = homePropertiesFake
             },
