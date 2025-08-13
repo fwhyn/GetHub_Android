@@ -50,7 +50,7 @@ class AuthTokenRepositoryMainTest {
 
     // ----------------------------------------------------------------
     @Test
-    fun getFirstTimeShouldThrowNotFoundExeption() = runTest {
+    fun getFirstTimeShouldThrowNotFoundException() = runTest {
         var status: Status? = null
         try {
             authTokenRepository.get(Unit)
