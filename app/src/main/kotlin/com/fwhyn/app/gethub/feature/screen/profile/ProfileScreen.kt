@@ -1,6 +1,7 @@
 package com.fwhyn.app.gethub.feature.screen.profile
 
 import android.content.res.Configuration
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -106,6 +107,7 @@ private fun ProfileScreen(
     val state by vm.commonProp.state.collectAsStateWithLifecycle()
     when ((state as? CommonState.Dialog<*>)?.dat) {
         is ProfileState.Loading -> CircularProgressDialog()
+        else -> Log.d(PROFILE_ROUTE, "Unhandled State")
     }
 
     // ----------------------------------------------------------------

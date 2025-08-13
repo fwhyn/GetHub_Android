@@ -1,5 +1,6 @@
 package com.fwhyn.app.gethub.feature.screen.home
 
+import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -40,9 +41,9 @@ import com.fwhyn.app.gethub.feature.screen.home.component.LogoutButton
 import com.fwhyn.app.gethub.feature.screen.home.component.getStateOfGitHubUsersViewParam
 import com.fwhyn.app.gethub.feature.screen.home.model.HomeEvent
 import com.fwhyn.app.gethub.feature.screen.home.model.HomeProperties
+import com.fwhyn.app.gethub.feature.screen.home.model.HomeState
 import com.fwhyn.app.gethub.feature.screen.home.model.homePropertiesFake
 import com.fwhyn.app.gethub.feature.screen.login.navigateToLoginScreen
-import com.fwhyn.app.gethub.feature.screen.profile.model.ProfileState
 import com.fwhyn.app.gethub.feature.screen.profile.navigateToProfileScreen
 import com.fwhyn.lib.baze.compose.dialog.CircularProgressDialog
 import com.fwhyn.lib.baze.compose.helper.ActivityState
@@ -91,7 +92,8 @@ private fun HomeScreen(
     // ----------------------------------------------------------------
     val state by vm.commonProp.state.collectAsStateWithLifecycle()
     when ((state as? CommonState.Dialog<*>)?.dat) {
-        is ProfileState.Loading -> CircularProgressDialog()
+        is HomeState.Loading -> CircularProgressDialog()
+        else -> Log.d(HOME_ROUTE, "Unhandled State")
     }
 
     // ----------------------------------------------------------------
