@@ -20,5 +20,4 @@ class AuthUserRepositoryMain @Inject constructor(
             }
         }
     }
-
 }
