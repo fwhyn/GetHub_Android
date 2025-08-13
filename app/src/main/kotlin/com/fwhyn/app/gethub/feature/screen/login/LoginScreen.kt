@@ -1,5 +1,6 @@
 package com.fwhyn.app.gethub.feature.screen.login
 
+import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.layout.Arrangement
@@ -51,6 +52,8 @@ import com.fwhyn.lib.baze.compose.dialog.CircularProgressDialog
 import com.fwhyn.lib.baze.compose.helper.ActivityState
 import com.fwhyn.lib.baze.compose.helper.DevicePreviews
 import com.fwhyn.lib.baze.compose.helper.rememberActivityState
+import com.fwhyn.lib.baze.compose.model.CommonProperties
+import com.fwhyn.lib.baze.compose.model.CommonState
 
 const val LOGIN_ROUTE = "LOGIN_ROUTE"
 
@@ -108,10 +111,10 @@ fun LoginScreen(
     }
 
     // ----------------------------------------------------------------
-    val state by vm.properties.state.collectAsStateWithLifecycle()
-    when (state) {
-        LoginState.Idle -> {} // do nothing
-        LoginState.Loading -> CircularProgressDialog()
+    val state by vm.commonProp.state.collectAsStateWithLifecycle()
+    when ((state as? CommonState.Dialog<*>)?.dat) {
+        is LoginState.Loading -> CircularProgressDialog()
+        else -> Log.d(LOGIN_ROUTE, "Unhandled State")
     }
 
     // ----------------------------------------------------------------
@@ -194,6 +197,8 @@ fun LoginScreenPreview() {
             activityState = rememberActivityState(),
             stringManager = LoginStringManagerMain(LocalContext.current),
             vm = object : LoginVmInterface() {
+                override val commonProp: CommonProperties
+                    get() = CommonProperties()
                 override val properties: LoginProperties
                     get() = loginPropertiesFake
 

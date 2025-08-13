@@ -10,6 +10,7 @@ import com.fwhyn.app.gethub.feature.screen.login.model.LoginProperties
 import com.fwhyn.app.gethub.feature.screen.login.model.LoginState
 import com.fwhyn.lib.baze.common.model.Exzeption
 import com.fwhyn.lib.baze.common.model.Status
+import com.fwhyn.lib.baze.compose.model.CommonProperties
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -27,13 +28,13 @@ class LoginViewModel @Inject constructor(
         get() = viewModelScope
 
     private val event: MutableSharedFlow<LoginEvent> = MutableSharedFlow()
-    private val state: MutableStateFlow<LoginState> = MutableStateFlow(LoginState.Idle)
     private val password: MutableStateFlow<String> = MutableStateFlow("")
     private val isValid: MutableStateFlow<Boolean> = MutableStateFlow(false)
 
+    override val commonProp: CommonProperties = CommonProperties()
+
     override val properties: LoginProperties = LoginProperties(
         event = event,
-        state = state,
         password = password,
         isValid = isValid,
     )
@@ -56,9 +57,10 @@ class LoginViewModel @Inject constructor(
 
     // ----------------------------------------------------------------
     private fun loginByToken(param: LoginByTokenParam = LoginByTokenParam.default()) {
+        val id = loginByTokenUseCase.getId()
         loginByTokenUseCase.invoke(
             scope = scope,
-            onStart = { state.value = LoginState.Loading },
+            onStart = { showLoading(id) },
             onFetchParam = { param },
             onOmitResult = {
                 it.onSuccess {
@@ -71,8 +73,16 @@ class LoginViewModel @Inject constructor(
                     }
                 }
             },
-            onFinish = { state.value = LoginState.Idle },
+            onFinish = { dismissLoading(id) },
         )
+    }
+
+    private fun showLoading(tag: String) {
+        commonProp.showDialog(tag, LoginState.Loading)
+    }
+
+    private fun dismissLoading(tag: String) {
+        commonProp.dismissDialog(tag)
     }
 
     private suspend fun handleError(error: Throwable) {
