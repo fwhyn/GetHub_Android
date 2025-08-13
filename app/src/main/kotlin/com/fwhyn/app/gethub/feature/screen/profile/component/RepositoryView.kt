@@ -21,6 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -58,7 +59,9 @@ fun RepositoryView(
 
             Text(
                 modifier = Modifier.padding(top = 8.dp),
-                text = param.repo.description ?: stringResource(R.string.dash)
+                text = param.repo.description ?: stringResource(R.string.dash),
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
             )
 
             Text(
