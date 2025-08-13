@@ -13,6 +13,7 @@ import com.fwhyn.lib.baze.common.model.Status
 import com.fwhyn.lib.baze.compose.model.CommonProperties
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import java.net.SocketTimeoutException
@@ -88,7 +89,9 @@ class LoginViewModel @Inject constructor(
     private suspend fun handleError(error: Throwable) {
         val code = when (error) {
             is Exzeption -> handleExzeptionError(error.status)
-            is SocketTimeoutException -> LoginMessageCode.TimeOutError
+            is TimeoutCancellationException,
+            is SocketTimeoutException,
+                -> LoginMessageCode.TimeOutError
             is UnknownHostException -> LoginMessageCode.NetworkError
             else -> LoginMessageCode.LoginError
         }

@@ -23,6 +23,7 @@ import com.fwhyn.lib.baze.common.model.Status
 import com.fwhyn.lib.baze.compose.model.CommonProperties
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import java.net.SocketTimeoutException
@@ -181,7 +182,9 @@ class ProfileViewModel @Inject constructor(
     private suspend fun handleError(error: Throwable) {
         val errorCode = when (error) {
             is Exzeption -> handleExzeptionError(error.status)
-            is SocketTimeoutException -> ProfileMessageCode.TimeOutError
+            is TimeoutCancellationException,
+            is SocketTimeoutException,
+                -> ProfileMessageCode.TimeOutError
             is UnknownHostException -> ProfileMessageCode.NetworkError
             else -> ProfileMessageCode.UnexpectedError
         }
