@@ -36,12 +36,11 @@ class AuthUserRepositoryMainTest {
 
     @Before
     fun setUp() {
-        val httpUrl = MockWebServerProvider.get().url("/")
+        val httpUrl = MockWebServerProvider.httpUrl()
         val retrofitModule = RetrofitGitHubDiMain()
-        val builder = retrofitModule.retrofitBuilder(httpUrl)
 
         val retrofit = retrofitModule.retrofit(
-            builder = builder,
+            baseUrl = httpUrl,
             authTokenLocalDataSource = authTokenLocalDataSource
         )
         val authUserRemoteDataSource = AuthTokenDiMain().authUserRemoteDataSource(retrofit)

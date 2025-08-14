@@ -8,12 +8,17 @@ import com.fwhyn.app.gethub.feature.func.event.data.remote.GitHubEventsResponse
 import com.fwhyn.app.gethub.feature.func.user.data.remote.GitHubReposResponse
 import com.fwhyn.app.gethub.feature.func.user.data.remote.GitHubUsersByLoginResponse
 import com.fwhyn.app.gethub.feature.func.user.data.remote.GitHubUsersResponse
+import okhttp3.HttpUrl
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import okhttp3.mockwebserver.RecordedRequest
 
 object MockWebServerProvider {
+
+    fun httpUrl(): HttpUrl {
+        return get().url("/")
+    }
 
     fun get(): MockWebServer {
         val mockWebServer = MockWebServer()

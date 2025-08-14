@@ -28,6 +28,6 @@ class GitHubApiDiFake {
             StrictMode.setThreadPolicy(policy)
         }
 
-        return MockWebServerProvider.get().url("/")
+        return MockWebServerProvider.httpUrl()
     }
 }
