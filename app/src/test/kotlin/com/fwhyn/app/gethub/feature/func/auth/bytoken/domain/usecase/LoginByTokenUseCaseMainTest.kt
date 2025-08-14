@@ -119,7 +119,7 @@ class LoginByTokenUseCaseMainTest {
         loginByTokenUseCase.join()
 
         Assert.assertEquals(null, resultSuccess)
-        Assert.assertEquals(Status.NotFound, resultFailure?.status)
+        Assert.assertEquals(Status.Unauthorized, resultFailure?.status)
     }
 
     @Test
@@ -145,5 +145,55 @@ class LoginByTokenUseCaseMainTest {
 
         Assert.assertEquals(validatedLocalToken.validatedUser, resultSuccess?.user)
         Assert.assertEquals(null, resultFailure)
+    }
+
+    @Test
+    fun `login success when input token is correct`() = runTest {
+        val correctToken = TOKEN_FAKE
+
+        var resultSuccess: LoginByTokenResult? = null
+        var resultFailure: Throwable? = null
+        loginByTokenUseCase.invoke(
+            scope = this,
+            onFetchParam = {
+                LoginByTokenParam(token = correctToken)
+            },
+            onOmitResult = {
+                it.onSuccess { output ->
+                    resultSuccess = output
+                }.onFailure { error ->
+                    resultFailure = error
+                }
+            }
+        )
+        loginByTokenUseCase.join()
+
+        Assert.assertEquals(validatedLocalToken.validatedUser, resultSuccess?.user)
+        Assert.assertEquals(null, resultFailure)
+    }
+
+    @Test
+    fun `login failed when input token is incorrect`() = runTest {
+        val incorrectToken = "jskdaf"
+
+        var resultSuccess: LoginByTokenResult? = null
+        var resultFailure: Exzeption? = null
+        loginByTokenUseCase.invoke(
+            scope = this,
+            onFetchParam = {
+                LoginByTokenParam(token = incorrectToken)
+            },
+            onOmitResult = {
+                it.onSuccess { output ->
+                    resultSuccess = output
+                }.onFailure { error ->
+                    resultFailure = error as? Exzeption
+                }
+            }
+        )
+        loginByTokenUseCase.join()
+
+        Assert.assertEquals(null, resultSuccess)
+        Assert.assertEquals(Status.Unauthorized, resultFailure?.status)
     }
 }
