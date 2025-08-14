@@ -18,6 +18,7 @@ import com.fwhyn.app.gethub.feature.func.auth.bytoken.domain.model.LoginByTokenP
 import com.fwhyn.app.gethub.feature.func.auth.bytoken.domain.model.LoginByTokenResult
 import com.fwhyn.lib.baze.common.model.Exzeption
 import com.fwhyn.lib.baze.common.model.Status
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Assert
@@ -149,12 +150,27 @@ class LoginByTokenUseCaseMainTest {
 
     @Test
     fun `login success when input token is correct`() = runTest {
+        loginSuccess(this)
+    }
+
+    @Test
+    fun `login failed when input token is incorrect`() = runTest {
+        loginFailed(this)
+    }
+
+    @Test
+    fun `login failed then success when input token is incorrect then correct`() = runTest {
+        loginFailed(this)
+        loginSuccess(this)
+    }
+
+    private suspend fun loginSuccess(scope: CoroutineScope) {
         val correctToken = TOKEN_FAKE
 
         var resultSuccess: LoginByTokenResult? = null
         var resultFailure: Throwable? = null
         loginByTokenUseCase.invoke(
-            scope = this,
+            scope = scope,
             onFetchParam = {
                 LoginByTokenParam(token = correctToken)
             },
@@ -172,14 +188,13 @@ class LoginByTokenUseCaseMainTest {
         Assert.assertEquals(null, resultFailure)
     }
 
-    @Test
-    fun `login failed when input token is incorrect`() = runTest {
+    private suspend fun loginFailed(scope: CoroutineScope) {
         val incorrectToken = "jskdaf"
 
         var resultSuccess: LoginByTokenResult? = null
         var resultFailure: Exzeption? = null
         loginByTokenUseCase.invoke(
-            scope = this,
+            scope = scope,
             onFetchParam = {
                 LoginByTokenParam(token = incorrectToken)
             },
