@@ -6,7 +6,7 @@ import okhttp3.mockwebserver.RecordedRequest
 object GitHubAuthResponse {
 
     // TODO use this token in fake mode variant
-    const val TOKEN = "admin"
+    const val TOKEN_FAKE = "admin"
 
     val errorAuthResponse = MockResponse().setResponseCode(401)
 
@@ -21,6 +21,6 @@ object GitHubAuthResponse {
         val authHeader = request.getHeader("Authorization")
         val token = authHeader?.removePrefix("Bearer ")
 
-        return token != TOKEN
+        return token != TOKEN_FAKE
     }
 }

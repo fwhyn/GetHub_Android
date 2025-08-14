@@ -1,10 +1,13 @@
 package com.fwhyn.app.gethub.feature.func.auth.bytoken.data.remote
 
 object GitHubUserSuccessResponse {
+    const val LOGIN = "fwhyn"
+    const val ID = 22416802
+
     val success = """
         {
-            "login": "fwhyn",
-            "id": 22416802,
+            "login": "$LOGIN",
+            "id": $ID,
             "node_id": "MDQ6VXNlcjIyNDE2ODAy",
             "avatar_url": "https://avatars.githubusercontent.com/u/22416802?v=4",
             "gravatar_id": "",
