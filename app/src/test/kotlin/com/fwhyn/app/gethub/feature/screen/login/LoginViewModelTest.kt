@@ -2,7 +2,7 @@ package com.fwhyn.app.gethub.feature.screen.login
 
 import MainDispatcherRule
 import app.cash.turbine.test
-import com.fwhyn.app.gethub.assertNoProducedValue
+import assertNoProducedValue
 import com.fwhyn.app.gethub.feature.func.auth.bytoken.domain.model.AuthUserDomain
 import com.fwhyn.app.gethub.feature.func.auth.bytoken.domain.model.LoginByTokenParam
 import com.fwhyn.app.gethub.feature.func.auth.bytoken.domain.model.LoginByTokenResult

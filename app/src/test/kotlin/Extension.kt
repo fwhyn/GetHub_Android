@@ -1,7 +1,4 @@
-package com.fwhyn.app.gethub
-
 import app.cash.turbine.ReceiveTurbine
-import com.fwhyn.lib.baze.common.helper.Rezult
 import org.junit.Assert
 
 suspend fun <T> ReceiveTurbine<T>.assertNoProducedValue() {
@@ -14,6 +11,6 @@ suspend fun <T> ReceiveTurbine<T>.assertNoProducedValue() {
     }
 }
 
-suspend fun <T> ReceiveTurbine<T>.asResultFailureOrNull(): Rezult.Failure<Throwable>? {
-    return awaitItem() as? Rezult.Failure<Throwable>
+suspend fun <T> ReceiveTurbine<T>.resultFailureOrNull(): Throwable? {
+    return (awaitItem() as? Result<T>)?.exceptionOrNull()
 }

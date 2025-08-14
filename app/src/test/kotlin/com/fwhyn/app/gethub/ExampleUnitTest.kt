@@ -1,6 +1,7 @@
 package com.fwhyn.app.gethub
 
 import app.cash.turbine.test
+import assertNoProducedValue
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
