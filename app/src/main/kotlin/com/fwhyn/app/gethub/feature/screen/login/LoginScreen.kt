@@ -57,7 +57,11 @@ import com.fwhyn.lib.baze.compose.model.CommonProperties
 import com.fwhyn.lib.baze.compose.model.CommonState
 
 const val LOGIN_ROUTE = "LOGIN_ROUTE"
-const val LOGIN_LOADING_TEST_TAG = "LOGIN_CIRCULAR_TEST_TAG"
+const val LOGIN_LOADING_TAG = "LOGIN_LOADING_TAG"
+const val LOGIN_TITLE_TAG = "LOGIN_WELCOME_TAG"
+const val LOGIN_PASSWORD_TAG = "LOGIN_PASSWORD_TAG"
+const val LOGIN_BUTTON_TAG = "LOGIN_BUTTON_TAG"
+const val LOGIN_GENERATE_TOKEN_TAG = "LOGIN_GENERATE_TOKEN_TAG"
 
 val loginScreenModifier = Modifier
     .fillMaxSize()
@@ -117,7 +121,7 @@ fun LoginScreen(
     // ----------------------------------------------------------------
     val state by vm.commonProp.state.collectAsStateWithLifecycle()
     when ((state as? CommonState.Dialog<*>)?.dat) {
-        is LoginState.Loading -> CircularProgressDialog(Modifier.testTag(LOGIN_LOADING_TEST_TAG))
+        is LoginState.Loading -> CircularProgressDialog(Modifier.testTag(LOGIN_LOADING_TAG))
         else -> Log.d(LOGIN_ROUTE, "Unhandled State")
     }
 
@@ -158,22 +162,23 @@ fun LoginView(
         val commonFieldModifier = Modifier.fillMaxWidth()
 
         LoginTitle(
-            modifier = commonFieldModifier,
+            modifier = commonFieldModifier.testTag(LOGIN_TITLE_TAG),
         )
 
         MySpacer(20.dp)
         PasswordField(
-            modifier = commonFieldModifier,
+            modifier = commonFieldModifier.testTag(LOGIN_PASSWORD_TAG),
             param = param.passwordFieldParam
         )
 
         MySpacer(20.dp)
         LoginButton(
-            modifier = commonFieldModifier,
+            modifier = commonFieldModifier.testTag(LOGIN_BUTTON_TAG),
             param = param.loginButtonParam
         )
 
         Row(
+            modifier = Modifier.testTag(LOGIN_GENERATE_TOKEN_TAG),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center,
         ) {

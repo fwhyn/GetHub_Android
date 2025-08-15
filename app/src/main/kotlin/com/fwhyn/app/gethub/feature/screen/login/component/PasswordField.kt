@@ -51,7 +51,7 @@ fun PasswordField(
         IconButton(onClick = { isPasswordVisible = !isPasswordVisible }) {
             Icon(
                 if (isPasswordVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility,
-                contentDescription = stringResource(R.string.password_field),
+                contentDescription = stringResource(R.string.password_hide_unhide),
                 tint = MaterialTheme.colorScheme.primary
             )
         }

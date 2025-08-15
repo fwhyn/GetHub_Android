@@ -96,14 +96,17 @@ dependencies {
 
     // Testing Dependencies
     testImplementation(libs.io.mock)
-    testImplementation(libs.org.jetbrains.kotlinx.coroutines.test)
     testImplementation(libs.org.robolectric)
     testImplementation(libs.app.cash.turbine)
     testImplementation(libs.com.squareup.okhttp3.mockwebserver)
 
     androidTestImplementation(libs.androidx.runner)
 
-    /// JUnit Testing
+    //// Coroutine test
+    testImplementation(libs.org.jetbrains.kotlinx.coroutines.test)
+    androidTestImplementation(libs.org.jetbrains.kotlinx.coroutines.test)
+
+    //// JUnit Testing
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
 
@@ -111,7 +114,7 @@ dependencies {
     androidTestImplementation(libs.bundles.androidx.compose.test)
     androidTestImplementation(platform(libs.androidx.compose.bom))
 
-    /// Dagger Hilt Testing
+    //// Dagger Hilt Testing
     testImplementation(libs.com.google.dagger.hilt.android.testing)
     kaptTest(libs.bundles.dagger.hilt.compiler)
     testAnnotationProcessor(libs.bundles.dagger.hilt.compiler)
