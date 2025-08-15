@@ -21,10 +21,10 @@ runner = "1.6.2"
 # ----------------------------------------------------------------------------------------------------------------------
 [libraries]
 # Main Dependency --------------------------------
-androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version = "1.2.0-beta02" }
+androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version = "1.2.0-rc01" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidxCoreKtx" }
 androidx-security-crypto-ktx = { module = "androidx.security:security-crypto-ktx", version = "1.1.0" }
-fwhyn-lib-baze = { module = "io.github.fwhyn.lib:baze", version = "1.7.5" }
+fwhyn-lib-baze = { module = "io.github.fwhyn.lib:baze", version = "1.7.6" }
 org-apache-poi-ooxml = { module = "org.apache.poi:poi-ooxml", version = "5.2.3" }
 
 com-google-dagger-hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "googleDaggerHilt" }

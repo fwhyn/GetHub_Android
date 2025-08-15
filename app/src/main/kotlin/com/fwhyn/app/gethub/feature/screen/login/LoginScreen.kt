@@ -18,6 +18,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -56,15 +57,18 @@ import com.fwhyn.lib.baze.compose.model.CommonProperties
 import com.fwhyn.lib.baze.compose.model.CommonState
 
 const val LOGIN_ROUTE = "LOGIN_ROUTE"
+const val LOGIN_LOADING_TEST_TAG = "LOGIN_CIRCULAR_TEST_TAG"
+
+val loginScreenModifier = Modifier
+    .fillMaxSize()
+    .padding(24.dp)
 
 fun NavGraphBuilder.addLoginScreen(
     activityState: ActivityState,
 ) {
     composable(LOGIN_ROUTE) { backStack ->
         LoginScreen(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(24.dp),
+            modifier = loginScreenModifier,
             stringManager = LoginStringManagerMain(LocalContext.current),
             activityState = activityState,
             vm = hiltViewModel<LoginViewModel>(),
@@ -113,7 +117,7 @@ fun LoginScreen(
     // ----------------------------------------------------------------
     val state by vm.commonProp.state.collectAsStateWithLifecycle()
     when ((state as? CommonState.Dialog<*>)?.dat) {
-        is LoginState.Loading -> CircularProgressDialog()
+        is LoginState.Loading -> CircularProgressDialog(Modifier.testTag(LOGIN_LOADING_TEST_TAG))
         else -> Log.d(LOGIN_ROUTE, "Unhandled State")
     }
 
@@ -195,6 +199,7 @@ fun LoginScreenPreview() {
     MyTheme {
         LoginScreen(
             activityState = rememberActivityState(),
+            modifier = loginScreenModifier,
             stringManager = LoginStringManagerMain(LocalContext.current),
             vm = object : LoginVmInterface() {
                 override val commonProp: CommonProperties
@@ -202,6 +207,9 @@ fun LoginScreenPreview() {
                 override val properties: LoginProperties
                     get() = loginPropertiesFake
 
+                init {
+                    commonProp.showDialog("tag", LoginState.Loading)
+                }
             }
         )
     }

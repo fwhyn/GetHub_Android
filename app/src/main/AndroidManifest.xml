@@ -13,13 +13,16 @@
         android:theme="@style/Theme.GetHub">
         <activity
             android:name="com.fwhyn.app.gethub.feature.screen.main.MainActivity"
-            android:exported="true"
-            android:theme="@style/Theme.GetHub">
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".feature.screen.main.MainForTestActivity"
+            android:exported="false" />
     </application>
 
 </manifest>
