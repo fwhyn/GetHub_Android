@@ -10,11 +10,11 @@ class AuthTokenRepositoryMain @Inject constructor(
     private val authTokenLocalDataSource: AuthTokenLocalDataSource,
 ) : AuthTokenRepository {
     override suspend fun get(param: Unit): AuthTokenData {
-        val data = authTokenLocalDataSource.token ?: throw Exzeption(Status.NotFound)
+        val data = authTokenLocalDataSource.get() ?: throw Exzeption(Status.NotFound)
         return data
     }
 
     override suspend fun set(param: Unit, data: AuthTokenData?) {
-        authTokenLocalDataSource.token = data
+        authTokenLocalDataSource.set(data)
     }
 }

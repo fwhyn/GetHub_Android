@@ -18,14 +18,13 @@ class PreferenceDi {
     annotation class EncryptedPrefs
 
     companion object {
-        const val ENCRYPTED_PREFS_NAME = "ENCRYPTED_PREFS_GETHUB"
+        const val ENCRYPTED_PREFS_GETHUB = "ENCRYPTED_PREFS_GETHUB"
     }
 
-    // TODO encrypt shared preferences
     @Provides
     @Singleton
     @EncryptedPrefs
     fun sharedPreferences(@ApplicationContext context: Context): SharedPreferences {
-        return context.getSharedPreferences(ENCRYPTED_PREFS_NAME, Context.MODE_PRIVATE)
+        return context.getSharedPreferences(ENCRYPTED_PREFS_GETHUB, Context.MODE_PRIVATE)
     }
 }

@@ -6,6 +6,9 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityRetainedComponent
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import okhttp3.HttpUrl
 import retrofit2.Retrofit
 
@@ -19,12 +22,15 @@ class RetrofitGitHubDiMain {
         @GitHubApi baseUrl: HttpUrl,
         authTokenLocalDataSource: AuthTokenLocalDataSource,
     ): Retrofit {
+        var token = ""
+        CoroutineScope(Dispatchers.Default).launch {
+            authTokenLocalDataSource.getFlow().collect {
+                token = it?.value ?: ""
+            }
+        }
         val builder = RetrofitProvider
             .getCustomBuilder(baseUrl)
-            .addBearerAuth {
-                val token = authTokenLocalDataSource.token?.value ?: ""
-                token
-            }
+            .addBearerAuth { token }
 
         return builder.build()
     }

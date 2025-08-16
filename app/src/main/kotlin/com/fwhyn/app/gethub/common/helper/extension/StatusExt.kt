@@ -1,4 +1,4 @@
-package com.fwhyn.app.gethub.common.helper
+package com.fwhyn.app.gethub.common.helper.extension
 
 import com.fwhyn.lib.baze.common.model.Status
 

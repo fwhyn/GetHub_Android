@@ -2,9 +2,10 @@ package com.fwhyn.app.gethub.feature.func.auth.bytoken.data.local
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
-import com.fwhyn.app.gethub.common.di.PreferenceDi
 import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.model.AuthTokenData
 import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.model.AuthUserData
+import com.fwhyn.app.gethub.feature.func.datastore.di.DataStoreDi
+import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Assert
 import org.junit.Before
@@ -12,8 +13,8 @@ import org.junit.Test
 
 class AuthTokenLocalDataSourceMainTest {
     private val context = ApplicationProvider.getApplicationContext<Context>()
-    private val preferenceModule = PreferenceDi()
-    private val preferences = preferenceModule.sharedPreferences(context)
+    private val preferenceModule = DataStoreDi()
+    private val preferences = preferenceModule.encryptedUserPrefsDataStore(context)
 
     private lateinit var authTokenLocalDataSource: AuthTokenLocalDataSourceMain
 
@@ -34,58 +35,58 @@ class AuthTokenLocalDataSourceMainTest {
 
     // ----------------------------------------------------------------
     @Before
-    fun setUp() {
-        preferences.edit().clear().commit()
+    fun setUp() = runTest {
         authTokenLocalDataSource = AuthTokenLocalDataSourceMain(preferences)
+        authTokenLocalDataSource.set(null)
     }
 
     @After
-    fun tearDown() {
-        preferences.edit().clear().commit()
+    fun tearDown() = runTest {
+        authTokenLocalDataSource.set(null)
     }
 
     // ----------------------------------------------------------------
     @Test
-    fun getFirstDataShouldBeNullData() {
-        val output: AuthTokenData? = authTokenLocalDataSource.token
+    fun getFirstDataShouldBeNullData() = runTest {
+        val output: AuthTokenData? = authTokenLocalDataSource.get()
         Assert.assertNull(output)
     }
 
     @Test
-    fun dataShouldBeEqualAfterSet() {
-        authTokenLocalDataSource.token = input
+    fun dataShouldBeEqualAfterSet() = runTest {
+        authTokenLocalDataSource.set(input)
 
-        val output: AuthTokenData? = authTokenLocalDataSource.token
+        val output: AuthTokenData? = authTokenLocalDataSource.get()
         Assert.assertEquals(input, output)
     }
 
     @Test
-    fun dataShouldReferToTheLatestSet() {
-        authTokenLocalDataSource.token = input
-        authTokenLocalDataSource.token = newInput
+    fun dataShouldReferToTheLatestSet() = runTest {
+        authTokenLocalDataSource.set(input)
+        authTokenLocalDataSource.set(newInput)
 
-        val output: AuthTokenData? = authTokenLocalDataSource.token
+        val output: AuthTokenData? = authTokenLocalDataSource.get()
         Assert.assertEquals(newInput, output)
     }
 
 
     @Test
-    fun dataShouldBeNullAfterClear() {
-        authTokenLocalDataSource.token = input
-        authTokenLocalDataSource.token = null
+    fun dataShouldBeNullAfterClear() = runTest {
+        authTokenLocalDataSource.set(input)
+        authTokenLocalDataSource.set(null)
 
 
-        val output: AuthTokenData? = authTokenLocalDataSource.token
+        val output: AuthTokenData? = authTokenLocalDataSource.get()
         Assert.assertEquals(null, output)
     }
 
     @Test
-    fun dataShouldBeEqualAfterClearAndSet() {
-        authTokenLocalDataSource.token = input
-        authTokenLocalDataSource.token = null
-        authTokenLocalDataSource.token = newInput
+    fun dataShouldBeEqualAfterClearAndSet() = runTest {
+        authTokenLocalDataSource.set(input)
+        authTokenLocalDataSource.set(null)
+        authTokenLocalDataSource.set(newInput)
 
-        val output: AuthTokenData? = authTokenLocalDataSource.token
+        val output: AuthTokenData? = authTokenLocalDataSource.get()
         Assert.assertEquals(newInput, output)
     }
 }

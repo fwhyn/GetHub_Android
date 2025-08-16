@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.jetbrains.kotlin.compose)
     alias(libs.plugins.google.dagger.hilt)
+    alias(libs.plugins.google.protobuf)
     kotlin("kapt")
 }
 
@@ -78,8 +79,10 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.fwhyn.lib.baze)
     implementation(libs.org.apache.poi.ooxml)
-    implementation(libs.androidx.security.crypto.ktx)
     implementation(libs.com.squareup.okhttp3.mockwebserver)
+    implementation(libs.bundles.datastore)
+    implementation(libs.com.google.protobuf.javalite)
+    implementation(libs.androidx.security.crypto.ktx)
 
     //// Retrofit
     implementation(libs.bundles.retrofit2)
@@ -98,27 +101,41 @@ dependencies {
     testImplementation(libs.io.mock)
     testImplementation(libs.org.robolectric)
     testImplementation(libs.app.cash.turbine)
-    testImplementation(libs.com.squareup.okhttp3.mockwebserver)
 
     androidTestImplementation(libs.androidx.runner)
 
-    //// Coroutine test
+    //// MockWebServer Test
+    testImplementation(libs.com.squareup.okhttp3.mockwebserver)
+    androidTestImplementation(libs.com.squareup.okhttp3.mockwebserver)
+
+    //// Coroutine Test
     testImplementation(libs.org.jetbrains.kotlinx.coroutines.test)
     androidTestImplementation(libs.org.jetbrains.kotlinx.coroutines.test)
 
-    //// JUnit Testing
+    //// JUnit Test
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
 
-    //// Compose Testing
+    //// Compose Test
     androidTestImplementation(libs.bundles.androidx.compose.test)
     androidTestImplementation(platform(libs.androidx.compose.bom))
 
-    //// Dagger Hilt Testing
+    //// Dagger Hilt Test
     testImplementation(libs.com.google.dagger.hilt.android.testing)
     kaptTest(libs.bundles.dagger.hilt.compiler)
     testAnnotationProcessor(libs.bundles.dagger.hilt.compiler)
     androidTestImplementation(libs.com.google.dagger.hilt.android.testing)
     kaptAndroidTest(libs.bundles.dagger.hilt.compiler)
     androidTestAnnotationProcessor(libs.bundles.dagger.hilt.compiler)
+}
+
+protobuf {
+    protoc { artifact = libs.com.google.protobuf.protoc.get().toString() }
+    generateProtoTasks {
+        all().forEach { task ->
+            task.builtins {
+                create("java") { option("lite") }
+            }
+        }
+    }
 }

@@ -1,8 +1,8 @@
 package com.fwhyn.app.gethub.feature.screen.profile
 
 import androidx.lifecycle.viewModelScope
-import com.fwhyn.app.gethub.common.helper.StatusExt
-import com.fwhyn.app.gethub.common.helper.emitEvent
+import com.fwhyn.app.gethub.common.helper.extension.StatusExt
+import com.fwhyn.app.gethub.common.helper.extension.emitEvent
 import com.fwhyn.app.gethub.feature.func.auth.bytoken.domain.usecase.LogoutUseCase
 import com.fwhyn.app.gethub.feature.func.event.data.model.GetGitHubEventsRepoParam
 import com.fwhyn.app.gethub.feature.func.event.data.repository.GetGitHubEventsRepository

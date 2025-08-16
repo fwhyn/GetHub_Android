@@ -1,7 +1,7 @@
 package com.fwhyn.app.gethub.feature.screen.login
 
 import androidx.lifecycle.viewModelScope
-import com.fwhyn.app.gethub.common.helper.trimSpaceTabEnter
+import com.fwhyn.app.gethub.common.helper.extension.trimSpaceTabEnter
 import com.fwhyn.app.gethub.feature.func.auth.bytoken.domain.model.LoginByTokenParam
 import com.fwhyn.app.gethub.feature.func.auth.bytoken.domain.usecase.LoginByTokenUseCase
 import com.fwhyn.app.gethub.feature.screen.login.component.LoginMessageCode

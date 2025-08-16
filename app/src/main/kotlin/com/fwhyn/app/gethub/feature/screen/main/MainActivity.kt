@@ -23,7 +23,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
 import com.fwhyn.app.deandro.common.ui.base.BaseActivity
 import com.fwhyn.app.gethub.BuildConfig
-import com.fwhyn.app.gethub.common.helper.emitEvent
+import com.fwhyn.app.gethub.common.helper.extension.emitEvent
 import com.fwhyn.app.gethub.common.ui.config.MyTheme
 import com.fwhyn.lib.baze.compose.helper.ActivityRetainedState
 import com.fwhyn.lib.baze.compose.helper.rememberActivityState

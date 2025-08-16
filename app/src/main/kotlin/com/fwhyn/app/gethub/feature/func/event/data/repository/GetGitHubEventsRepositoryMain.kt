@@ -1,7 +1,7 @@
 package com.fwhyn.app.gethub.feature.func.event.data.repository
 
 import com.fwhyn.app.gethub.common.helper.Constant.TIMEOUT_MILLIS
-import com.fwhyn.app.gethub.common.helper.StatusExt
+import com.fwhyn.app.gethub.common.helper.extension.StatusExt
 import com.fwhyn.app.gethub.feature.func.event.data.model.GetGitHubEventsRepoParam
 import com.fwhyn.app.gethub.feature.func.event.data.model.GitHubEventData
 import com.fwhyn.app.gethub.feature.func.event.data.remote.GitHubEventsRemoteDataSource

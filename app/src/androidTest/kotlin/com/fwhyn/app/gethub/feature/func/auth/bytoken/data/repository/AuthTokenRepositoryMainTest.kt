@@ -2,10 +2,10 @@ package com.fwhyn.app.gethub.feature.func.auth.bytoken.data.repository
 
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
-import com.fwhyn.app.gethub.common.di.PreferenceDi
 import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.local.AuthTokenLocalDataSourceMain
 import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.model.AuthTokenData
 import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.model.AuthUserData
+import com.fwhyn.app.gethub.feature.func.datastore.di.DataStoreDi
 import com.fwhyn.lib.baze.common.model.Exzeption
 import com.fwhyn.lib.baze.common.model.Status
 import kotlinx.coroutines.test.runTest
@@ -16,8 +16,8 @@ import org.junit.Test
 
 class AuthTokenRepositoryMainTest {
     private val context = ApplicationProvider.getApplicationContext<Context>()
-    private val preferenceModule = PreferenceDi()
-    private val preferences = preferenceModule.sharedPreferences(context)
+    private val preferenceModule = DataStoreDi()
+    private val preferences = preferenceModule.encryptedUserPrefsDataStore(context)
     private val authTokenLocalDataSource: AuthTokenLocalDataSourceMain = AuthTokenLocalDataSourceMain(preferences)
     private lateinit var authTokenRepository: AuthTokenRepositoryMain
 
@@ -38,14 +38,14 @@ class AuthTokenRepositoryMainTest {
 
     // ----------------------------------------------------------------
     @Before
-    fun setUp() {
-        authTokenLocalDataSource.token = null
+    fun setUp() = runTest {
+        authTokenLocalDataSource.set(null)
         authTokenRepository = AuthTokenRepositoryMain(authTokenLocalDataSource)
     }
 
     @After
-    fun tearDown() {
-        authTokenLocalDataSource.token = null
+    fun tearDown() = runTest {
+        authTokenLocalDataSource.set(null)
     }
 
     // ----------------------------------------------------------------

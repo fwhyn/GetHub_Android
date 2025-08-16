@@ -1,0 +1,7 @@
+syntax = "proto3";
+option java_package = "com.fwhyn.app.gethub.feature.func.datastore.data.model";
+option java_multiple_files = true;
+
+message UserPrefs {
+  optional string auth_token = 1;
+}
