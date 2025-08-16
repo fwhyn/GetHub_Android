@@ -14,9 +14,9 @@ object EncryptedUserPrefsDataSource : Serializer<UserPrefs> {
 
     override suspend fun readFrom(input: InputStream): UserPrefs {
         try {
-            val data = input.readBytes()
-            if (data.isEmpty()) return defaultValue
-            val plain = AesEncryptor.decryptData(data)
+            val cipherText = input.readBytes()
+            if (cipherText.isEmpty()) return defaultValue
+            val plain = AesEncryptor.decryptData(cipherText)
 
             return UserPrefs.parseFrom(plain)
         } catch (e: InvalidProtocolBufferException) {
@@ -28,7 +28,9 @@ object EncryptedUserPrefsDataSource : Serializer<UserPrefs> {
     }
 
     override suspend fun writeTo(t: UserPrefs, output: OutputStream) {
-        val cipherText = AesEncryptor.encryptData(t.toByteArray())
+        val plain = t.toByteArray()
+        val cipherText = AesEncryptor.encryptData(plain)
+
         output.write(cipherText)
     }
 }
