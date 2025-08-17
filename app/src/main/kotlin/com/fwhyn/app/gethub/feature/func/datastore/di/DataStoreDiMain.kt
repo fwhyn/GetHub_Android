@@ -14,7 +14,7 @@ import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
-class DataStoreDi {
+class DataStoreDiMain {
 
     companion object {
         const val ENCRYPTED_USER_PREFS_DATASTORE_GETHUB = "ENCRYPTED_USER_PREFS_DATASTORE_GETHUB"
