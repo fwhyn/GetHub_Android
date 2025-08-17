@@ -13,8 +13,8 @@ import org.junit.Test
 
 class AuthTokenLocalDataSourceMainTest {
     private val context = ApplicationProvider.getApplicationContext<Context>()
-    private val preferenceModule by lazy { DataStoreDi() }
-    private val preferences by lazy { preferenceModule.encryptedUserPrefsDataStore(context) }
+    private val preferenceModule = DataStoreDi()
+    private val preferences = preferenceModule.encryptedUserPrefsDataStore(context)
 
     private val authTokenLocalDataSource = AuthTokenLocalDataSourceMain(preferences)
 

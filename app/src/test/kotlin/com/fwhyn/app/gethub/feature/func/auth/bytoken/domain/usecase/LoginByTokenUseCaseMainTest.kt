@@ -19,6 +19,8 @@ import com.fwhyn.app.gethub.feature.func.auth.bytoken.domain.model.LoginByTokenR
 import com.fwhyn.lib.baze.common.model.Exzeption
 import com.fwhyn.lib.baze.common.model.Status
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Assert
@@ -32,8 +34,21 @@ class LoginByTokenUseCaseMainTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
+    val token: MutableStateFlow<AuthTokenData?> = MutableStateFlow(null)
+    val tokenValue
+        get() = token.value?.value ?: ""
     val authTokenLocalDataSource = object : AuthTokenLocalDataSource {
-        override var token: AuthTokenData? = null
+        override suspend fun get(): AuthTokenData? {
+            return token.value
+        }
+
+        override fun getFlow(): Flow<AuthTokenData?> {
+            return token
+        }
+
+        override suspend fun set(data: AuthTokenData?) {
+            token.value = data
+        }
     }
 
     private lateinit var loginByTokenUseCase: LoginByTokenUseCaseMain
@@ -53,12 +68,15 @@ class LoginByTokenUseCaseMainTest {
 
     // ----------------------------------------------------------------
     @Before
-    fun setUp() {
+    fun setUp() = runTest {
         val authTokenRepository = AuthTokenRepositoryMain(authTokenLocalDataSource)
 
         val httpUrl = MockWebServerProvider.httpUrl()
-        val retrofitGitHubDiMain = RetrofitGitHubDiMain()
-        val retrofit = retrofitGitHubDiMain.retrofit(httpUrl, authTokenLocalDataSource)
+        val retrofitModule = RetrofitGitHubDiMain()
+        val retrofit = retrofitModule.retrofit(
+            baseUrl = httpUrl,
+            onGetToken = { tokenValue }
+        )
         val authTokenDiMain = AuthTokenDiMain()
         val authUserRemoteDataSource = authTokenDiMain.authUserRemoteDataSource(retrofit)
         val authUserRepository = AuthUserRepositoryMain(authUserRemoteDataSource)
@@ -100,7 +118,7 @@ class LoginByTokenUseCaseMainTest {
 
     @Test
     fun `login failed when unvalidated local token exists`() = runTest {
-        authTokenLocalDataSource.token = unvalidatedLocalToken.toData()
+        authTokenLocalDataSource.set(unvalidatedLocalToken.toData())
 
         var resultSuccess: LoginByTokenResult? = null
         var resultFailure: Exzeption? = null
@@ -125,7 +143,7 @@ class LoginByTokenUseCaseMainTest {
 
     @Test
     fun `login success when validated local token exists`() = runTest {
-        authTokenLocalDataSource.token = validatedLocalToken.toData()
+        authTokenLocalDataSource.set(validatedLocalToken.toData())
 
         var resultSuccess: LoginByTokenResult? = null
         var resultFailure: Throwable? = null

@@ -16,21 +16,57 @@ import retrofit2.Retrofit
 @InstallIn(ActivityRetainedComponent::class)
 class RetrofitGitHubDiMain {
 
+    private var token = ""
+
     @Provides
     @GitHubApi
     fun retrofit(
+        @GitHubApi scope: CoroutineScope,
         @GitHubApi baseUrl: HttpUrl,
         authTokenLocalDataSource: AuthTokenLocalDataSource,
     ): Retrofit {
-        var token = ""
-        CoroutineScope(Dispatchers.Default).launch {
+        collectToken(
+            scope = scope,
+            authTokenLocalDataSource = authTokenLocalDataSource,
+        ) {
+            token = it
+        }
+
+        return retrofit(
+            baseUrl = baseUrl,
+            onGetToken = {
+                token
+            }
+        )
+    }
+
+    @Provides
+    @GitHubApi
+    fun coroutineScope(): CoroutineScope {
+        return CoroutineScope(Dispatchers.IO)
+    }
+
+
+    fun collectToken(
+        scope: CoroutineScope,
+        authTokenLocalDataSource: AuthTokenLocalDataSource,
+        onOmitted: (String) -> Unit
+    ) {
+        scope.launch {
             authTokenLocalDataSource.getFlow().collect {
-                token = it?.value ?: ""
+                val token = it?.value ?: ""
+                onOmitted(token)
             }
         }
+    }
+
+    fun retrofit(
+        baseUrl: HttpUrl,
+        onGetToken: () -> String,
+    ): Retrofit {
         val builder = RetrofitProvider
             .getCustomBuilder(baseUrl)
-            .addBearerAuth { token }
+            .addBearerAuth(onGetToken)
 
         return builder.build()
     }
