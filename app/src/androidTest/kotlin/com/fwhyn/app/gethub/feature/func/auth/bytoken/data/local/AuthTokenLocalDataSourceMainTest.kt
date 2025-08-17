@@ -1,22 +1,29 @@
 package com.fwhyn.app.gethub.feature.func.auth.bytoken.data.local
 
-import android.content.Context
-import androidx.test.core.app.ApplicationProvider
 import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.model.AuthTokenData
 import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.model.AuthUserData
-import com.fwhyn.app.gethub.feature.func.datastore.di.DataStoreDi
+import dagger.hilt.android.testing.HiltAndroidRule
+import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Assert
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
+import javax.inject.Inject
 
+@HiltAndroidTest
 class AuthTokenLocalDataSourceMainTest {
-    private val context = ApplicationProvider.getApplicationContext<Context>()
-    private val preferenceModule = DataStoreDi()
-    private val preferences = preferenceModule.encryptedUserPrefsDataStore(context)
 
-    private val authTokenLocalDataSource = AuthTokenLocalDataSourceMain(preferences)
+    @get:Rule
+    val hiltRule = HiltAndroidRule(this)
+
+//    private val context = ApplicationProvider.getApplicationContext<Context>()
+//    private val preferenceModule = DataStoreDiMain()
+//    private val preferences = preferenceModule.encryptedUserPrefsDataStore(context)
+
+    @Inject
+    lateinit var authTokenLocalDataSource: AuthTokenLocalDataSource
 
     private val input = AuthTokenData(
         value = "test_token",
@@ -36,6 +43,8 @@ class AuthTokenLocalDataSourceMainTest {
     // ----------------------------------------------------------------
     @Before
     fun setUp() = runTest {
+        hiltRule.inject()
+
         authTokenLocalDataSource.set(null)
     }
 
