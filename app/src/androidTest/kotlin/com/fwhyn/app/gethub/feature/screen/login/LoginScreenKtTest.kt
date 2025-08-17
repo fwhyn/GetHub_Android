@@ -18,14 +18,20 @@ import com.fwhyn.app.gethub.feature.screen.login.model.LoginProperties
 import com.fwhyn.app.gethub.feature.screen.main.MainForTestActivity
 import com.fwhyn.lib.baze.compose.helper.rememberActivityState
 import com.fwhyn.lib.baze.compose.model.CommonProperties
+import dagger.hilt.android.testing.HiltAndroidRule
+import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
+@HiltAndroidTest
 class LoginScreenKtTest {
 
-    @get:Rule
+    @get:Rule(order = 0)
+    val hiltRule = HiltAndroidRule(this)
+
+    @get:Rule(order = 1)
     val composeTestRule = createAndroidComposeRule<MainForTestActivity>()
 
     private val pass = MutableStateFlow("")
