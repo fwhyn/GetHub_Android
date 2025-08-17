@@ -15,9 +15,7 @@ import com.fwhyn.lib.baze.compose.model.CommonState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.runTest
-import org.junit.After
 import org.junit.Assert
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
@@ -29,16 +27,6 @@ class LoginViewModelTest {
     private val scope = mainDispatcherRule.scope
 
     private lateinit var loginViewModel: LoginVmInterface
-
-    @Before
-    fun setUp() {
-
-    }
-
-    @After
-    fun tearDown() {
-
-    }
 
     val loginUseCaseErrorUnauthorized = object : LoginByTokenUseCase() {
         override suspend fun onRunning(

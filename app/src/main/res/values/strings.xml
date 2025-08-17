@@ -10,7 +10,6 @@
     <string name="enter_your_password">Enter your password.</string>
     <string name="remember_me">Remember me</string>
     <string name="login_error">Login error!</string>
-    <string name="login_success">Login success.</string>
     <string name="unexpected_error">Unexpected error!</string>
     <string name="time_out_error">Time out error!</string>
     <string name="github_users">GitHub Users</string>
@@ -21,7 +20,6 @@
     <string name="colon">": "</string>
     <string name="repositories">Repositories</string>
     <string name="repository">Repository</string>
-    <string name="branch">Branch</string>
     <string name="message">Message</string>
     <string name="events">Events</string>
     <string name="data_not_found">Data not found!</string>

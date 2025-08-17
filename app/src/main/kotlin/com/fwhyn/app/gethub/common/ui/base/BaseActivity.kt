@@ -1,4 +1,4 @@
-package com.fwhyn.app.deandro.common.ui.base
+package com.fwhyn.app.gethub.common.ui.base
 
 import androidx.activity.ComponentActivity
 

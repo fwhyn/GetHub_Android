@@ -19,7 +19,6 @@ import com.fwhyn.app.gethub.feature.screen.main.MainForTestActivity
 import com.fwhyn.lib.baze.compose.helper.rememberActivityState
 import com.fwhyn.lib.baze.compose.model.CommonProperties
 import kotlinx.coroutines.flow.MutableStateFlow
-import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -58,11 +57,6 @@ class LoginScreenKtTest {
                 )
             }
         }
-    }
-
-    @After
-    fun tearDown() {
-
     }
 
     @Test

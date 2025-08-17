@@ -15,7 +15,6 @@ import com.fwhyn.lib.baze.common.model.Status
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.runTest
-import org.junit.After
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
@@ -65,11 +64,6 @@ class AuthUserRepositoryMainTest {
         )
         val authUserRemoteDataSource = AuthTokenDiMain().authUserRemoteDataSource(retrofit)
         authUserRepository = AuthUserRepositoryMain(authUserRemoteDataSource)
-    }
-
-    @After
-    fun tearDown() {
-
     }
 
     @Test

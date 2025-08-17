@@ -42,7 +42,7 @@ class ProfileViewModel @Inject constructor(
         get() = viewModelScope
 
     private val event = MutableSharedFlow<ProfileEvent>()
-    private val userName = MutableStateFlow<String>("")
+    private val userName = MutableStateFlow("")
     private val gitHubUserProfile = MutableStateFlow(GitHubUserProfileUi.default())
     private val gitHubRepos = MutableStateFlow<List<GitHubRepoUi>>(emptyList())
     private val gitHubEvents = MutableStateFlow<List<GitHubEventUi>>(emptyList())

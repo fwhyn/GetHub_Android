@@ -22,7 +22,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.runTest
-import org.junit.After
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
@@ -85,11 +84,6 @@ class LoginByTokenUseCaseMainTest {
             authTokenRepository = authTokenRepository,
             authUserRepository = authUserRepository
         )
-    }
-
-    @After
-    fun tearDown() {
-
     }
 
     // ----------------------------------------------------------------
