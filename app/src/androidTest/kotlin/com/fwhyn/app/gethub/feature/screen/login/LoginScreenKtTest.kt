@@ -65,12 +65,6 @@ class LoginScreenKtTest {
 
     }
 
-//    @Test
-//    fun showLoadingWhenStateShowLoadingInvoked() {
-//        vm.commonProp.showDialog("tag", LoginState.Loading)
-//        composeTestRule.onNodeWithTag(LOGIN_LOADING_TEST_TAG).assertIsDisplayed()
-//    }
-
     @Test
     fun loginTitleIsShown() {
         composeTestRule.onNodeWithText(context.getString(R.string.welcome))

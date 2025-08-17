@@ -6,11 +6,11 @@ import org.junit.Before
 class GitHubUsersRemoteDataSourceTest {
     @Before
     fun setUp() {
-        TODO("Not yet implemented")
+
     }
 
     @After
     fun tearDown() {
-        TODO("Not yet implemented")
+
     }
 }

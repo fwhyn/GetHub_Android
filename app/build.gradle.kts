@@ -8,10 +8,6 @@ plugins {
 }
 
 android {
-    // TODO add ui test
-    // TODO add integrated test
-    // TODO add unit test
-    // TODO check warnings
     // TODO release latest baze
 
     namespace = "com.fwhyn.app.gethub"

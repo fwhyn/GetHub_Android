@@ -129,7 +129,7 @@ object GitHubEventsSuccessResponse {
                                 "email": "wycats@gmail.com",
                                 "name": "Yehuda Katz"
                             },
-                            "message": "docs: complete Phase 1 documentation consolidation from NEXT_STEPS.md\n\nConsolidate fragmented documentation into production-ready structure:\n\n- Create honest README.md replacing aspirational claims with actual status\n- Consolidate CONTRIBUTING.md from 11 Windsurf rule files\n- Add comprehensive ARCHITECTURE.md documenting system design\n- Merge CONSOLIDATION.md + VIBE_CODING_PRACTICES.md into DEVELOPMENT_PRACTICES.md\n- Create single-source TODO.md for active work tracking\n- Add API.md for public interface documentation\n- Create docs/roadmap.md for future feature planning\n- Archive fragmented docs (HEROKU.md, CONTAINERIZATION.md, CODING_STYLE.md, etc.)\n\nThis addresses the documentation reality gap identified in NEXT_STEPS.md by replacing\nproof-of-concept quality documentation with honest, consolidated docs that match\nthe actual codebase state.",
+                            "message": "docs: complete Phase 1 documentation consolidation from NEXT_STEPS.md\n\nConsolidate fragmented documentation into production-ready structure:\n\n- Create honest README.md replacing aspirational claims with actual status\n- Consolidate CONTRIBUTING.md from 11 Windsurf rule files\n- Add comprehensive ARCHITECTURE.md documenting system design\n- Merge CONSOLIDATION.md + VIBE_CODING_PRACTICES.md into DEVELOPMENT_PRACTICES.md\n- Create single-source TOD.md for active work tracking\n- Add API.md for public interface documentation\n- Create docs/roadmap.md for future feature planning\n- Archive fragmented docs (HEROKU.md, CONTAINERIZATION.md, CODING_STYLE.md, etc.)\n\nThis addresses the documentation reality gap identified in NEXT_STEPS.md by replacing\nproof-of-concept quality documentation with honest, consolidated docs that match\nthe actual codebase state.",
                             "distinct": true,
                             "url": "https://api.github.com/repos/wycats/quick-mcp/commits/99957d72ba31c2333bc3f17d1edf22fe5130328c"
                         },
@@ -139,7 +139,7 @@ object GitHubEventsSuccessResponse {
                                 "email": "wycats@gmail.com",
                                 "name": "Yehuda Katz"
                             },
-                            "message": "docs: complete branding migration and consolidate documentation\n\n- Fix remaining mcpify/MCPify references throughout documentation\n- Update API.md: all import paths and product names\n- Update TODO.md: package names and CLI commands\n- Update docs/roadmap.md: complete Quick-MCP branding\n- Update NEXT_STEPS.md: reflect Phase 1 completion and current focus\n- Add docs/ephemeral/ to .gitignore for temporary strategy docs\n\nCompletes the branding migration from MCPify to Quick-MCP.",
+                            "message": "docs: complete branding migration and consolidate documentation\n\n- Fix remaining mcpify/MCPify references throughout documentation\n- Update API.md: all import paths and product names\n- Update TOD.md: package names and CLI commands\n- Update docs/roadmap.md: complete Quick-MCP branding\n- Update NEXT_STEPS.md: reflect Phase 1 completion and current focus\n- Add docs/ephemeral/ to .gitignore for temporary strategy docs\n\nCompletes the branding migration from MCPify to Quick-MCP.",
                             "distinct": true,
                             "url": "https://api.github.com/repos/wycats/quick-mcp/commits/d1df9eae795fc249be76154d21732c0e63fb2c92"
                         },
@@ -2276,7 +2276,7 @@ object GitHubEventsSuccessResponse {
                                 "email": "fwhynseventh@gmail.com",
                                 "name": "fwhyn"
                             },
-                            "message": "Home Screen\n\nadded todo",
+                            "message": "Home Screen\n\nadded tod",
                             "distinct": false,
                             "url": "https://api.github.com/repos/fwhyn/GetHub_Android/commits/282c7b018213557927d0d2beb279f234d9d0311a"
                         },
@@ -2536,7 +2536,7 @@ object GitHubEventsSuccessResponse {
                                 "email": "fwhynseventh@gmail.com",
                                 "name": "fwhyn"
                             },
-                            "message": "Home Screen\n\nadded todo",
+                            "message": "Home Screen\n\nadded tod",
                             "distinct": false,
                             "url": "https://api.github.com/repos/fwhyn/GetHub_Android/commits/282c7b018213557927d0d2beb279f234d9d0311a"
                         },
