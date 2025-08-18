@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
@@ -31,8 +32,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.fwhyn.app.gethub.R
 import com.fwhyn.app.gethub.common.ui.component.MySpacer
+import com.fwhyn.app.gethub.common.ui.component.RefreshAndTextView
 import com.fwhyn.app.gethub.common.ui.component.TopBar
 import com.fwhyn.app.gethub.common.ui.component.TopBarParam
+import com.fwhyn.app.gethub.common.ui.component.getStateOfRefreshAndTextViewParam
 import com.fwhyn.app.gethub.common.ui.component.getStateOfTopBarParam
 import com.fwhyn.app.gethub.common.ui.config.MyTheme
 import com.fwhyn.app.gethub.common.ui.config.TopBarHeight
@@ -86,6 +89,7 @@ fun NavController.navigateToProfileScreen(userName: String, navOptions: NavOptio
 }
 
 // TODO create adaptable font size but limited to 16sp
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ProfileScreen(
     modifier: Modifier = Modifier,
@@ -136,7 +140,8 @@ private fun ProfileScreen(
     val param = ProfileViewParam(
         topBarParam = topBarParam,
         profileViewSection1Param = profileViewSection1Param,
-        profileViewSection2Param = profileViewSection2Param
+        profileViewSection2Param = profileViewSection2Param,
+        onRefresh = vm::onRefresh
     )
 
     ProfileView(
@@ -150,8 +155,18 @@ fun ProfileView(
     modifier: Modifier = Modifier,
     param: ProfileViewParam,
 ) {
-    val configuration = LocalConfiguration.current
+    if (param.profileViewSection1Param.userProfile.login == "") {
+        RefreshAndTextView(
+            modifier = modifier,
+            param = getStateOfRefreshAndTextViewParam(
+                onClicked = param.onRefresh
+            )
+        )
 
+        return
+    }
+
+    val configuration = LocalConfiguration.current
     when (configuration.orientation) {
         Configuration.ORIENTATION_LANDSCAPE -> {
             LandscapeProfileView(
@@ -244,6 +259,7 @@ data class ProfileViewParam(
     val topBarParam: TopBarParam,
     val profileViewSection1Param: ProfileViewSection1Param,
     val profileViewSection2Param: ProfileViewSection2Param,
+    val onRefresh: () -> Unit,
 )
 
 @DevicePreviews
@@ -259,6 +275,28 @@ fun ProfileScreenPreview() {
                     get() = CommonProperties()
                 override val properties: ProfileProperties
                     get() = profilePropertiesFake
+
+                override fun onUpdateUserName(data: String) {
+                    // No-op for preview
+                }
+            },
+        )
+    }
+}
+
+@DevicePreviews
+@Composable
+fun ProfileScreenEmptyPreview() {
+    MyTheme {
+        ProfileScreen(
+            modifier = Modifier.background(color = MaterialTheme.colorScheme.background),
+            activityState = rememberActivityState(),
+            stringManager = ProfileStringManagerMain(LocalContext.current),
+            vm = object : ProfileVmInterface() {
+                override val commonProp: CommonProperties
+                    get() = CommonProperties()
+                override val properties: ProfileProperties
+                    get() = ProfileProperties.default()
 
                 override fun onUpdateUserName(data: String) {
                     // No-op for preview

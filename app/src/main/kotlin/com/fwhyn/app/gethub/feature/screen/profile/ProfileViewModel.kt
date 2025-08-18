@@ -72,13 +72,15 @@ class ProfileViewModel @Inject constructor(
         userName.value = data
     }
 
+    override fun onRefresh() {
+        loadGitHubUserProfile()
+    }
+
     override fun onLoadNextRepos() {
-        if (isUnableToLoadMoreRepos()) return
         getGitHubRepos()
     }
 
     override fun onLoadNextEvents() {
-        if (isAllEventsLoaded()) return
         getGitHubEvents()
     }
 
@@ -105,6 +107,8 @@ class ProfileViewModel @Inject constructor(
     }
 
     fun getGitHubRepos() {
+        if (isUnableToLoadMoreRepos()) return
+
         val id = getGitHubRepos.getId()
         getGitHubRepos.invoke(
             scope = scope,
@@ -124,6 +128,8 @@ class ProfileViewModel @Inject constructor(
     }
 
     fun getGitHubEvents() {
+        if (isAllEventsLoaded()) return
+
         val id = getGitHubEvents.getId()
         getGitHubEvents.invoke(
             scope = scope,

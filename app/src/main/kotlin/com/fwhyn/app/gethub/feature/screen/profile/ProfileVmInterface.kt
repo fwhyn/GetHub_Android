@@ -10,6 +10,7 @@ abstract class ProfileVmInterface : ViewModel() {
     abstract val properties: ProfileProperties
 
     abstract fun onUpdateUserName(data: String)
+    open fun onRefresh() {}
     open fun onLoadNextRepos() {}
     open fun onLoadNextEvents() {}
 }
