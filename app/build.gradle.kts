@@ -17,8 +17,8 @@ android {
         applicationId = "com.fwhyn.app.gethub"
         minSdk = 26
         targetSdk = 36
-        versionCode = 1000100
-        versionName = "1.0.1"
+        versionCode = 1010000
+        versionName = "1.1.0"
 
         testInstrumentationRunner = "com.fwhyn.app.gethub.MyTestRunner"
     }
