@@ -1,10 +1,9 @@
 package com.fwhyn.app.gethub.feature.func.auth.bytoken.data.repository
 
 import MainDispatcherRule
-import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.local.AuthTokenLocalDataSource
-import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.model.AuthTokenData
-import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.model.AuthUserData
-import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.remote.GitHubAuthResponse.TOKEN_FAKE
+import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.local.AuthTokenLocalDataSourceFake
+import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.model.authTokenDataFake
+import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.model.unvalidatedAuthTokenDataFake
 import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.remote.GitHubUserSuccessResponse.ID
 import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.remote.GitHubUserSuccessResponse.LOGIN
 import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.remote.MockWebServerProvider
@@ -12,8 +11,6 @@ import com.fwhyn.app.gethub.feature.func.auth.bytoken.di.AuthTokenDiMain
 import com.fwhyn.app.gethub.feature.func.auth.bytoken.di.RetrofitGitHubDiMain
 import com.fwhyn.lib.baze.common.model.Exzeption
 import com.fwhyn.lib.baze.common.model.Status
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Before
@@ -27,31 +24,9 @@ class AuthUserRepositoryMainTest {
 
     val scope = mainDispatcherRule.scope
 
-    val token: MutableStateFlow<AuthTokenData?> = MutableStateFlow(null)
-    val tokenValue
-        get() = token.value?.value ?: ""
-    val authTokenLocalDataSource = object : AuthTokenLocalDataSource {
-        override suspend fun get(): AuthTokenData? {
-            return token.value
-        }
-
-        override fun getFlow(): Flow<AuthTokenData?> {
-            return token
-        }
-
-        override suspend fun set(data: AuthTokenData?) {
-            token.value = data
-        }
-    }
+    val authTokenLocalDataSource = AuthTokenLocalDataSourceFake()
 
     lateinit var authUserRepository: AuthUserRepositoryMain
-
-    val authToken = AuthTokenData(
-        value = TOKEN_FAKE,
-        validatedUser = null
-    )
-
-    val validatedAuthToken = authToken.copy(validatedUser = AuthUserData(login = LOGIN, id = ID))
 
     @Before
     fun setUp() = runTest {
@@ -60,7 +35,7 @@ class AuthUserRepositoryMainTest {
 
         val retrofit = retrofitModule.retrofit(
             baseUrl = httpUrl,
-            onGetToken = { tokenValue }
+            onGetToken = { authTokenLocalDataSource.token }
         )
         val authUserRemoteDataSource = AuthTokenDiMain().authUserRemoteDataSource(retrofit)
         authUserRepository = AuthUserRepositoryMain(authUserRemoteDataSource)
@@ -80,7 +55,7 @@ class AuthUserRepositoryMainTest {
 
     @Test
     fun `when token exists and validatedUser is null, it will return success`() = scope.runTest {
-        authTokenLocalDataSource.set(authToken)
+        authTokenLocalDataSource.set(unvalidatedAuthTokenDataFake)
 
         val authUserData = authUserRepository.get(Unit)
 
@@ -90,7 +65,7 @@ class AuthUserRepositoryMainTest {
 
     @Test
     fun `when token exists and validatedUser is not null, it will return success`() = scope.runTest {
-        authTokenLocalDataSource.set(validatedAuthToken)
+        authTokenLocalDataSource.set(authTokenDataFake)
 
         val authUserData = authUserRepository.get(Unit)
 

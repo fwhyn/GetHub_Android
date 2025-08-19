@@ -1,26 +1,21 @@
 package com.fwhyn.app.gethub.feature.func.auth.bytoken.domain.usecase
 
 import MainDispatcherRule
-import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.local.AuthTokenLocalDataSource
-import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.model.AuthTokenData
+import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.local.AuthTokenLocalDataSourceFake
+import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.model.authTokenDataFake
+import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.model.unvalidatedAuthTokenDataFake
 import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.remote.GitHubAuthResponse.TOKEN_FAKE
-import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.remote.GitHubUserSuccessResponse.ID
-import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.remote.GitHubUserSuccessResponse.LOGIN
 import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.remote.MockWebServerProvider
 import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.repository.AuthTokenRepositoryMain
 import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.repository.AuthUserRepositoryMain
 import com.fwhyn.app.gethub.feature.func.auth.bytoken.di.AuthTokenDiMain
 import com.fwhyn.app.gethub.feature.func.auth.bytoken.di.RetrofitGitHubDiMain
-import com.fwhyn.app.gethub.feature.func.auth.bytoken.domain.helper.toData
-import com.fwhyn.app.gethub.feature.func.auth.bytoken.domain.model.AuthTokenDomain
-import com.fwhyn.app.gethub.feature.func.auth.bytoken.domain.model.AuthUserDomain
 import com.fwhyn.app.gethub.feature.func.auth.bytoken.domain.model.LoginByTokenParam
 import com.fwhyn.app.gethub.feature.func.auth.bytoken.domain.model.LoginByTokenResult
+import com.fwhyn.app.gethub.feature.func.auth.bytoken.domain.model.authTokenDomainFake
 import com.fwhyn.lib.baze.common.model.Exzeption
 import com.fwhyn.lib.baze.common.model.Status
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert
 import org.junit.Before
@@ -32,38 +27,9 @@ class LoginByTokenUseCaseMainTest {
 
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
-
-    val token: MutableStateFlow<AuthTokenData?> = MutableStateFlow(null)
-    val tokenValue
-        get() = token.value?.value ?: ""
-    val authTokenLocalDataSource = object : AuthTokenLocalDataSource {
-        override suspend fun get(): AuthTokenData? {
-            return token.value
-        }
-
-        override fun getFlow(): Flow<AuthTokenData?> {
-            return token
-        }
-
-        override suspend fun set(data: AuthTokenData?) {
-            token.value = data
-        }
-    }
+    val authTokenLocalDataSource = AuthTokenLocalDataSourceFake()
 
     private lateinit var loginByTokenUseCase: LoginByTokenUseCaseMain
-
-    private val unvalidatedLocalToken = AuthTokenDomain(
-        value = TOKEN_FAKE,
-        validatedUser = null
-    )
-
-    private val validatedLocalToken = AuthTokenDomain(
-        value = TOKEN_FAKE,
-        validatedUser = AuthUserDomain(
-            login = LOGIN,
-            id = ID,
-        )
-    )
 
     // ----------------------------------------------------------------
     @Before
@@ -74,7 +40,7 @@ class LoginByTokenUseCaseMainTest {
         val retrofitModule = RetrofitGitHubDiMain()
         val retrofit = retrofitModule.retrofit(
             baseUrl = httpUrl,
-            onGetToken = { tokenValue }
+            onGetToken = { authTokenLocalDataSource.token }
         )
         val authTokenDiMain = AuthTokenDiMain()
         val authUserRemoteDataSource = authTokenDiMain.authUserRemoteDataSource(retrofit)
@@ -112,7 +78,7 @@ class LoginByTokenUseCaseMainTest {
 
     @Test
     fun `login failed when unvalidated local token exists`() = runTest {
-        authTokenLocalDataSource.set(unvalidatedLocalToken.toData())
+        authTokenLocalDataSource.set(unvalidatedAuthTokenDataFake)
 
         var resultSuccess: LoginByTokenResult? = null
         var resultFailure: Exzeption? = null
@@ -137,7 +103,7 @@ class LoginByTokenUseCaseMainTest {
 
     @Test
     fun `login success when validated local token exists`() = runTest {
-        authTokenLocalDataSource.set(validatedLocalToken.toData())
+        authTokenLocalDataSource.set(authTokenDataFake)
 
         var resultSuccess: LoginByTokenResult? = null
         var resultFailure: Throwable? = null
@@ -156,7 +122,7 @@ class LoginByTokenUseCaseMainTest {
         )
         loginByTokenUseCase.join()
 
-        Assert.assertEquals(validatedLocalToken.validatedUser, resultSuccess?.user)
+        Assert.assertEquals(authTokenDomainFake.validatedUser, resultSuccess?.user)
         Assert.assertEquals(null, resultFailure)
     }
 
@@ -196,7 +162,7 @@ class LoginByTokenUseCaseMainTest {
         )
         loginByTokenUseCase.join()
 
-        Assert.assertEquals(validatedLocalToken.validatedUser, resultSuccess?.user)
+        Assert.assertEquals(authTokenDomainFake.validatedUser, resultSuccess?.user)
         Assert.assertEquals(null, resultFailure)
     }
 
