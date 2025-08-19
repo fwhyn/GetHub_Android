@@ -182,8 +182,6 @@ fun ProfileView(
             )
         }
     }
-
-
 }
 
 @Composable
