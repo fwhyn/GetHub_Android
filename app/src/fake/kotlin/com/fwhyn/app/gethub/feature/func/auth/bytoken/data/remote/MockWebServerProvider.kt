@@ -2,6 +2,7 @@ package com.fwhyn.app.gethub.feature.func.auth.bytoken.data.remote
 
 import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.remote.GitHubAuthResponse.errorAuthResponse
 import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.remote.GitHubAuthResponse.isBadCredential
+import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.remote.GitHubAuthResponse.isLimited
 import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.remote.GitHubAuthResponse.isRequiredAuthentication
 import com.fwhyn.app.gethub.feature.func.auth.bytoken.data.remote.GitHubFailedResponse.notFoundResponse
 import com.fwhyn.app.gethub.feature.func.event.data.remote.GitHubEventsResponse
@@ -28,6 +29,9 @@ object MockWebServerProvider {
                 return when {
                     isRequiredAuthentication(request) ->
                         errorAuthResponse.setBody(GitHubFailedResponse.requireAuthentication)
+
+                    isLimited(request) ->
+                        errorAuthResponse.setBody(GitHubFailedResponse.apiLimited)
 
                     isBadCredential(request) ->
                         errorAuthResponse.setBody(GitHubFailedResponse.badCredential)
