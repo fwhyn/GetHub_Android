@@ -67,6 +67,12 @@ android {
             excludes += listOf("META-INF/LICENSE-notice.md", "META-INF/LICENSE.md")
         }
     }
+
+//    testOptions {
+//        unitTests.all {
+//            systemProperty("robolectric.conscryptMode", "OFF")
+//        }
+//    }
 }
 
 dependencies {
@@ -113,6 +119,7 @@ dependencies {
 
     //// JUnit Test
     testImplementation(libs.junit)
+    testImplementation(libs.androidx.junit.ext.ktx)
     androidTestImplementation(libs.androidx.junit)
 
     //// Compose Test
