@@ -94,11 +94,14 @@ dependencies {
     annotationProcessor(libs.bundles.dagger.hilt.compiler)
 
     // Testing Dependencies
-    testImplementation(libs.io.mock)
     testImplementation(libs.org.robolectric)
     testImplementation(libs.app.cash.turbine)
 
     androidTestImplementation(libs.androidx.runner)
+
+    //// Mockk
+    testImplementation(libs.io.mock)
+    androidTestImplementation(libs.io.mock.android)
 
     //// MockWebServer Test
     testImplementation(libs.com.squareup.okhttp3.mockwebserver)

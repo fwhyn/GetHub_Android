@@ -15,15 +15,20 @@ import com.fwhyn.app.gethub.R
 import com.fwhyn.app.gethub.common.ui.config.MyTheme
 import com.fwhyn.app.gethub.feature.screen.login.component.LoginStringManagerMain
 import com.fwhyn.app.gethub.feature.screen.login.model.LoginProperties
+import com.fwhyn.app.gethub.feature.screen.login.model.LoginState
 import com.fwhyn.app.gethub.feature.screen.main.MainForTestActivity
 import com.fwhyn.lib.baze.compose.helper.rememberActivityState
 import com.fwhyn.lib.baze.compose.model.CommonProperties
+import com.fwhyn.lib.baze.compose.model.CommonState
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import io.mockk.every
+import io.mockk.spyk
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.rules.TestName
 
 @HiltAndroidTest
 class LoginScreenKtTest {
@@ -34,35 +39,46 @@ class LoginScreenKtTest {
     @get:Rule(order = 1)
     val composeTestRule = createAndroidComposeRule<MainForTestActivity>()
 
+    @get:Rule(order = 2)
+    val testName = TestName()
+
     private val pass = MutableStateFlow("")
     private val isValid = MutableStateFlow(false)
     private val loginProperties = LoginProperties.default(
         password = pass,
         isValid = isValid
     )
+    private val commonPropSpy = spyk(CommonProperties())
 
     private val context = ApplicationProvider.getApplicationContext<Context>()
     private val stringManager = LoginStringManagerMain(context)
 
+
     val vm = object : LoginVmInterface() {
         override val commonProp: CommonProperties
-            get() = CommonProperties()
+            get() = commonPropSpy
         override val properties: LoginProperties
             get() = loginProperties
     }
 
+    // ----------------------------------------------------------------
     @Before
     fun setUp() {
-        composeTestRule.setContent {
-            MyTheme {
-                LoginScreen(
-                    activityState = rememberActivityState(),
-                    modifier = loginScreenModifier,
-                    stringManager = stringManager,
-                    vm = vm
-                )
-            }
+        when (testName.methodName) {
+            "showLoadingWhenInvoked" -> return
         }
+
+        contentSetup()
+    }
+
+    // ----------------------------------------------------------------
+    @Test
+    fun showLoadingWhenInvoked() {
+        every { commonPropSpy.state } answers { MutableStateFlow(CommonState.Dialog("Loading", LoginState.Loading)) }
+        contentSetup()
+
+        composeTestRule.onNodeWithTag(LOGIN_LOADING_TAG)
+            .assertIsDisplayed()
     }
 
     @Test
@@ -123,5 +139,19 @@ class LoginScreenKtTest {
         composeTestRule.onNodeWithTag(LOGIN_BUTTON_TAG)
             .assertHasClickAction()
             .assertIsEnabled()
+    }
+
+    // ----------------------------------------------------------------
+    private fun contentSetup() {
+        composeTestRule.setContent {
+            MyTheme {
+                LoginScreen(
+                    activityState = rememberActivityState(),
+                    modifier = loginScreenModifier,
+                    stringManager = stringManager,
+                    vm = vm
+                )
+            }
+        }
     }
 }

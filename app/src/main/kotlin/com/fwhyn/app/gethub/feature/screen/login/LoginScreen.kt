@@ -121,7 +121,7 @@ fun LoginScreen(
     // ----------------------------------------------------------------
     val state by vm.commonProp.state.collectAsStateWithLifecycle()
     when ((state as? CommonState.Dialog<*>)?.dat) {
-        is LoginState.Loading -> CircularProgressDialog(Modifier.testTag(LOGIN_LOADING_TAG))
+        is LoginState.Loading -> CircularProgressDialog(foregroundModifier = Modifier.testTag(LOGIN_LOADING_TAG))
         else -> Log.d(LOGIN_ROUTE, "Unhandled State")
     }
 
