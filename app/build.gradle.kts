@@ -67,12 +67,6 @@ android {
             excludes += listOf("META-INF/LICENSE-notice.md", "META-INF/LICENSE.md")
         }
     }
-
-//    testOptions {
-//        unitTests.all {
-//            systemProperty("robolectric.conscryptMode", "OFF")
-//        }
-//    }
 }
 
 dependencies {
