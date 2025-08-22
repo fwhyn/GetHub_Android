@@ -98,6 +98,7 @@ dependencies {
     testImplementation(libs.org.robolectric)
     testImplementation(libs.app.cash.turbine)
 
+    testImplementation(libs.androidx.test.ext.junit.ktx)
     androidTestImplementation(libs.androidx.test.runner)
 
     //// Mockk
