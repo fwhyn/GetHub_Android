@@ -99,6 +99,8 @@ dependencies {
     testImplementation(libs.org.robolectric)
     testImplementation(libs.app.cash.turbine)
 
+    androidTestImplementation(libs.androidx.test.runner)
+
     //// Mockk
     testImplementation(libs.io.mock)
     androidTestImplementation(libs.io.mock.android)
