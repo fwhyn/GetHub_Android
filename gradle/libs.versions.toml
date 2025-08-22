@@ -20,7 +20,6 @@ mockk = "1.14.2"
 # Main Dependency --------------------------------
 androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version = "1.2.0-rc01" }
 fwhyn-lib-baze = { module = "io.github.fwhyn.lib:baze", version = "1.7.7" }
-org-apache-poi-ooxml = { module = "org.apache.poi:poi-ooxml", version = "5.2.3" }
 androidx-datastore = { module = "androidx.datastore:datastore", version.ref = "dataStore" }
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "dataStore" }
 com-google-protobuf-javalite = { module = "com.google.protobuf:protobuf-javalite", version.ref = "protoBuf" }
