@@ -7,38 +7,30 @@ androidxHilt = "1.2.0"
 
 # Main Dependency --------------------------------
 androidxActivity = "1.10.1"
-androidxCoreKtx = "1.16.0"
 androidxComposeBom = "2025.06.00"
 retrofit = "2.11.0"
-okhttp = "4.12.0"
 dataStore = "1.1.7"
 protoBuf = "4.32.0"
 
 # Test Dependency --------------------------------
-junit = "4.13.2"
-androidxJunit = "1.2.1"
-junitKtx = "1.3.0"
-runner = "1.6.2"
 mockk = "1.14.2"
 
 # ----------------------------------------------------------------------------------------------------------------------
 [libraries]
 # Main Dependency --------------------------------
 androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version = "1.2.0-rc01" }
-androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidxCoreKtx" }
-fwhyn-lib-baze = { module = "io.github.fwhyn.lib:baze", version = "1.7.6" }
+fwhyn-lib-baze = { module = "io.github.fwhyn.lib:baze", version = "1.7.7" }
 org-apache-poi-ooxml = { module = "org.apache.poi:poi-ooxml", version = "5.2.3" }
-
 androidx-datastore = { module = "androidx.datastore:datastore", version.ref = "dataStore" }
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "dataStore" }
 com-google-protobuf-javalite = { module = "com.google.protobuf:protobuf-javalite", version.ref = "protoBuf" }
 com-google-protobuf-protoc = { module = "com.google.protobuf:protoc", version.ref = "protoBuf" }
 androidx-security-crypto-ktx = { module = "androidx.security:security-crypto-ktx", version = "1.1.0" }
 
-com-google-dagger-hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "googleDaggerHilt" }
-com-google-dagger-hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "googleDaggerHilt" }
+com-google-dagger-hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "googleDaggerHilt" }
+com-google-dagger-hilt-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "googleDaggerHilt" }
 
-androidx-hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "androidxHilt" }
+androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "androidxHilt" }
 
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidxActivity" }
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "androidxComposeBom" }
@@ -55,31 +47,23 @@ androidx-compose-runtime = { group = "androidx.compose.runtime", name = "runtime
 io-coil-kt-compose = { group = "io.coil-kt", name = "coil-compose", version = "2.7.0" }
 com-github-yeocak-ComposableTimelineView = { module = "com.github.yeocak:ComposableTimelineView", version = "0.6" }
 
-com-squareup-retrofit2-retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
-com-squareup-retrofit2-converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
-
-com-squareup-okhttp3-okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
-com-squareup-okhttp3-logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
+com-squareup-retrofit2-retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+com-squareup-retrofit2-converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
 
 # Test Dependency --------------------------------
-org-jetbrains-kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version = "1.10.2" }
+org-jetbrains-kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version = "1.10.2" }
 org-robolectric = { module = "org.robolectric:robolectric", version = "4.15.1" }
 com-google-dagger-hilt-android-testing = { module = "com.google.dagger:hilt-android-testing", version.ref = "googleDaggerHilt" }
-
-junit = { group = "junit", name = "junit", version.ref = "junit" }
-androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidxJunit" }
-androidx-junit-ext-ktx = { group = "androidx.test.ext", name = "junit-ktx", version.ref = "junitKtx" }
 
 io-mock = { module = "io.mockk:mockk", version.ref = "mockk" }
 io-mock-android = { module = "io.mockk:mockk-android", version.ref = "mockk" }
 
 androidx-compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
-androidx-compose-ui-test-junit4-android = { group = "androidx.compose.ui", name = "ui-test-junit4-android", version = "1.8.2" }
+androidx-compose-ui-test-junit4-android = { module = "androidx.compose.ui:ui-test-junit4-android", version = "1.8.2" }
 
 app-cash-turbine = { module = "app.cash.turbine:turbine", version = "1.2.0" }
 com-squareup-okhttp3-mockwebserver = { module = "com.squareup.okhttp3:mockwebserver", version = "4.10.0" }
-androidx-runner = { group = "androidx.test", name = "runner", version.ref = "runner" }
 
 # ----------------------------------------------------------------------------------------------------------------------
 [plugins]
@@ -125,11 +109,6 @@ androidx-compose = [
 retrofit2 = [
     "com-squareup-retrofit2-retrofit",
     "com-squareup-retrofit2-converter-gson",
-]
-
-okhttp = [
-    "com-squareup-okhttp3-okhttp",
-    "com-squareup-okhttp3-logging-interceptor"
 ]
 
 # Test Bundles --------------------------------

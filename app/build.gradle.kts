@@ -67,22 +67,24 @@ android {
             excludes += listOf("META-INF/LICENSE-notice.md", "META-INF/LICENSE.md")
         }
     }
+
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
+    }
 }
 
 dependencies {
     // Main Dependencies
     implementation(libs.androidx.core.splashscreen)
-    implementation(libs.androidx.core.ktx)
     implementation(libs.fwhyn.lib.baze)
     implementation(libs.org.apache.poi.ooxml)
     implementation(libs.com.squareup.okhttp3.mockwebserver)
     implementation(libs.bundles.datastore)
     implementation(libs.com.google.protobuf.javalite)
     implementation(libs.androidx.security.crypto.ktx)
-
-    //// Retrofit
     implementation(libs.bundles.retrofit2)
-    implementation(libs.bundles.okhttp)
 
     //// Compose
     implementation(libs.bundles.androidx.compose)
@@ -97,8 +99,6 @@ dependencies {
     testImplementation(libs.org.robolectric)
     testImplementation(libs.app.cash.turbine)
 
-    androidTestImplementation(libs.androidx.runner)
-
     //// Mockk
     testImplementation(libs.io.mock)
     androidTestImplementation(libs.io.mock.android)
@@ -110,11 +110,6 @@ dependencies {
     //// Coroutine Test
     testImplementation(libs.org.jetbrains.kotlinx.coroutines.test)
     androidTestImplementation(libs.org.jetbrains.kotlinx.coroutines.test)
-
-    //// JUnit Test
-    testImplementation(libs.junit)
-    testImplementation(libs.androidx.junit.ext.ktx)
-    androidTestImplementation(libs.androidx.junit)
 
     //// Compose Test
     androidTestImplementation(libs.bundles.androidx.compose.test)
