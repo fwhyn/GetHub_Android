@@ -1,7 +1,6 @@
 package com.fwhyn.app.gethub
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.fwhyn.app.gethub.feature.func.auth.bytoken.di.TestDiMain
 import dagger.Module
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest

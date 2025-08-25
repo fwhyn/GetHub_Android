@@ -1,4 +1,4 @@
-package com.fwhyn.app.gethub.feature.func.auth.bytoken.di
+package com.fwhyn.app.gethub
 
 import dagger.Module
 import dagger.Provides

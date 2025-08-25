@@ -14,7 +14,7 @@ import retrofit2.Retrofit
 
 @Module
 @InstallIn(ActivityRetainedComponent::class)
-class RetrofitGitHubDiMain {
+open class RetrofitGitHubDiMain {
 
     private var token = ""
 
@@ -45,7 +45,6 @@ class RetrofitGitHubDiMain {
     fun coroutineScope(): CoroutineScope {
         return CoroutineScope(Dispatchers.IO)
     }
-
 
     fun collectToken(
         scope: CoroutineScope,
