@@ -136,3 +136,15 @@ protobuf {
         }
     }
 }
+
+// TODO gradle
+// - add info about what project like printing app, connect the mobile phone to printer
+// - mention my japanese skill
+// - the end it's like meeting you today
+//
+//
+//
+// - what the situation, act, action, result
+//
+// - prepare the question from you
+// - most challenging project make it clearer
