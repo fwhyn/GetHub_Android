@@ -80,9 +80,10 @@ dependencies {
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.fwhyn.lib.baze)
     implementation(libs.com.squareup.okhttp3.mockwebserver)
-    implementation(libs.bundles.datastore)
     implementation(libs.com.google.protobuf.javalite)
     implementation(libs.androidx.security.crypto.ktx)
+
+    implementation(libs.bundles.datastore)
     implementation(libs.bundles.retrofit2)
 
     //// Compose
