@@ -79,11 +79,11 @@ dependencies {
     // Main Dependencies
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.fwhyn.lib.baze)
-    implementation(libs.org.apache.poi.ooxml)
     implementation(libs.com.squareup.okhttp3.mockwebserver)
-    implementation(libs.bundles.datastore)
     implementation(libs.com.google.protobuf.javalite)
     implementation(libs.androidx.security.crypto.ktx)
+
+    implementation(libs.bundles.datastore)
     implementation(libs.bundles.retrofit2)
 
     //// Compose
@@ -99,6 +99,7 @@ dependencies {
     testImplementation(libs.org.robolectric)
     testImplementation(libs.app.cash.turbine)
 
+    testImplementation(libs.androidx.test.ext.junit.ktx)
     androidTestImplementation(libs.androidx.test.runner)
 
     //// Mockk

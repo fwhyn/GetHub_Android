@@ -20,7 +20,7 @@ import retrofit2.Retrofit
 
 @Module
 @InstallIn(ActivityRetainedComponent::class)
-class AuthTokenDiMain {
+open class AuthTokenDiMain {
 
     @Provides
     fun authTokenLocalDataSource(

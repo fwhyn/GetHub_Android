@@ -12,7 +12,6 @@ import com.fwhyn.lib.baze.common.model.Exzeption
 import com.fwhyn.lib.baze.common.model.Status
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.test.runTest
-import org.junit.After
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
@@ -28,6 +27,7 @@ class GetGitHubUsersRepositoryMainTest {
 
     private lateinit var getGitHubUsersRepository: GetGitHubUsersRepository
 
+    // ----------------------------------------------------------------
     @Before
     fun setUp() {
         val retrofitGitHubDiMain = RetrofitGitHubDiMain()
@@ -35,14 +35,9 @@ class GetGitHubUsersRepositoryMainTest {
         val gitHubUsersDiMain = GitHubUsersDiMain()
         val gitHubUsersRemoteDataSource = gitHubUsersDiMain.gitHubUsersRemoteDataSource(retrofit)
         getGitHubUsersRepository = GetGitHubUsersRepositoryMain(gitHubUsersRemoteDataSource)
-
     }
 
-    @After
-    fun tearDown() {
-
-    }
-
+    // ----------------------------------------------------------------
     @Test
     fun `success and users exist when token is valid`() = runTest {
         token = TOKEN_FAKE

@@ -13,7 +13,7 @@ import retrofit2.Retrofit
 
 @Module
 @InstallIn(ActivityRetainedComponent::class)
-class GitHubUsersDiMain {
+open class GitHubUsersDiMain {
 
     @Provides
     fun gitHubUsersRemoteDataSource(
